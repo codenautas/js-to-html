@@ -9,6 +9,7 @@
     "name": "Emilio Platzer", "email": "emilioplatzer@gmail.com"
   }],
   "dependencies": {
+    "expect.js": "~0.3.1"
   },
   "devDependencies": {
     "istanbul": "~0.3.6",
