@@ -45,4 +45,14 @@ jsToHtml.Internal.prototype.toHtml=function toHtml(opts,recurseOpts){
         "</"+object.tagName+">"+nl;
 }
 
+Object.defineProperty(jsToHtml.Internal.prototype, 'internal', {
+    get: function(){
+        if(jsToHtml.testing){
+            return this.internalContent;
+        }else{
+            throw new Error('jsToHtml.Internal error: the internal content is only for test purposes');
+        }
+    }
+});
+
 exports = module.exports = jsToHtml;

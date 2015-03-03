@@ -12,13 +12,36 @@
 $ npm install js-to-html
 ```
 
+## API
+
+### jsToHtml(object)
+
+Create a jsToHtml.Internal object that contains the data
+
+### internal.toHtml(opt)
+
+Returns the Html Text
+
+opt  | value
+-----|-------
+pretty | returns a pretty and indented text
+
+### jsToHtml.testing
+
+Enter testing mode (for access internal property).
+
+### internal.internal
+
+Returns the internal object for test purposes
+
+
 ## Example
 
 ```js
-var jh = require('js-to-html');
+var jsToHtml = require('js-to-html');
 
 console.log(
-    js({
+    jsToHtml({
         tagName:'div',
         attributes:{'class':'the_class', id:'47'},
         content:[
