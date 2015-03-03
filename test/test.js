@@ -1,3 +1,4 @@
+"use strict";
 
 var expect = require('expect.js');
 var jh = require('..');
@@ -10,7 +11,7 @@ describe('js-to-html', function(){
                 textContent:'The first example'
             });
             expect(object).to.be.a(jh.Internal);
-            htmlText=object.toHtml();
+            var htmlText=object.toHtml();
             expect(htmlText).to.eql("<p>The first example</p>");
         });
         it('should render a span with attributes', function(){
@@ -22,6 +23,21 @@ describe('js-to-html', function(){
                 "<span class=the_class id=44>The second example</span>"
             );
         });
+        it('should render a div with other elements inside', function(){
+            expect(jh({
+                tagName:'div',
+                attributes:{'class':'the_class', id:'47'},
+                content:[
+                    {tagName: 'p', textContent: 'First paragraph'},
+                    {tagName: 'p', textContent: 'Second paragraph'},
+                ]
+            }).toHtml()).to.eql(
+                "<div class=the_class id=47>"+
+                "<p>First paragraph</p>"+
+                "<p>Second paragraph</p>"+
+                "</div>"
+            );
+        });
         it('should render a div with other elements inside in a pretty way', function(){
             expect(jh({
                 tagName:'div',
@@ -30,7 +46,7 @@ describe('js-to-html', function(){
                     {tagName: 'p', textContent: 'First paragraph'},
                     {tagName: 'p', textContent: 'Second paragraph'},
                 ]
-            }).toHtml({pretty:true, margin:4})).to.eql(
+            }).toHtml({pretty:true},{margin:4})).to.eql(
                 "    <div class=the_class id=47>\n"+
                 "      <p>First paragraph</p>\n"+
                 "      <p>Second paragraph</p>\n"+

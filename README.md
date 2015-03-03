@@ -12,11 +12,33 @@
 $ npm install js-to-html
 ```
 
-## API
+## Example
 
 ```js
 var jh = require('js-to-html');
+
+console.log(
+    js({
+        tagName:'div',
+        attributes:{'class':'the_class', id:'47'},
+        content:[
+            {tagName: 'p', textContent: 'First paragraph'},
+            {tagName: 'p', textContent: 'Second paragraph'},
+        ]
+    }).toHtml({pretty:true})
+)
+
+/* logs:
+<div class=the_class id=47>
+  <p>First paragraph</p>
+  <p>Second paragraph</p>
+</div>
+)
 ```
+
+## Notes
+
+* Do not use in production enviroments. Do not escape text yet!
 
 ## License
 
