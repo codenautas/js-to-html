@@ -100,18 +100,14 @@ describe('js-to-html', function(){
                 "</div>"
             );
         });
-        it.skip('should render a div with other elements inside in a pretty way', function(){
-            expect(jh({
-                tagName:'div',
-                attributes:{'class':'the_class', id:'47'},
-                content:[
-                    {tagName: 'p', textContent: 'First paragraph'},
-                    {tagName: 'p', textContent: 'Second paragraph'},
-                ]
-            }).toHtml({pretty:true},{margin:4})).to.eql(
+        it('should render a div with other elements inside in a pretty way', function(){
+            expect(html.div({'class':'the_class', id:'47'},[
+                html.h1('First title'),
+                html.h2(['Second title with ',html.b('something'),' bold'])
+            ]).toHtmlText({pretty:true},{margin:4})).to.eql(
                 "    <div class=the_class id=47>\n"+
-                "      <p>First paragraph</p>\n"+
-                "      <p>Second paragraph</p>\n"+
+                "      <h1>First title</h1>\n"+
+                "      <h2>Second title with <b>something</b> bold</h2>\n"+
                 "    </div>\n"
             );
         });
