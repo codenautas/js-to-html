@@ -217,7 +217,4 @@ Object.keys(jsToHtml.htmlTags).map(function(tagName){
     }
 });
 
-jsToHtml.Internal=function(object){
-    this.internalContent=object;
-}
 exports = module.exports = jsToHtml;
