@@ -52,16 +52,17 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     recurseOpts.margin=recurseOpts.margin||0;
     var tagInfo=jsToHtml.htmlTags[this.tagName];
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
-    var nl=(opts.pretty && tagInfo.display=='block'?'\n':'');
-    var sp=(opts.pretty && tagInfo.display=='block'?spaces:function(x){ return ''; });
+    var inlineBlock=((tagInfo.display||'inline')=='inline');
+    var nl=(opts.pretty && !inlineBlock?'\n':'');
+    var sp=(opts.pretty && !inlineBlock?spaces:function(x){ return ''; });
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
             return ' '+attrName+'='+this.attributes[attrName];
         },this).join('')+
-        ">"+(tagInfoFirstChild.display=='block'?nl:'')+
+        ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+
         this.content.map(function(node){
             return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
-        }).join('')+(tagInfoFirstChild.display=='block'?sp(recurseOpts.margin):'')+
+        }).join('')+((tagInfoFirstChild.display||'inline')!='inline'?sp(recurseOpts.margin):'')+
         "</"+this.tagName+">"+nl;
 }
 
@@ -105,12 +106,12 @@ jsToHtml.htmlTags={
     "br"           :{type:'HTML4', "void":true, description:"Defines a single line break"},
     "button"       :{type:'HTML4', description:"Defines a clickable button"},
     "canvas"       :{type:'HTML5', description:"Used to draw graphics, on the fly, via scripting (usually JavaScript)"},
-    "caption"      :{type:'HTML4', description:"Defines a table caption"},
+    "caption"      :{type:'HTML4', display:'not-inline', description:"Defines a table caption"},
     "center"       :{type:'HTML4', description:"Not supported in HTML5. Deprecated in HTML 4.01. Defines centered text"},
     "cite"         :{type:'HTML4', description:"Defines the title of a work"},
     "code"         :{type:'HTML4', description:"Defines a piece of computer code"},
-    "col"          :{type:'HTML4', "void":true, description:"Specifies column properties for each column within a <colgroup> element "},
-    "colgroup"     :{type:'HTML4', description:"Specifies a group of one or more columns in a table for formatting"},
+    "col"          :{type:'HTML4', display:'not-inline', "void":true, description:"Specifies column properties for each column within a <colgroup> element "},
+    "colgroup"     :{type:'HTML4', display:'not-inline', description:"Specifies a group of one or more columns in a table for formatting"},
     "command"      :{type:'HTML5', "void":true, description:"Defines a command button that a user can invoke"},
     "datalist"     :{type:'HTML5', description:"Specifies a list of pre-defined options for input controls"},
     "dd"           :{type:'HTML4', description:"Defines a description of an item in a definition list"},
@@ -189,16 +190,16 @@ jsToHtml.htmlTags={
     "sub"          :{type:'HTML4', description:"Defines subscripted text"},
     "summary"      :{type:'HTML5', description:"Defines a visible heading for a <details> element"},
     "sup"          :{type:'HTML4', description:"Defines superscripted text"},
-    "table"        :{type:'HTML4', description:"Defines a table"},
-    "tbody"        :{type:'HTML4', description:"Groups the body content in a table"},
-    "td"           :{type:'HTML4', description:"Defines a cell in a table"},
+    "table"        :{type:'HTML4', display:'not-inline', description:"Defines a table"},
+    "tbody"        :{type:'HTML4', display:'not-inline', description:"Groups the body content in a table"},
+    "td"           :{type:'HTML4', display:'not-inline', description:"Defines a cell in a table"},
     "textarea"     :{type:'HTML4', description:"Defines a multiline input control (text area)"},
-    "tfoot"        :{type:'HTML4', description:"Groups the footer content in a table"},
-    "th"           :{type:'HTML4', description:"Defines a header cell in a table"},
-    "thead"        :{type:'HTML4', description:"Groups the header content in a table"},
+    "tfoot"        :{type:'HTML4', display:'not-inline', description:"Groups the footer content in a table"},
+    "th"           :{type:'HTML4', display:'not-inline', description:"Defines a header cell in a table"},
+    "thead"        :{type:'HTML4', display:'not-inline', description:"Groups the header content in a table"},
     "time"         :{type:'HTML5', description:"Defines a date/time"},
     "title"        :{type:'HTML4', description:"Defines a title for the document"},
-    "tr"           :{type:'HTML4', description:"Defines a row in a table"},
+    "tr"           :{type:'HTML4', display:'not-inline', description:"Defines a row in a table"},
     "track"        :{type:'HTML5', description:"Defines text tracks for media elements (<video> and <audio>)"},
     "tt"           :{type:'HTML4', description:"Not supported in HTML5. Defines teletype text"},
     "u"            :{type:'HTML4', description:"Defines text that should be stylistically different from normal text"},
