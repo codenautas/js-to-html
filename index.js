@@ -35,10 +35,13 @@ jsToHtml.Html=function Html(directObject){
     }
 }
 
-jsToHtml.Html.prototype.toHtmlText=function toHtmlText(){
+jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     if('textNode' in this){
         return this.textNode;
     }
+    var nl='';
+    var opts={};
+    var recurseOpts={};
     return "<"+this.tagName+
         /*(object.attributes?Object.keys(object.attributes).map(function(attrName){
             return ' '+attrName+'='+object.attributes[attrName];
@@ -46,15 +49,10 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(){
         ">"+
         /*
         (opts.pretty?spaces(recurseOpts.margin):'')+
-        (object.content?nl+object.content.map(function(node){
-            // esto hay que controlarlo cuando permitamos meter objetos internos dentro de objetos comunes para pasarlos a internos otra vez. 
-            // if(!(node instanceof jsToHtml.Internal)){
-                node=jsToHtml(node);
-            //}
-            return node.toHtml(opts,{margin:recurseOpts.margin+2});
-        }).join('')+(opts.pretty?spaces(recurseOpts.margin):''):'')+
-        (object.textContent||'')+
         */
+        nl+this.content.map(function(node){
+            return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
+        }).join('')+(opts.pretty?spaces(recurseOpts.margin):'')+
         "</"+this.tagName+">"//+nl;
 }
 

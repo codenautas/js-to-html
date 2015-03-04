@@ -51,11 +51,11 @@ describe('js-to-html', function(){
                 direct({textNode:'a phrase', thisAttribute:"no good"})
             }).to.throwError(/not recognized thisAttribute property/);
         });
-        it.skip('should render an element without content', function(){
+        it('should render an element without content', function(){
             var p=direct({
                 tagName:'p',
-                attributte:{},
-                content:'The first example'
+                attributes:{},
+                content:[direct({textNode: 'The first example'})]
             });
             expect(p).to.be.a(jsToHtml.Html);
             var htmlText=p.toHtmlText();
