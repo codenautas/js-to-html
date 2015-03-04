@@ -13,13 +13,29 @@
 var jsToHtml={};
 
 jsToHtml.Html=function Html(directObject){
+    var isTextNode='textNode' in directObject;
+    var validProperties=isTextNode?{
+        textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string"}},
+    }:{
+        tagName:   {textType:'string type' ,check:function(x){ return typeof x=="string"}},
+        attributes:{textType:'Object class',check:function(x){ return typeof x=="object" && x.constructor == Object}},
+        content:   {textType:'Array class' ,check:function(x){ return typeof x=="object" && x instanceof Array}},
+    }
+    for(var property in validProperties){
+        var value=directObject[property];
+        if(!(property in directObject) || !validProperties[property].check(value)){
+            throw new Error('jsToHtml.Html error: directObject must include '+property+' of '+validProperties[property].textType);
+        }
+        this[property]=value;
+    }
     for(var property in directObject){
-        this[property]=directObject[property];
+        if(!(property in validProperties)){
+            throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
+        }
     }
 }
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(){
-    console.log('render con ',this);
     if('textNode' in this){
         return this.textNode;
     }

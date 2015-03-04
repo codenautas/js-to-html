@@ -24,7 +24,7 @@ describe('js-to-html', function(){
         it('should render an element without content', function(){
             var div=direct({
                 tagName:'div',
-                attributte:{},
+                attributes:{},
                 content:[]
             });
             expect(div).to.be.a(jsToHtml.Html);
@@ -33,14 +33,23 @@ describe('js-to-html', function(){
         });
         it('should control the presence and type/class of all properties', function(){
             expect(function(){
-                direct({tagName:'div', attributte:{}, content:"must not be a string"})
-            }).to.trowError(/must include content of Array class/);
+                direct({tagName:'div', attributes:{}})
+            }).to.throwError(/must include content/);
+            expect(function(){
+                direct({tagName:'div', attributes:{}, content:"must not be a string"})
+            }).to.throwError(/must include content of Array class/);
             expect(function(){
                 direct({tagName:'div', content:[], attributes:['must not be an array']})
-            }).to.trowError(/must include attributes of Object class/);
+            }).to.throwError(/must include attributes of Object class/);
             expect(function(){
                 direct({tagName:8, content:[], attributes:{valid:true}});
-            }).to.trowError(/must include tagName of string type/);
+            }).to.throwError(/must include tagName of string type/);
+            expect(function(){
+                direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
+            }).to.throwError(/not recognized other property/);
+            expect(function(){
+                direct({textNode:'a phrase', thisAttribute:"no good"})
+            }).to.throwError(/not recognized thisAttribute property/);
         });
         it.skip('should render an element without content', function(){
             var p=direct({
