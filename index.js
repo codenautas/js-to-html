@@ -12,14 +12,18 @@
  
 var jsToHtml={};
 
+function isPlainObject(x){
+    return typeof x=="object" && x.constructor == Object;
+}
+
 jsToHtml.Html=function Html(directObject){
     var isTextNode='textNode' in directObject;
     var validProperties=isTextNode?{
-        textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string"}},
+        textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string" }},
     }:{
-        tagName:   {textType:'string type' ,check:function(x){ return typeof x=="string"}},
-        attributes:{textType:'Object class',check:function(x){ return typeof x=="object" && x.constructor == Object}},
-        content:   {textType:'Array class' ,check:function(x){ return typeof x=="object" && x instanceof Array}},
+        tagName:   {textType:'string type' ,check:function(x){ return typeof x=="string" }},
+        attributes:{textType:'Object class',check:function(x){ return isPlainObject(x) }},
+        content:   {textType:'Array class' ,check:function(x){ return typeof x=="object" && x instanceof Array }},
     }
     for(var property in validProperties){
         var value=directObject[property];
@@ -43,13 +47,11 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var opts={};
     var recurseOpts={};
     return "<"+this.tagName+
-        /*(object.attributes?Object.keys(object.attributes).map(function(attrName){
-            return ' '+attrName+'='+object.attributes[attrName];
-        }).join(''):'')+*/
+        Object.keys(this.attributes).map(function(attrName){
+            return ' '+attrName+'='+this.attributes[attrName];
+        },this).join('')+
         ">"+
-        /*
         (opts.pretty?spaces(recurseOpts.margin):'')+
-        */
         nl+this.content.map(function(node){
             return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
         }).join('')+(opts.pretty?spaces(recurseOpts.margin):'')+
@@ -60,7 +62,26 @@ jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
 }
 
-jsToHtml.html=function html(){
+jsToHtml.indirect=function direct(tagName,contentOrAttributes,contentIfThereAreAttributes){
+    var thereAreAttributes=isPlainObject(contentOrAttributes);
+    var attributes = thereAreAttributes?contentOrAttributes:{};
+    var content    = thereAreAttributes?contentIfThereAreAttributes:contentOrAttributes;
+    return jsToHtml.direct({
+        tagName:tagName,
+        attributes:attributes,
+        content:typeof content=='string'?[{textNode:content}]:content
+    });
+}
+
+jsToHtml.html={
+}
+
+jsToHtml.html.p=function p(contentOrAttributes,contentIfThereAreAttributes){
+    return jsToHtml.indirect('p',contentOrAttributes,contentIfThereAreAttributes);
+}
+
+jsToHtml.html.div=function div(contentOrAttributes,contentIfThereAreAttributes){
+    return jsToHtml.indirect('div',contentOrAttributes,contentIfThereAreAttributes);
 }
 
 jsToHtml.Internal=function(object){

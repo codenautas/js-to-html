@@ -61,33 +61,39 @@ describe('js-to-html', function(){
             var htmlText=p.toHtmlText();
             expect(htmlText).to.eql("<p>The first example</p>");
         });
-        it.skip('should render an element with textContent', function(){
+        it('should construct a p object', function(){
             var p=html.p('The first example');
-            expect(p).to.be.a(jsToHtml.Html);
-            expect(p.toDumpObject()).to.eql({
+            expect(p).to.eql(direct({
                 tagName:'p',
-                textContent:'The first example'
-            });
-            var htmlText=p.toHtmlText();
-            expect(htmlText).to.eql("<p>The first example</p>");
+                attributes:{},
+                content:[direct({textNode: 'The first example'})]
+            }));
         });
-        it.skip('should render a span with attributes', function(){
-            expect(html.span(
+        it('should render a p with attributes', function(){
+            expect(html.p(
                 {'class':'the_class', id:'44'},
                 'The second example'
-            ).toHtml()).to.eql(
-                "<span class=the_class id=44>The second example</span>"
-            );
+            )).to.eql(direct({
+                tagName:'p',
+                attributes:{'class':'the_class', id:'44'},
+                content:[direct({textNode: 'The second example'})]
+            }));
         });
-        it.skip('should render a div with other elements inside', function(){
-            expect(jh({
+        it('should construct and render a div with other elements inside', function(){
+            var div=html.div({'class':'the_class', id:'47'},[
+                html.p('First paragraph'),
+                html.p('Second paragraph')
+            ]);
+            var object=direct({
                 tagName:'div',
                 attributes:{'class':'the_class', id:'47'},
                 content:[
-                    {tagName: 'p', textContent: 'First paragraph'},
-                    {tagName: 'p', textContent: 'Second paragraph'},
+                    direct({tagName: 'p', attributes:{}, content:[direct({textNode: 'First paragraph' })]}),
+                    direct({tagName: 'p', attributes:{}, content:[direct({textNode: 'Second paragraph'})]})
                 ]
-            }).toHtml()).to.eql(
+            });
+            expect(div).to.eql(object);
+            expect(object.toHtmlText()).to.eql(
                 "<div class=the_class id=47>"+
                 "<p>First paragraph</p>"+
                 "<p>Second paragraph</p>"+
