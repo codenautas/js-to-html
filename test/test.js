@@ -111,23 +111,5 @@ describe('js-to-html', function(){
                 "    </div>\n"
             );
         });
-        it.skip('should expose the internal content for test purposes',function(){
-            var object={
-                tagName:'div',
-                attributes:{'class':'the_class', id:'47'},
-                content:[
-                    {tagName: 'p', textContent: 'First paragraph'},
-                    {tagName: 'p', textContent: 'Second paragraph'},
-                ]
-            };
-            jh.testing=true;
-            expect(jh(object).internal).to.eql(object);
-        });
-        it.skip('should not expose the internal content if not for test purposes',function(){
-            jh.testing=false;
-            expect(function(){
-                jh({tagName:'div'}).internal
-            }).to.throwError(/internal content is only for test purposes/);
-        });
     });
 });

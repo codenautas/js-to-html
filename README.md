@@ -14,11 +14,13 @@ $ npm install js-to-html
 
 ## API
 
-### jsToHtml(object)
+### html.TAGNAME([attributes, ]content)
 
-Create a jsToHtml.Internal object that contains the data
+Returns a Html object with TAGNAME, attributes and content. 
 
-### internal.toHtml(opt)
+Content could be a string expression or a Html object. 
+
+### Html.toHtmlText(opts)
 
 Returns the Html Text
 
@@ -26,29 +28,19 @@ opt  | value
 -----|-------
 pretty | returns a pretty and indented text
 
-### jsToHtml.testing
-
-Enter testing mode (for access internal property).
-
-### internal.internal
-
-Returns the internal object for test purposes
-
-
 ## Example
 
 ```js
-var jsToHtml = require('js-to-html');
+var html = require('js-to-html').html;
 
 console.log(
-    jsToHtml({
-        tagName:'div',
-        attributes:{'class':'the_class', id:'47'},
-        content:[
-            {tagName: 'p', textContent: 'First paragraph'},
-            {tagName: 'p', textContent: 'Second paragraph'},
+    html.div(
+        {'class':'the_class', id:'47'},
+        [
+            html.p('First paragraph'),
+            html.p('Second paragraph'),
         ]
-    }).toHtml({pretty:true})
+    ).toHtmlText({pretty:true})
 )
 
 /* logs:
