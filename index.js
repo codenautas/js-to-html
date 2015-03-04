@@ -70,16 +70,18 @@ jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
 }
 
-jsToHtml.indirect=function direct(tagName,contentOrAttributes,contentIfThereAreAttributes){
+jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
     var attributes = thereAreAttributes?contentOrAttributes:{};
     var content    = thereAreAttributes?contentIfThereAreAttributes:contentOrAttributes;
     return jsToHtml.direct({
         tagName:tagName,
         attributes:attributes,
-        content:typeof content=='string'?[jsToHtml.direct({textNode:content})]:content.map(function(element){
-            return typeof element=='string'?jsToHtml.direct({textNode:element}):element;
-        })
+        content:typeof content=='string'?[jsToHtml.direct({textNode:content})]:(
+            !content?[]:(content.map(function(element){
+                return typeof element=='string'?jsToHtml.direct({textNode:element}):element;
+            }))
+        )
     });
 }
 

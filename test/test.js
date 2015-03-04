@@ -111,7 +111,7 @@ describe('js-to-html', function(){
                 "    </div>\n"
             );
         });
-        it.skip('should construct div without content', function(){
+        it('should construct div without content', function(){
             expect(html.div().toHtmlText()).to.eql(
                 "<div></div>"
             );
