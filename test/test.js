@@ -111,5 +111,45 @@ describe('js-to-html', function(){
                 "    </div>\n"
             );
         });
+        it.skip('should construct div without content', function(){
+            expect(html.div().toHtmlText()).to.eql(
+                "<div></div>"
+            );
+        });
+        it.skip('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
+            expect(
+                html.p({"class":'names', title:'this title'},'text').toHtmlText()
+            ).to.eql("<p class=names title='this title'>text</p>");
+        });
+        it.skip('should escape text', function(){
+            expect(direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
+                'esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'
+            );
+        });
+        it.skip('should escape attributes', function(){
+            expect(html.p({title:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
+                "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
+            );
+        });
+        it.skip('should control space in class atribute', function(){
+            expect(function(){
+                html.p({"class":'three class names'},'text')
+            }).to.throwError(/class attribute could not contain spaces/);
+        });
+        it.skip('should not admit an invalid element', function(){
+            expect(function(){
+                direct({tagName:"not-exists", attributes:{}, content:[]})
+            }).to.throwError(/tagName not-exists not exists/);
+        });
+        it.skip('should render void elements without closing tag', function(){
+            expect(
+                direct({tagName:"img", attributes:{src:'img.png'}, content:[]}).toHtmlText()
+            ).to.eql("<img src='img.png'>");
+        });
+        it.skip('should concat list values for list-type attributes', function(){
+            expect(
+                html.p({"class":['names', 'other']},'text').toHtmlText()
+            ).to.eql("<p class='names other'>text</p>");
+        });
     });
 });
