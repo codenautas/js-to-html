@@ -141,7 +141,7 @@ describe('js-to-html', function(){
                 direct({tagName:"not-exists", attributes:{}, content:[]})
             }).to.throwError(/tagName not-exists not exists/);
         });
-        it.skip('should render void elements without closing tag', function(){
+        it('should render void elements without closing tag', function(){
             expect(
                 direct({tagName:"img", attributes:{src:'img.png'}, content:[]}).toHtmlText()
             ).to.eql("<img src='img.png'>");

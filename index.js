@@ -68,6 +68,8 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     recurseOpts.margin=recurseOpts.margin||0;
     var tagInfo=jsToHtml.htmlTags[this.tagName];
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
+    var isvoidTag=tagInfo["void"]||false;
+    console.log(isvoidTag);
     var inlineBlock=((tagInfo.display||'inline')=='inline');
     var nl=(opts.pretty && !inlineBlock?'\n':'');
     var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
@@ -82,7 +84,7 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
         this.content.map(function(node){
             return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
         }).join('')+((tagInfoFirstChild.display||'inline')!='inline'?sp(recurseOpts.margin):'')+
-        "</"+this.tagName+">"+nl;
+        (isvoidTag?'':"</"+this.tagName+">")+nl;
 }
 
 
