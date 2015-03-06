@@ -20,6 +20,21 @@ function spaces(n){
     return new Array(n+1).join(' ');
 }
 
+function escapeChar(simpleText){
+    var htmlReservedSymbols={
+            '&' :'&amp;',
+            '<' :'&lt;',
+            '>' :'&gt;',
+            '\\\'':'&#39;',
+            '"' :'&quot;'
+    };
+    var escapedText=simpleText;
+    for(var htmlReservedSymbol in htmlReservedSymbols){
+        escapedText=escapedText.replace(new RegExp( htmlReservedSymbol,'g'),htmlReservedSymbols[htmlReservedSymbol]);
+    }
+    return escapedText;
+}
+
 jsToHtml.Html=function Html(directObject){
     var isTextNode='textNode' in directObject;
     var validProperties=isTextNode?{
@@ -44,8 +59,9 @@ jsToHtml.Html=function Html(directObject){
 }
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+
     if('textNode' in this){
-        return this.textNode;
+        return escapeChar(this.textNode);
     }
     opts=opts||{};
     recurseOpts=recurseOpts||{};
@@ -54,10 +70,12 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
     var inlineBlock=((tagInfo.display||'inline')=='inline');
     var nl=(opts.pretty && !inlineBlock?'\n':'');
-    var sp=(opts.pretty && !inlineBlock?spaces:function(x){ return ''; });
+    var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
+    var patt= new RegExp(/[^a-z\^A-Z]/);
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
-            return ' '+attrName+'='+this.attributes[attrName];
+            var quotingAttrVal=patt.test(this.attributes[attrName])?'\''+this.attributes[attrName]+'\'':this.attributes[attrName];
+            return ' '+attrName+'='+quotingAttrVal;
         },this).join('')+
         ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+
         this.content.map(function(node){
@@ -65,6 +83,7 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
         }).join('')+((tagInfoFirstChild.display||'inline')!='inline'?sp(recurseOpts.margin):'')+
         "</"+this.tagName+">"+nl;
 }
+
 
 jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
