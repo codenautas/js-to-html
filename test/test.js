@@ -136,7 +136,7 @@ describe('js-to-html', function(){
                 html.p({"class":'three class names'},'text')
             }).to.throwError(/class attribute could not contain spaces/);
         });
-        it.skip('should not admit an invalid element', function(){
+        it('should not admit an invalid element', function(){
             expect(function(){
                 direct({tagName:"not-exists", attributes:{}, content:[]})
             }).to.throwError(/tagName not-exists not exists/);

@@ -52,10 +52,14 @@ jsToHtml.Html=function Html(directObject){
         this[property]=value;
     }
     for(var property in directObject){
+        if(property=='tagName' && !jsToHtml.htmlTags[directObject[property]]){
+            throw new Error('tagName '+ directObject[property]+ ' not exists');
+        };
         if(!(property in validProperties)){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
     }
+    
 }
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
