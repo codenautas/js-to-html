@@ -79,8 +79,13 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var patt= new RegExp(/[^a-z\^A-Z]/);
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
-            var escapedAttrVal=escapeChar(this.attributes[attrName])
-            var quotingAttrVal=patt.test(this.attributes[attrName])?'\''+escapedAttrVal+'\'':escapedAttrVal;
+            var attrVal=this.attributes[attrName];
+            var textAttrVal=attrVal;
+            if(!(typeof attrVal=="string")){
+                textAttrVal= attrVal.join(' ');
+            } 
+            var escapedAttrVal=escapeChar(textAttrVal);
+            var quotingAttrVal=patt.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+'='+quotingAttrVal;
         },this).join('')+
         ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+

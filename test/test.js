@@ -146,7 +146,7 @@ describe('js-to-html', function(){
                 direct({tagName:"img", attributes:{src:'img.png'}, content:[]}).toHtmlText()
             ).to.eql("<img src='img.png'>");
         });
-        it.skip('should concat list values for list-type attributes', function(){
+        it('should concat list values for list-type attributes', function(){
             expect(
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
