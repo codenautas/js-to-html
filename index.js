@@ -80,8 +80,9 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
             var attrVal=this.attributes[attrName];
-            var textAttrVal=attrVal;
-            if(!(typeof attrVal=="string")){
+            var textAttrVal=attrVal;          
+            if((attrName in jsToHtml.htmlAttrs) && ('listType' in jsToHtml.htmlAttrs[attrName]) &&
+                (!(typeof attrVal=="string")) ){
                 textAttrVal= attrVal.join(' ');
             } 
             var escapedAttrVal=escapeChar(textAttrVal);
@@ -115,8 +116,11 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     });
 }
 
-// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
+jsToHtml.htmlAttrs={
+    "class"        :{listType:true, rejectSpaces:true}
+};
 
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
 jsToHtml.htmlTags={
     "a"            :{type:'HTML4', description:"Defines a hyperlink"},
     "abbr"         :{type:'HTML4', description:"Defines an abbreviation"},
