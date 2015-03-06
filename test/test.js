@@ -126,7 +126,7 @@ describe('js-to-html', function(){
                 'esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'
             );
         });
-        it.skip('should escape attributes', function(){
+        it('should escape attributes', function(){
             expect(html.p({title:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
                 "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
             );

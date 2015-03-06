@@ -74,7 +74,8 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var patt= new RegExp(/[^a-z\^A-Z]/);
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
-            var quotingAttrVal=patt.test(this.attributes[attrName])?'\''+this.attributes[attrName]+'\'':this.attributes[attrName];
+            var escapedAttrVal=escapeChar(this.attributes[attrName])
+            var quotingAttrVal=patt.test(this.attributes[attrName])?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+'='+quotingAttrVal;
         },this).join('')+
         ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+
