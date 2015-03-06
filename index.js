@@ -69,7 +69,6 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var tagInfo=jsToHtml.htmlTags[this.tagName];
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
     var isvoidTag=tagInfo["void"]||false;
-    console.log(isvoidTag);
     var inlineBlock=((tagInfo.display||'inline')=='inline');
     var nl=(opts.pretty && !inlineBlock?'\n':'');
     var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
