@@ -94,7 +94,7 @@ describe('js-to-html', function(){
             });
             expect(div).to.eql(object);
             expect(object.toHtmlText()).to.eql(
-                "<div class=the_class id=47>"+
+                "<div class='the_class' id='47'>"+
                 "<p>First paragraph</p>"+
                 "<p>Second paragraph</p>"+
                 "</div>"
@@ -105,7 +105,7 @@ describe('js-to-html', function(){
                 html.h1('First title'),
                 html.h2(['Second title with ',html.b('something'),' bold'])
             ]).toHtmlText({pretty:true},{margin:4})).to.eql(
-                "    <div class=the_class id=47>\n"+
+                "    <div class='the_class' id='47'>\n"+
                 "      <h1>First title</h1>\n"+
                 "      <h2>Second title with <b>something</b> bold</h2>\n"+
                 "    </div>\n"
@@ -116,37 +116,37 @@ describe('js-to-html', function(){
                 "<div></div>"
             );
         });
-        it.skip('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
+        it('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
             expect(
                 html.p({"class":'names', title:'this title'},'text').toHtmlText()
             ).to.eql("<p class=names title='this title'>text</p>");
         });
-        it.skip('should escape text', function(){
+        it('should escape text', function(){
             expect(direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
                 'esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'
             );
         });
-        it.skip('should escape attributes', function(){
+        it('should escape attributes', function(){
             expect(html.p({title:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
                 "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
             );
         });
-        it.skip('should control space in class atribute', function(){
+        it('should control space in class atribute', function(){
             expect(function(){
                 html.p({"class":'three class names'},'text')
             }).to.throwError(/class attribute could not contain spaces/);
         });
-        it.skip('should not admit an invalid element', function(){
+        it('should not admit an invalid element', function(){
             expect(function(){
                 direct({tagName:"not-exists", attributes:{}, content:[]})
             }).to.throwError(/tagName not-exists not exists/);
         });
-        it.skip('should render void elements without closing tag', function(){
+        it('should render void elements without closing tag', function(){
             expect(
                 direct({tagName:"img", attributes:{src:'img.png'}, content:[]}).toHtmlText()
             ).to.eql("<img src='img.png'>");
         });
-        it.skip('should concat list values for list-type attributes', function(){
+        it('should concat list values for list-type attributes', function(){
             expect(
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");

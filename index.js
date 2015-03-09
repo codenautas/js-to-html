@@ -20,7 +20,23 @@ function spaces(n){
     return new Array(n+1).join(' ');
 }
 
+function escapeChar(simpleText){
+    var htmlReservedSymbols={
+            '&' :'&amp;',
+            '<' :'&lt;',
+            '>' :'&gt;',
+            '\\\'':'&#39;',
+            '"' :'&quot;'
+    };
+    var escapedText=simpleText;
+    for(var htmlReservedSymbol in htmlReservedSymbols){
+        escapedText=escapedText.replace(new RegExp( htmlReservedSymbol,'g'),htmlReservedSymbols[htmlReservedSymbol]);
+    }
+    return escapedText;
+}
+
 jsToHtml.Html=function Html(directObject){
+    var pattWhiteSpaces=new RegExp( "\\s");
     var isTextNode='textNode' in directObject;
     var validProperties=isTextNode?{
         textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string" }},
@@ -37,34 +53,63 @@ jsToHtml.Html=function Html(directObject){
         this[property]=value;
     }
     for(var property in directObject){
+        if(property=='attributes'){
+            for(var attrName in directObject[property]){
+                if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)|| false){
+                    var attrValue= directObject[property][attrName];
+                    if(attrValue instanceof Array){
+                       attrValue = attrValue.join('');
+                    };
+                    if(pattWhiteSpaces.test(attrValue)){   
+                            throw new Error(attrName + 'class attribute could not contain spaces');
+                    };
+                };
+            };
+        };
+        if(property=='tagName' && !jsToHtml.htmlTags[directObject[property]]){
+            throw new Error('tagName '+ directObject[property]+ ' not exists');
+        };
         if(!(property in validProperties)){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
     }
+    
 }
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+
     if('textNode' in this){
-        return this.textNode;
+        return escapeChar(this.textNode);
     }
     opts=opts||{};
     recurseOpts=recurseOpts||{};
     recurseOpts.margin=recurseOpts.margin||0;
     var tagInfo=jsToHtml.htmlTags[this.tagName];
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
+    var isvoidTag=tagInfo["void"]||false;
     var inlineBlock=((tagInfo.display||'inline')=='inline');
     var nl=(opts.pretty && !inlineBlock?'\n':'');
-    var sp=(opts.pretty && !inlineBlock?spaces:function(x){ return ''; });
+    var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
+    var patt= new RegExp(/[^a-z\^A-Z]/);
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
-            return ' '+attrName+'='+this.attributes[attrName];
+            var attrVal=this.attributes[attrName];
+            var textAttrVal=attrVal;          
+            if((attrName in jsToHtml.htmlAttrs) && ('listType' in jsToHtml.htmlAttrs[attrName]) &&
+                (!(typeof attrVal=="string")) ){
+                textAttrVal= attrVal.join(' ');
+            } 
+            var escapedAttrVal=escapeChar(textAttrVal);
+            var quotingAttrVal=patt.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+            return ' '+attrName+'='+quotingAttrVal;
         },this).join('')+
         ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+
         this.content.map(function(node){
             return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
         }).join('')+((tagInfoFirstChild.display||'inline')!='inline'?sp(recurseOpts.margin):'')+
-        "</"+this.tagName+">"+nl;
+        (isvoidTag?'':"</"+this.tagName+">")+nl;
 }
+
 
 jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
@@ -85,8 +130,11 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     });
 }
 
-// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
+jsToHtml.htmlAttrs={
+    "class"        :{listType:true, rejectSpaces:true}
+};
 
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
 jsToHtml.htmlTags={
     "a"            :{type:'HTML4', description:"Defines a hyperlink"},
     "abbr"         :{type:'HTML4', description:"Defines an abbreviation"},
