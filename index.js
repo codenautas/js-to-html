@@ -36,6 +36,7 @@ function escapeChar(simpleText){
 }
 
 jsToHtml.Html=function Html(directObject){
+    var pattWhiteSpaces=new RegExp( "\\s");
     var isTextNode='textNode' in directObject;
     var validProperties=isTextNode?{
         textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string" }},
@@ -52,6 +53,19 @@ jsToHtml.Html=function Html(directObject){
         this[property]=value;
     }
     for(var property in directObject){
+        if(property=='attributes'){
+            for(var attrName in directObject[property]){
+                if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)|| false){
+                    var attrValue= directObject[property][attrName];
+                    if(attrValue instanceof Array){
+                       attrValue = attrValue.join('');
+                    };
+                    if(pattWhiteSpaces.test(attrValue)){   
+                            throw new Error(attrName + 'class attribute could not contain spaces');
+                    };
+                };
+            };
+        };
         if(property=='tagName' && !jsToHtml.htmlTags[directObject[property]]){
             throw new Error('tagName '+ directObject[property]+ ' not exists');
         };

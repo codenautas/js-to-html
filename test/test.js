@@ -131,7 +131,7 @@ describe('js-to-html', function(){
                 "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
             );
         });
-        it.skip('should control space in class atribute', function(){
+        it('should control space in class atribute', function(){
             expect(function(){
                 html.p({"class":'three class names'},'text')
             }).to.throwError(/class attribute could not contain spaces/);
