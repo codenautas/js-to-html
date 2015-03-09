@@ -1,7 +1,7 @@
 "use strict";
 
 var expect = require('expect.js');
-var jsToHtml = require('..');
+var jsToHtml = require('../js-to-html.js');
 
 describe('js-to-html', function(){
     describe('basic test', function(){
