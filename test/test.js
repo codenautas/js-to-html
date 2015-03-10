@@ -1,7 +1,7 @@
 "use strict";
 
 var expect = require('expect.js');
-var jsToHtml = require('..');
+var jsToHtml = require('../js-to-html.js');
 
 describe('js-to-html', function(){
     describe('basic test', function(){
@@ -150,6 +150,11 @@ describe('js-to-html', function(){
             expect(
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
+        });
+        it/*.skip*/('should accept numbers', function(){
+            expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
+                "<p><span>3</span>1.1</p>"
+            );
         });
     });
 });
