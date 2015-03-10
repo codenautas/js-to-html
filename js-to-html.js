@@ -35,20 +35,27 @@ function escapeChar(simpleText){
     return escapedText;
 }
 
+jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
+    return typeof x==="string" || typeof x==="number";
+}
+
+function identity(x){ return x; };
+
 jsToHtml.Html=function Html(directObject){
     var pattWhiteSpaces=new RegExp( "\\s");
     var isTextNode='textNode' in directObject;
     var validProperties=isTextNode?{
-        textNode:  {textType:'string type' ,check:function(x){ return typeof x=="string" }},
+        textNode:  {textType:'string type' ,check:jsToHtml.couldDirectTextContent, transform:function(x){ return typeof x==="string"?x:''+x; }},
     }:{
         tagName:   {textType:'string type' ,check:function(x){ return typeof x=="string" }},
         attributes:{textType:'Object class',check:function(x){ return isPlainObject(x) }},
         content:   {textType:'Array class' ,check:function(x){ return typeof x=="object" && x instanceof Array }},
     }
     for(var property in validProperties){
-        var value=directObject[property];
-        if(!(property in directObject) || !validProperties[property].check(value)){
-            throw new Error('jsToHtml.Html error: directObject must include '+property+' of '+validProperties[property].textType);
+        var propertyDef=validProperties[property];
+        var value=(propertyDef.transform||identity)(directObject[property]);
+        if(!(property in directObject) || !propertyDef.check(value)){
+            throw new Error('jsToHtml.Html error: directObject must include '+property+' of '+propertyDef.textType);
         }
         this[property]=value;
     }
@@ -122,9 +129,9 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     return jsToHtml.direct({
         tagName:tagName,
         attributes:attributes,
-        content:typeof content=='string'?[jsToHtml.direct({textNode:content})]:(
+        content:jsToHtml.couldDirectTextContent(content)?[jsToHtml.direct({textNode:content})]:(
             !content?[]:(content.map(function(element){
-                return typeof element=='string'?jsToHtml.direct({textNode:element}):element;
+                return jsToHtml.couldDirectTextContent(element)?jsToHtml.direct({textNode:element}):element;
             }))
         )
     });
