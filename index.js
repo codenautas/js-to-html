@@ -90,7 +90,7 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var inlineBlock=((tagInfo.display||'inline')=='inline');
     var nl=(opts.pretty && !inlineBlock?'\n':'');
     var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
-    var patt= new RegExp(/[^a-z\^A-Z]/);
+    var pattNonWordChar= new RegExp(/\W/);
     return sp(recurseOpts.margin)+"<"+this.tagName+
         Object.keys(this.attributes).map(function(attrName){
             var attrVal=this.attributes[attrName];
@@ -100,7 +100,7 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
                 textAttrVal= attrVal.join(' ');
             } 
             var escapedAttrVal=escapeChar(textAttrVal);
-            var quotingAttrVal=patt.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+            var quotingAttrVal=pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+'='+quotingAttrVal;
         },this).join('')+
         ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+

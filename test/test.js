@@ -94,7 +94,7 @@ describe('js-to-html', function(){
             });
             expect(div).to.eql(object);
             expect(object.toHtmlText()).to.eql(
-                "<div class='the_class' id='47'>"+
+                "<div class=the_class id=47>"+
                 "<p>First paragraph</p>"+
                 "<p>Second paragraph</p>"+
                 "</div>"
@@ -105,7 +105,7 @@ describe('js-to-html', function(){
                 html.h1('First title'),
                 html.h2(['Second title with ',html.b('something'),' bold'])
             ]).toHtmlText({pretty:true},{margin:4})).to.eql(
-                "    <div class='the_class' id='47'>\n"+
+                "    <div class=the_class id=47>\n"+
                 "      <h1>First title</h1>\n"+
                 "      <h2>Second title with <b>something</b> bold</h2>\n"+
                 "    </div>\n"
