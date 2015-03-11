@@ -31,26 +31,6 @@ describe('js-to-html', function(){
             var htmlText=div.toHtmlText();
             expect(htmlText).to.eql("<div></div>");
         });
-        it('should control the presence and type/class of all properties', function(){
-            expect(function(){
-                direct({tagName:'div', attributes:{}})
-            }).to.throwError(/must include content/);
-            expect(function(){
-                direct({tagName:'div', attributes:{}, content:"must not be a string"})
-            }).to.throwError(/must include content of Array class/);
-            expect(function(){
-                direct({tagName:'div', content:[], attributes:['must not be an array']})
-            }).to.throwError(/must include attributes of Object class/);
-            expect(function(){
-                direct({tagName:8, content:[], attributes:{valid:true}});
-            }).to.throwError(/must include tagName of string type/);
-            expect(function(){
-                direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
-            }).to.throwError(/not recognized other property/);
-            expect(function(){
-                direct({textNode:'a phrase', thisAttribute:"no good"})
-            }).to.throwError(/not recognized thisAttribute property/);
-        });
         it('should render an element without content', function(){
             var p=direct({
                 tagName:'p',
@@ -155,6 +135,40 @@ describe('js-to-html', function(){
             expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
                 "<p><span>3</span>1.1</p>"
             );
+        });
+    });
+    describe('controls of direct function.', function(){
+        var html = jsToHtml.html;
+        var direct = jsToHtml.direct;
+        it('should control the presence of content', function(){
+            expect(function(){
+                direct({tagName:'div', attributes:{}})
+            }).to.throwError(/must include content/);
+        });
+        it('should control the type of content', function(){
+            expect(function(){
+                direct({tagName:'div', attributes:{}, content:"must not be a string"})
+            }).to.throwError(/must include content of Array class/);
+        });
+        it('should control the type of attributes', function(){
+            expect(function(){
+                direct({tagName:'div', content:[], attributes:['must not be an array']})
+            }).to.throwError(/must include attributes of Object class/);
+        });
+        it('should control the type of tagName', function(){
+            expect(function(){
+                direct({tagName:8, content:[], attributes:{valid:true}});
+            }).to.throwError(/must include tagName of string type/);
+        });
+        it('should not permit de presence of other attributes', function(){
+            expect(function(){
+                direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
+            }).to.throwError(/not recognized other property/);
+        });
+        it('should not permit de presence of other attributes in a TextNode', function(){
+            expect(function(){
+                direct({textNode:'a phrase', thisAttribute:"no good"})
+            }).to.throwError(/not recognized thisAttribute property/);
         });
     });
 });
