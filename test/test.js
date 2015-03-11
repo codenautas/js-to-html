@@ -148,17 +148,17 @@ describe('js-to-html', function(){
         it('should control the type of content', function(){
             expect(function(){
                 direct({tagName:'div', attributes:{}, content:"must not be a string"})
-            }).to.throwError(/must include content of Array class/);
+            }).to.throwError(/content must be Array/);
         });
         it('should control the type of attributes', function(){
             expect(function(){
                 direct({tagName:'div', content:[], attributes:['must not be an array']})
-            }).to.throwError(/must include attributes of Object class/);
+            }).to.throwError(/attributes must be a plain Object/);
         });
         it('should control the type of tagName', function(){
             expect(function(){
                 direct({tagName:8, content:[], attributes:{valid:true}});
-            }).to.throwError(/must include tagName of string type/);
+            }).to.throwError(/tagName must be a string/);
         });
         it('should not permit de presence of other attributes', function(){
             expect(function(){
