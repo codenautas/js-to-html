@@ -31,7 +31,7 @@ describe('js-to-html', function(){
             var htmlText=div.toHtmlText();
             expect(htmlText).to.eql("<div></div>");
         });
-        it('should render an element without content', function(){
+        it('should render an element with content', function(){
             var p=direct({
                 tagName:'p',
                 attributes:{},
@@ -40,6 +40,10 @@ describe('js-to-html', function(){
             expect(p).to.be.a(jsToHtml.Html);
             var htmlText=p.toHtmlText();
             expect(htmlText).to.eql("<p>The first example</p>");
+        });
+        it.skip('should construct a textNode', function(){
+            var p=html._text('A text node that could not be created with document.createElement');
+            expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));
         });
         it('should construct a p object', function(){
             var p=html.p('The first example');
@@ -148,7 +152,7 @@ describe('js-to-html', function(){
         it('should control the type of content', function(){
             expect(function(){
                 direct({tagName:'div', attributes:{}, content:"must not be a string"})
-            }).to.throwError(/content must be Array/);
+            }).to.throwError(/content must be an Array/);
         });
         it('should control the type of attributes', function(){
             expect(function(){

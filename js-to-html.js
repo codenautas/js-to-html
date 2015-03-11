@@ -20,19 +20,17 @@ function spaces(n){
     return new Array(n+1).join(' ');
 }
 
+var htmlReservedSymbols={
+    '&' :'&amp;',
+    '<' :'&lt;',
+    '>' :'&gt;',
+    "'" :'&#39;',
+    '"' :'&quot;'
+};
+
 function escapeChar(simpleText){
-    var htmlReservedSymbols={
-            '&' :'&amp;',
-            '<' :'&lt;',
-            '>' :'&gt;',
-            '\\\'':'&#39;',
-            '"' :'&quot;'
-    };
-    var escapedText=simpleText;
-    for(var htmlReservedSymbol in htmlReservedSymbols){
-        escapedText=escapedText.replace(new RegExp( htmlReservedSymbol,'g'),htmlReservedSymbols[htmlReservedSymbol]);
-    }
-    return escapedText;
+    simpleText=simpleText==null?'':''+simpleText;
+    return /[&<>'"]/.test(simpleText)?simpleText.replace(/[&<>'"]/g,function(c){ return htmlReservedSymbols[c]; }):simpleText;
 }
 
 jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
@@ -41,41 +39,59 @@ jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
 
 function identity(x){ return x; };
 
-jsToHtml.Html=function Html(directObject){
-    var pattWhiteSpaces=new RegExp( "\\s");
-    var isTextNode='textNode' in directObject;
-    var validProperties=isTextNode?{
-        textNode:  {textType:'string type' ,check:jsToHtml.couldDirectTextContent, transform:function(x){ return typeof x==="string"?x:''+x; }},
-    }:{
-        tagName:   {textType:'string type' ,check:function(x){ return typeof x=="string" }},
-        attributes:{textType:'Object class',check:function(x){ return isPlainObject(x) }},
-        content:   {textType:'Array class' ,check:function(x){ return typeof x=="object" && x instanceof Array }},
+var validDirectProperties={
+    true:{
+        textNode:  {
+            checks:[{check:jsToHtml.couldDirectTextContent, text:"must be string or number"}], 
+            transform:function(x){ return typeof x==="string"?x:''+x; }
+        }
+    },
+    false:{
+        tagName:   {checks:[
+            {check:function(x){ return typeof x=="string" }, text:"must be a string"},
+            {check:function(x){ if(!jsToHtml.htmlTags[x]){ throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");}; return true;}}  
+        ]},
+        attributes:{checks:[
+            {check:function(attributes){ return isPlainObject(attributes) }, text:"must be a plain Object"},
+            {check:function(attributes){
+                for(var attrName in attributes){
+                    if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
+                        var attrValue=attributes[attrName];
+                        var pattWhiteSpaces=new RegExp( "\\s");
+                        if(pattWhiteSpaces.test(attrValue)){   
+                            throw new Error(attrName + 'class attribute could not contain spaces');
+                        };
+                        if(attrValue instanceof Array){
+                            attrValue = attrValue.join('');
+                        };
+                    };
+                };
+                return true;
+            }}
+        ]},
+        content:   {checks:[{check:function(x){ return typeof x=="object" && x instanceof Array }, text:"must be an Array"}]},
     }
+};
+    
+
+jsToHtml.Html=function Html(directObject){
+    var isTextNode='textNode' in directObject;
+    var validProperties=validDirectProperties[isTextNode];
     for(var property in validProperties){
         var propertyDef=validProperties[property];
         var value=(propertyDef.transform||identity)(directObject[property]);
-        if(!(property in directObject) || !propertyDef.check(value)){
-            throw new Error('jsToHtml.Html error: directObject must include '+property+' of '+propertyDef.textType);
+        if(!(property in directObject)){
+            throw new Error('jsToHtml.Html error: directObject must include '+property);
+        }
+        for(var c=0; c<propertyDef.checks.length; c++){
+            var check=propertyDef.checks[c];
+            if(!check.check(value)){
+                throw new Error('jsToHtml.Html error: directObject '+property+' '+check.text);
+            }
         }
         this[property]=value;
     }
     for(var property in directObject){
-        if(property=='attributes'){
-            for(var attrName in directObject[property]){
-                if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)|| false){
-                    var attrValue= directObject[property][attrName];
-                    if(attrValue instanceof Array){
-                       attrValue = attrValue.join('');
-                    };
-                    if(pattWhiteSpaces.test(attrValue)){   
-                            throw new Error(attrName + 'class attribute could not contain spaces');
-                    };
-                };
-            };
-        };
-        if(property=='tagName' && !jsToHtml.htmlTags[directObject[property]]){
-            throw new Error('tagName '+ directObject[property]+ ' not exists');
-        };
         if(!(property in validProperties)){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
@@ -84,7 +100,6 @@ jsToHtml.Html=function Html(directObject){
 }
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
-
     if('textNode' in this){
         return escapeChar(this.textNode);
     }
