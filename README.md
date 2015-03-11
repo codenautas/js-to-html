@@ -18,8 +18,16 @@ $ npm install js-to-html
 
 Returns a Html object with TAGNAME, attributes and content. 
 
-Content could be a string expression or a Html object. 
+**content** could be
+ * a string expression
+ * an array of children, each child could be
+   * a string expression
+   * a Html object
 
+**attributes** must be a plain object, each property of the object will be a html attribute (example: `{colspan:3, id:"abc"}`). 
+Some attributes names are reserved words, you can use it with the same name (example: `{class:'examples'}`). 
+Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`). 
+   
 ### Html.toHtmlText(opts)
 
 Returns the Html Text
@@ -52,8 +60,7 @@ console.log(
 ```
 
 ## Notes
-
-* Do not use in production enviroments. Do not escape text yet!
+ * In the future it will smart handle style attribute like `{style:{color: "blue", background: "none"}}`
 
 ## License
 
