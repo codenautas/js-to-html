@@ -144,11 +144,11 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     return jsToHtml.direct({
         tagName:tagName,
         attributes:attributes,
-        content:jsToHtml.couldDirectTextContent(content)?[jsToHtml.direct({textNode:content})]:(
-            !content?[]:(content.map(function(element){
-                return jsToHtml.couldDirectTextContent(element)?jsToHtml.direct({textNode:element}):element;
-            }))
-        )
+        content:(content instanceof Array?content:[content]).filter(function(element){
+            return element!==null && element!==undefined;
+        }).map(function(element){
+            return jsToHtml.couldDirectTextContent(element)?jsToHtml.direct({textNode:element}):element;
+        })
     });
 }
 
