@@ -41,6 +41,21 @@ describe('js-to-html', function(){
             var htmlText=p.toHtmlText();
             expect(htmlText).to.eql("<p>The first example</p>");
         });
+        it('should exclude null and undefined  in content', function(){
+            var p=html.p(['sí', null, html.img(), undefined, 1, '', 'no', 0]);
+            expect(p).to.eql(direct({
+                tagName:'p',
+                attributes:{},
+                content:[
+                    direct({textNode: 'sí'}),
+                    direct({tagName:'img', attributes:{}, content:[]}),
+                    direct({textNode: '1'}),
+                    direct({textNode: ''}),
+                    direct({textNode: 'no'}),
+                    direct({textNode: '0'})
+                ]
+            }));
+        });
         it.skip('should construct a textNode', function(){
             var p=html._text('A text node that could not be created with document.createElement');
             expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));
