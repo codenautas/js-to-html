@@ -141,6 +141,9 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     var thereAreAttributes=isPlainObject(contentOrAttributes);
     var attributes = thereAreAttributes?contentOrAttributes:{};
     var content    = thereAreAttributes?contentIfThereAreAttributes:contentOrAttributes;
+    if(!thereAreAttributes && (arguments.length>3 || contentIfThereAreAttributes != null)){
+        throw new Error('jsToHtml.indirect ERROR: the first parameter is not an attribute object then must there no be a second parameter');
+    }
     return jsToHtml.direct({
         tagName:tagName,
         attributes:attributes,

@@ -189,5 +189,10 @@ describe('js-to-html', function(){
                 direct({textNode:'a phrase', thisAttribute:"no good"})
             }).to.throwError(/not recognized thisAttribute property/);
         });
+        it('should reject double content (probably a mismatch)', function(){
+            expect(function(){
+                html.p("texto", "otro texto")
+            }).to.throwError(/the first parameter is not an attribute object then must there no be a second parameter/);
+        });
     });
 });
