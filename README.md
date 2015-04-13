@@ -1,3 +1,4 @@
+<!--multilang v0 en:README.md es:LEEME.md -->
 # js-to-html
 
 [![NPM Version][npm-image]][npm-url]
@@ -5,8 +6,18 @@
 [![Linux Build][travis-image]][travis-url]
 [![Windows Build][appveyor-image]][appveyor-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
+<!--multilang buttons -->
+language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
+also available in:
+[![Spanish](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)](LEEME.md)
 
+<!--lang:en-->
 ## Install
+
+<!--lang:es--]
+## Instalación
+
+[!--lang:*-->
 
 ```sh
 $ npm install js-to-html
@@ -15,29 +26,52 @@ $ npm install js-to-html
 ## API
 
 ### html.TAGNAME([attributes, ]content)
-
+<!--lang:en-->
 Returns a Html object with TAGNAME, attributes and content. 
+<!--lang:es--]
+Devuelve un objeto HTML cuyo tagname es TAGNAME y que contiene los atributos y el contenido que corresponda. 
 
+[!--lang:en-->
 **content** could be
  * a string expression
  * an array of children, each child could be
    * a string expression
    * a Html object
 
+<!--lang:es--]
+**content** puede ser:
+ * un *string* que corresponde a un contenido textual que no tiene elementos HTML internos (o sea solo texto)
+ * un *array* con los elementos que contiene, estos elementos pueden ser:
+   * una expresión *string*
+   * un objeto Html
+
+[!--lang:en-->
 **attributes** must be a plain object, each property of the object will be a html attribute (example: `{colspan:3, id:"abc"}`). 
 Some attributes names are reserved words, you can use it with the same name (example: `{class:'examples'}`). 
 Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`). 
+
+<!--lang:es--]
+**attributes** debe ser un objeto plano (sin tipo) con los atributos
    
+<!--lang:*-->
 ### Html.toHtmlText(opts)
 
+[!--lang:en-->
 Returns the Html Text
+<!--lang:es--]
+Devuelve un texto HTML
 
+[!--lang:en-->
 opt  | value
 -----|-------
 pretty | returns a pretty and indented text
 
+<!--lang:en-->
 ## Example
+<!--lang:es--]
+## Ejemplo
 
+[!--lang:*-->
 ```js
 var html = require('js-to-html').html;
 
