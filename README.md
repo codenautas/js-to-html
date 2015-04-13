@@ -56,8 +56,8 @@ Some attributes (like **class**) could contain lists (example: `{class:['example
 <!--lang:*-->
 ### Html.toHtmlText(opts)
 
-[!--lang:en-->
-Returns the Html Text
+<!--lang:en-->
+Returns an Html Text
 <!--lang:es--]
 Devuelve un texto HTML
 
@@ -94,9 +94,14 @@ console.log(
 ```
 
 ## Notes
- * In the future it will smart handle style attribute like `{style:{color: "blue", background: "none"}}`
-
+ * In the future it will be smart to handle style attribute like `{style:{color: "blue", background: "none"}}`
+ 
+<!--lang:es--]
+## Notas
+ * En el futuro será inteligente manejar atributos como `{style:{color: "blue", background: "none"}}`
+[!--lang:en-->
 ## License
+
 
 [MIT](LICENSE)
 
