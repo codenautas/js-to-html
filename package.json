@@ -1,7 +1,7 @@
 {
   "name": "js-to-html",
   "description": "Create HTML text from JS object",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/js-to-html",
@@ -12,8 +12,8 @@
   "dependencies": {
   },
   "devDependencies": {
-    "istanbul": "~0.3.6",
-    "mocha": "~2.1.0",
+    "istanbul": "~0.3.13",
+    "mocha": "~2.2.4",
     "expect.js": "~0.3.1"
   },
   "engines": {
