@@ -27,16 +27,16 @@ $ npm install js-to-html
 
 ### html.TAGNAME([attributes, ]content)
 <!--lang:en-->
-Returns a Html object with TAGNAME, attributes and content. 
+Returns an Html object with TAGNAME, attributes and content. 
 <!--lang:es--]
 Devuelve un objeto HTML cuyo tagname es TAGNAME y que contiene los atributos y el contenido que corresponda. 
 
 [!--lang:en-->
 **content** could be
  * a string expression
- * an array of children, each child could be
+ * an array of children. Each child could be
    * a string expression
-   * a Html object
+   * an Html object
 
 <!--lang:es--]
 **content** puede ser:
@@ -46,12 +46,14 @@ Devuelve un objeto HTML cuyo tagname es TAGNAME y que contiene los atributos y e
    * un objeto Html
 
 [!--lang:en-->
-**attributes** must be a plain object, each property of the object will be a html attribute (example: `{colspan:3, id:"abc"}`). 
-Some attributes names are reserved words, you can use it with the same name (example: `{class:'examples'}`). 
+**attributes** must be a plain object. Each property of the object will be an html attribute (example: `{colspan:3, id:"abc"}`). 
+Some attributes names are reserved words, you can use them with the same name (example: `{class:'examples'}`). 
 Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`). 
 
 <!--lang:es--]
-**attributes** debe ser un objeto plano (sin tipo) con los atributos
+**attributes** debe ser un objeto plano (sin tipo). Cada propiedad del objeto será un atributo html (ejemplo:`{colspan:3,id:"abc"}`).
+Algunos nombres de atributos son palabras reservadas, se pueden usar con el mismo nombre (ejemplo:`{'class':'ejemplos'}`).
+Algunos atributos (como **class**) pueden contener listas (ejemplo: `{'class':['ejemplos','listas']}`).
    
 <!--lang:*-->
 ### Html.toHtmlText(opts)
@@ -65,6 +67,11 @@ Devuelve un texto HTML
 opt  | value
 -----|-------
 pretty | returns a pretty and indented text
+
+<!--lang:es--]
+opción  | valor
+-----|-------
+pretty | devuelve un texto indentado
 
 <!--lang:en-->
 ## Example
@@ -94,15 +101,18 @@ console.log(
 ```
 
 ## Notes
- * In the future it will be smart to handle style attribute like `{style:{color: "blue", background: "none"}}`
+ * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
  
 <!--lang:es--]
 ## Notas
- * En el futuro será inteligente manejar atributos como `{style:{color: "blue", background: "none"}}`
+ * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
 [!--lang:en-->
 ## License
 
+<!--lang:es--]
 
+## Licencias
+-->
 [MIT](LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/js-to-html.svg?style=flat
