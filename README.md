@@ -1,11 +1,14 @@
 <!--multilang v0 en:README.md es:LEEME.md -->
 # js-to-html
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![Linux Build][travis-image]][travis-url]
+[![version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
+[![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
+[![linux](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
 [![Windows Build][appveyor-image]][appveyor-url]
-[![Test Coverage][coveralls-image]][coveralls-url]
+[![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
+[![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
+[![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
+
 <!--multilang buttons -->
 language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
 also available in:
@@ -115,13 +118,5 @@ console.log(
 -->
 [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/js-to-html.svg?style=flat
-[npm-url]: https://npmjs.org/package/js-to-html
-[travis-image]: https://img.shields.io/travis/codenautas/js-to-html/master.svg?label=linux&style=flat
-[travis-url]: https://travis-ci.org/codenautas/js-to-html
 [appveyor-image]: https://img.shields.io/appveyor/ci/emilioplatzer/js-to-html/master.svg?label=windows&style=flat
 [appveyor-url]: https://ci.appveyor.com/project/emilioplatzer/js-to-html
-[coveralls-image]: https://img.shields.io/coveralls/codenautas/js-to-html/master.svg?style=flat
-[coveralls-url]: https://coveralls.io/r/codenautas/js-to-html
-[downloads-image]: https://img.shields.io/npm/dm/js-to-html.svg?style=flat
-[downloads-url]: https://npmjs.org/package/js-to-html
