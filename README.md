@@ -1,10 +1,10 @@
 <!--multilang v0 en:README.md es:LEEME.md -->
 # js-to-html
 
+![designing](https://img.shields.io/badge/stability-desgining-red.svg)
 [![version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![linux](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
-[![Windows Build][appveyor-image]][appveyor-url]
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
 [![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
@@ -117,6 +117,3 @@ console.log(
 ## Licencias
 -->
 [MIT](LICENSE)
-
-[appveyor-image]: https://img.shields.io/appveyor/ci/emilioplatzer/js-to-html/master.svg?label=windows&style=flat
-[appveyor-url]: https://ci.appveyor.com/project/emilioplatzer/js-to-html
