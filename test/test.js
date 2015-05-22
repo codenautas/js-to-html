@@ -150,9 +150,12 @@ describe('js-to-html', function(){
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
         });
-        it/*.skip*/('should accept numbers', function(){
+        it('should accept numbers', function(){
             expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
                 "<p><span>3</span>1.1</p>"
+            );
+            expect(html.p({"class": "the_class_name"}, 314).toHtmlText()).to.eql(
+                "<p class=the_class_name>314</p>"
             );
         });
     });
