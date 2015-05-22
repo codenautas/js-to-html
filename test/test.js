@@ -56,6 +56,20 @@ describe('js-to-html', function(){
                 ]
             }));
         });
+        it('should get empty content when null and undefined in content', function(){
+            var p=html.p(null);
+            expect(p).to.eql(direct({
+                tagName:'p',
+                attributes:{},
+                content:[]
+            }));
+            var div=html.div();
+            expect(div).to.eql(direct({
+                tagName:'div',
+                attributes:{},
+                content:[]
+            }));
+        });
         it.skip('should construct a textNode', function(){
             var p=html._text('A text node that could not be created with document.createElement');
             expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));

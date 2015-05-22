@@ -12,8 +12,10 @@
  
 var jsToHtml={};
 
+console.log('typeof null',typeof null);
+
 function isPlainObject(x){
-    return typeof x=="object" && x.constructor == Object;
+    return typeof x=="object" && x && x.constructor == Object;
 }
 
 function spaces(n){
@@ -136,6 +138,8 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
 jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
 }
+
+console.log('isPlainObject(null)', isPlainObject(null));
 
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
