@@ -1,7 +1,7 @@
 <!--multilang v0 en:README.md es:LEEME.md -->
 # js-to-html
 
-![designing](https://img.shields.io/badge/stability-desgining-red.svg)
+![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![linux](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
@@ -9,7 +9,8 @@
 [![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
 [![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
 
-<!--multilang buttons -->
+<!--multilang buttons-->
+
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
 also available in:
 [![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md)
@@ -61,7 +62,7 @@ Some attributes (like **class**) could contain lists (example: `{class:['example
 Algunos nombres de atributos son palabras reservadas, se pueden usar con el mismo nombre (ejemplo:`{'class':'ejemplos'}`).
 Algunos atributos (como **class**) pueden contener listas (ejemplo: `{'class':['ejemplos','listas']}`).
    
-<!--lang:*-->
+[!--lang:*-->
 ### Html.toHtmlText(opts)
 
 <!--lang:en-->
@@ -80,7 +81,7 @@ opción  | valor
 -----|-------
 pretty | devuelve un texto indentado
 
-<!--lang:en-->
+[!--lang:en-->
 ## Example
 <!--lang:es--]
 ## Ejemplo

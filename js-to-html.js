@@ -9,13 +9,24 @@
  */
 
 "use strict";
- 
+(function webpackUniversalModuleDefinition(root, factory) {
+    /* istanbul ignore next */
+    if(typeof exports === 'object' && typeof module === 'object')
+        module.exports = factory();
+    else if(typeof define === 'function' && define.amd)
+        define(factory);
+    else if(typeof exports === 'object')
+        exports["jsToHtml"] = factory();
+    else
+        root["jsToHtml"] = factory();
+})(this, function() {
+
 var jsToHtml={};
 
 console.log('typeof null',typeof null);
 
 function isPlainObject(x){
-    return typeof x=="object" && x && x.constructor == Object;
+    return typeof x==="object" && x && x.constructor === Object;
 }
 
 function spaces(n){
@@ -31,7 +42,7 @@ var htmlReservedSymbols={
 };
 
 function escapeChar(simpleText){
-    simpleText=simpleText==null?'':''+simpleText;
+    simpleText=''+simpleText;
     return /[&<>'"]/.test(simpleText)?simpleText.replace(/[&<>'"]/g,function(c){ return htmlReservedSymbols[c]; }):simpleText;
 }
 
@@ -39,39 +50,50 @@ jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
     return typeof x==="string" || typeof x==="number";
 }
 
-function identity(x){ return x; };
+function identity(x){ return x; }
 
 var validDirectProperties={
     true:{
-        textNode:  {
-            checks:[{check:jsToHtml.couldDirectTextContent, text:"must be string or number"}], 
-            transform:function(x){ return typeof x==="string"?x:''+x; }
+        textNode:{
+            checks:[
+                {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
+                {check:jsToHtml.couldDirectTextContent, text:"must be string or number"}
+            ], 
+            transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
         }
     },
     false:{
         tagName:   {checks:[
-            {check:function(x){ return typeof x=="string" }, text:"must be a string"},
-            {check:function(x){ if(!jsToHtml.htmlTags[x]){ throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");}; return true;}}  
+            {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
+            {check:function(x){
+                if(!jsToHtml.htmlTags[x]){ 
+                    throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
+                } 
+                return true;
+            }}  
         ]},
         attributes:{checks:[
-            {check:function(attributes){ return isPlainObject(attributes) }, text:"must be a plain Object"},
+            {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
             {check:function(attributes){
                 for(var attrName in attributes){
+                    var attrValue=attributes[attrName];
+                    if(attrValue==null){
+                        throw new Error('js-to-html: attributes must not contain null value');
+                    }
                     if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
-                        var attrValue=attributes[attrName];
                         var pattWhiteSpaces=new RegExp( "\\s");
                         if(pattWhiteSpaces.test(attrValue)){   
-                            throw new Error(attrName + 'class attribute could not contain spaces');
-                        };
+                            throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces');
+                        }
                         if(attrValue instanceof Array){
                             attrValue = attrValue.join('');
-                        };
-                    };
-                };
+                        }
+                    }
+                }
                 return true;
             }}
         ]},
-        content:   {checks:[{check:function(x){ return typeof x=="object" && x instanceof Array }, text:"must be an Array"}]},
+        content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array }, text:"must be an Array"}]},
     }
 };
     
@@ -93,13 +115,35 @@ jsToHtml.Html=function Html(directObject){
         }
         this[property]=value;
     }
-    for(var property in directObject){
+    for(property in directObject){
         if(!(property in validProperties)){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
     }
-    
-}
+};
+
+jsToHtml.Html.prototype.attributesToHtmlText=function attributesToHtmlText(){
+    var pattNonWordChar=new RegExp(/\W/);
+    return Object.keys(this.attributes).map(function(attrName){
+        var attrVal=this.attributes[attrName];
+        var textAttrVal=attrVal;          
+        if( (attrName in jsToHtml.htmlAttrs) && 
+            ('listType' in jsToHtml.htmlAttrs[attrName]) &&
+            (typeof attrVal!=="string") 
+        ){
+            textAttrVal=attrVal.join(' ');
+        } 
+        var escapedAttrVal=escapeChar(textAttrVal);
+        var quotingAttrVal=pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+        return ' '+attrName+'='+quotingAttrVal;
+    },this).join('');
+};
+
+jsToHtml.Html.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
+    return this.content.map(function(node){
+        return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
+    }).join('')
+};
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     if('textNode' in this){
@@ -111,33 +155,22 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     var tagInfo=jsToHtml.htmlTags[this.tagName];
     var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
     var isvoidTag=tagInfo["void"]||false;
-    var inlineBlock=((tagInfo.display||'inline')=='inline');
+    var inlineBlock=((tagInfo.display||'inline')==='inline');
+    var firstChildInline=(tagInfoFirstChild.display||'inline')!=='inline';
     var nl=(opts.pretty && !inlineBlock?'\n':'');
-    var sp=(opts.pretty && !inlineBlock?spaces:function(x){return ''; });
-    var pattNonWordChar= new RegExp(/\W/);
-    return sp(recurseOpts.margin)+"<"+this.tagName+
-        Object.keys(this.attributes).map(function(attrName){
-            var attrVal=this.attributes[attrName];
-            var textAttrVal=attrVal;          
-            if((attrName in jsToHtml.htmlAttrs) && ('listType' in jsToHtml.htmlAttrs[attrName]) &&
-                (!(typeof attrVal=="string")) ){
-                textAttrVal= attrVal.join(' ');
-            } 
-            var escapedAttrVal=escapeChar(textAttrVal);
-            var quotingAttrVal=pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
-            return ' '+attrName+'='+quotingAttrVal;
-        },this).join('')+
-        ">"+((tagInfoFirstChild.display||'inline')!='inline'?nl:'')+
-        this.content.map(function(node){
-            return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
-        }).join('')+((tagInfoFirstChild.display||'inline')!='inline'?sp(recurseOpts.margin):'')+
+    var sp=(opts.pretty && !inlineBlock?spaces:function(){return ''; });
+    return sp(recurseOpts.margin)+"<"+
+        this.tagName+
+        this.attributesToHtmlText()+
+        ">"+(firstChildInline?nl:'')+
+        this.contentToHtmlText(opts,recurseOpts)+
+        (firstChildInline?sp(recurseOpts.margin):'')+
         (isvoidTag?'':"</"+this.tagName+">")+nl;
-}
-
+};
 
 jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
-}
+};
 
 console.log('isPlainObject(null)', isPlainObject(null));
 
@@ -157,7 +190,7 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
             return jsToHtml.couldDirectTextContent(element)?jsToHtml.direct({textNode:element}):element;
         })
     });
-}
+};
 
 jsToHtml.htmlAttrs={
     "class"        :{listType:true, rejectSpaces:true}
@@ -289,12 +322,18 @@ jsToHtml.htmlTags={
 };
 
 jsToHtml.html={
-}
+};
+
+jsToHtml.html._text=function _text(text){
+    return jsToHtml.direct({textNode:text});
+};
 
 Object.keys(jsToHtml.htmlTags).map(function(tagName){
     jsToHtml.html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
         return jsToHtml.indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
-    }
+    };
 });
 
-exports = module.exports = jsToHtml;
+return jsToHtml;
+
+});

@@ -70,7 +70,7 @@ describe('js-to-html', function(){
                 content:[]
             }));
         });
-        it.skip('should construct a textNode', function(){
+        it('should construct a textNode', function(){
             var p=html._text('A text node that could not be created with document.createElement');
             expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));
         });
@@ -196,6 +196,11 @@ describe('js-to-html', function(){
                 direct({tagName:8, content:[], attributes:{valid:true}});
             }).to.throwError(/tagName must be a string/);
         });
+        it('should control attributes with null value', function(){
+            expect(function(){
+                direct({tagName:'p', content:[], attributes:{display:null}});
+            }).to.throwError(/attributes must not contain null value/);
+        });
         it('should not permit de presence of other attributes', function(){
             expect(function(){
                 direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
@@ -206,10 +211,28 @@ describe('js-to-html', function(){
                 direct({textNode:'a phrase', thisAttribute:"no good"})
             }).to.throwError(/not recognized thisAttribute property/);
         });
+        it('should not permit null in a TextNode', function(){
+            expect(function(){
+                direct({textNode:null})
+            }).to.throwError(/textNodes must not contains null/);
+        });
         it('should reject double content (probably a mismatch)', function(){
             expect(function(){
                 html.p("texto", "otro texto")
             }).to.throwError(/the first parameter is not an attribute object then must there no be a second parameter/);
+        });
+    });
+    describe('controls of toHtmlText', function(){
+        var html = jsToHtml.html;
+        it('should reject null in escapeChar by _text', function(){
+            expect(function(){
+                html._text()
+            }).to.throwError(/textNodes must not contains null/);
+        });
+        it('should reject null in escapeChar by attributes', function(){
+            expect(function(){
+                html.p({'class':null})
+            }).to.throwError(/attributes must not contain null value/);
         });
     });
 });
