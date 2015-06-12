@@ -9,17 +9,25 @@
  */
 
 "use strict";
+/* eqnull:true */
 (function webpackUniversalModuleDefinition(root, factory) {
+    /* global define */
+    /* global globalModuleName */
+    /* istanbul ignore next */
+    if(typeof root.globalModuleName !== 'string'){
+        root.globalModuleName = factory.name;
+    }
     /* istanbul ignore next */
     if(typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
     else if(typeof define === 'function' && define.amd)
         define(factory);
     else if(typeof exports === 'object')
-        exports["jsToHtml"] = factory();
+        exports[root.globalModuleName] = factory();
     else
-        root["jsToHtml"] = factory();
-})(this, function() {
+        root[root.globalModuleName] = factory();
+    root.globalModuleName = null;
+})(this, function jsToHtml() {
 
 var jsToHtml={};
 
@@ -48,7 +56,7 @@ function escapeChar(simpleText){
 
 jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
     return typeof x==="string" || typeof x==="number";
-}
+};
 
 function identity(x){ return x; }
 
@@ -93,7 +101,7 @@ var validDirectProperties={
                 return true;
             }}
         ]},
-        content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array }, text:"must be an Array"}]},
+        content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"}]},
     }
 };
     
@@ -142,7 +150,7 @@ jsToHtml.Html.prototype.attributesToHtmlText=function attributesToHtmlText(){
 jsToHtml.Html.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
     return this.content.map(function(node){
         return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
-    }).join('')
+    }).join('');
 };
 
 jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
