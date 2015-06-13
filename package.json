@@ -1,7 +1,7 @@
 {
   "name": "js-to-html",
   "description": "Create HTML text from JS object",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/js-to-html",
@@ -17,12 +17,17 @@
     "expect.js": "~0.3.1"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
     "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
     "start": "node example/server.js"
+  },
+  "jshintConfig": {
+    "eqnull": true,
+    "globalstrict": true,
+    "node": true
   }
 }

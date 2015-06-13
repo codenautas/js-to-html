@@ -8,13 +8,9 @@
  * Module dependencies.
  */
 
-/*jshint eqnull:true */
-/*jshint globalstrict:true */
 "use strict";
 (function webpackUniversalModuleDefinition(root, factory) {
     /* global define */
-    /* global module */
-    /* global exports */
     /* istanbul ignore next */
     if(typeof root.globalModuleName !== 'string'){
         root.globalModuleName = factory.name;
