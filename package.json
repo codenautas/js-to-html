@@ -26,6 +26,8 @@
     "start": "node example/server.js"
   },
   "jshintConfig": {
-    "asi": false
+    "asi": false,
+    "forin": true,
+    "curly": true
   }
 }

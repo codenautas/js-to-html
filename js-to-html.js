@@ -19,14 +19,15 @@
         root.globalModuleName = factory.name;
     }
     /* istanbul ignore next */
-    if(typeof exports === 'object' && typeof module === 'object')
+    if(typeof exports === 'object' && typeof module === 'object'){
         module.exports = factory();
-    else if(typeof define === 'function' && define.amd)
+    }else if(typeof define === 'function' && define.amd){
         define(factory);
-    else if(typeof exports === 'object')
+    }else if(typeof exports === 'object'){
         exports[root.globalModuleName] = factory();
-    else
+    }else{
         root[root.globalModuleName] = factory();
+    }
     root.globalModuleName = null;
 })(/*jshint -W040 */this, function jsToHtml() {
 /*jshint +W040 */
@@ -85,7 +86,9 @@ var validDirectProperties={
         attributes:{checks:[
             {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
             {check:function(attributes){
+                /*jshint forin:false */
                 for(var attrName in attributes){
+                    /*jshint forin:true */
                     var attrValue=attributes[attrName];
                     if(attrValue==null){
                         throw new Error('js-to-html: attributes must not contain null value');
@@ -111,7 +114,9 @@ var validDirectProperties={
 jsToHtml.Html=function Html(directObject){
     var isTextNode='textNode' in directObject;
     var validProperties=validDirectProperties[isTextNode];
+    /*jshint forin:false */
     for(var property in validProperties){
+        /*jshint forin:true */
         var propertyDef=validProperties[property];
         var value=(propertyDef.transform||identity)(directObject[property]);
         if(!(property in directObject)){
@@ -125,7 +130,9 @@ jsToHtml.Html=function Html(directObject){
         }
         this[property]=value;
     }
+    /*jshint forin:false */
     for(property in directObject){
+        /*jshint forin:true */
         if(!(property in validProperties)){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
