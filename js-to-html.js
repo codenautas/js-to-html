@@ -8,11 +8,13 @@
  * Module dependencies.
  */
 
+/*jshint eqnull:true */
+/*jshint globalstrict:true */
 "use strict";
-/* eqnull:true */
 (function webpackUniversalModuleDefinition(root, factory) {
     /* global define */
-    /* global globalModuleName */
+    /* global module */
+    /* global exports */
     /* istanbul ignore next */
     if(typeof root.globalModuleName !== 'string'){
         root.globalModuleName = factory.name;
@@ -27,11 +29,12 @@
     else
         root[root.globalModuleName] = factory();
     root.globalModuleName = null;
-})(this, function jsToHtml() {
+})(/*jshint -W040 */this, function jsToHtml() {
+/*jshint +W040 */
 
+/*jshint -W004 */
 var jsToHtml={};
-
-console.log('typeof null',typeof null);
+/*jshint +W004 */
 
 function isPlainObject(x){
     return typeof x==="object" && x && x.constructor === Object;
@@ -179,8 +182,6 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
 jsToHtml.direct=function direct(directObject){
     return new jsToHtml.Html(directObject);
 };
-
-console.log('isPlainObject(null)', isPlainObject(null));
 
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
@@ -342,6 +343,9 @@ Object.keys(jsToHtml.htmlTags).map(function(tagName){
     };
 });
 
+console.log('jsToHtml', jsToHtml);
+
 return jsToHtml;
 
 });
+
