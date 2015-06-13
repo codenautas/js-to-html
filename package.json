@@ -26,8 +26,6 @@
     "start": "node example/server.js"
   },
   "jshintConfig": {
-    "eqnull": true,
-    "globalstrict": true,
-    "node": true
+    "asi": false
   }
 }

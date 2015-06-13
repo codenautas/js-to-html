@@ -9,6 +9,9 @@
  */
 
 "use strict";
+/*jshint eqnull:true */
+/*jshint globalstrict:true */
+/*jshint node:true */
 (function webpackUniversalModuleDefinition(root, factory) {
     /* global define */
     /* istanbul ignore next */
@@ -344,4 +347,3 @@ console.log('jsToHtml', jsToHtml);
 return jsToHtml;
 
 });
-
