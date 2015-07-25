@@ -349,8 +349,6 @@ Object.keys(jsToHtml.htmlTags).map(function(tagName){
     };
 });
 
-console.log('jsToHtml', jsToHtml);
-
 return jsToHtml;
 
 });
