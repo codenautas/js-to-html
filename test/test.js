@@ -2,6 +2,7 @@
 
 var expect = require('expect.js');
 var jsToHtml = require('../js-to-html.js');
+var moment = require('moment');
 
 describe('js-to-html', function(){
     describe('basic test', function(){
@@ -222,7 +223,7 @@ describe('js-to-html', function(){
             }).to.throwError(/the first parameter is not an attribute object then must there no be a second parameter/);
         });
     });
-    describe('controls of toHtmlText', function(){
+    describe('controls of html.TAGS parameters', function(){
         var html = jsToHtml.html;
         it('should reject null in escapeChar by _text', function(){
             expect(function(){
@@ -233,6 +234,12 @@ describe('js-to-html', function(){
             expect(function(){
                 html.p({'class':null})
             }).to.throwError(/attributes must not contain null value/);
+        });
+        it('should reject other objects', function(){
+            expect(function(){
+                var complexObject=moment();
+                html.p(complexObject);
+            }).to.throwError(/expects plain object of attributes or array of content/);
         });
     });
 });

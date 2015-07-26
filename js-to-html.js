@@ -191,10 +191,13 @@ jsToHtml.direct=function direct(directObject){
 
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
+    if(!thereAreAttributes && contentOrAttributes instanceof Object && !(contentOrAttributes instanceof Array)){
+        throw new Error('jsToHmlt.'+tagName+' expects plain object of attributes or array of content');
+    }
     var attributes = thereAreAttributes?contentOrAttributes:{};
     var content    = thereAreAttributes?contentIfThereAreAttributes:contentOrAttributes;
     if(!thereAreAttributes && (arguments.length>3 || contentIfThereAreAttributes != null)){
-        throw new Error('jsToHtml.indirect ERROR: the first parameter is not an attribute object then must there no be a second parameter');
+        throw new Error('jsToHtml.'+tagName+' ERROR: the first parameter is not an attribute object then must there no be a second parameter');
     }
     return jsToHtml.direct({
         tagName:tagName,
