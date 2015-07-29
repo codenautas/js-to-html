@@ -132,8 +132,8 @@ describe('js-to-html', function(){
         });
         it('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
             expect(
-                html.p({"class":'names', title:'this title'},'text').toHtmlText()
-            ).to.eql("<p class=names title='this title'>text</p>");
+                html.p({"class":'names', title:'this title', empty:''},'text').toHtmlText()
+            ).to.eql("<p class=names title='this title' empty=''>text</p>");
         });
         it('should escape text', function(){
             expect(direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(

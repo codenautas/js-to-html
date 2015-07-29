@@ -151,7 +151,7 @@ jsToHtml.Html.prototype.attributesToHtmlText=function attributesToHtmlText(){
             textAttrVal=attrVal.join(' ');
         } 
         var escapedAttrVal=escapeChar(textAttrVal);
-        var quotingAttrVal=pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+        var quotingAttrVal=textAttrVal===''||pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
         return ' '+attrName+'='+quotingAttrVal;
     },this).join('');
 };
