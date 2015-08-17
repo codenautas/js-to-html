@@ -51,6 +51,7 @@
   },
   "qa-control": {
     "version": "0.0.1",
+    "run-in": "both",
     "stability": "extending"
   }
 }

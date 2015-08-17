@@ -10,11 +10,13 @@ NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js
 
 -->
 # js-to-html
+Create HTML text from JS object
+
 
 ![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
-[![linux](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
+[![build](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
 [![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
@@ -77,6 +79,27 @@ console.log(
   <p>Second paragraph</p>
 </div>
 )
+```
+
+## Usándolo en el navegador
+
+Los objetos html tienen un método `create` que se usa para crear el elemento del DOM
+listo para agregarlo (por ejemplo con `appendChild`) a cualqueir elemento existente. 
+Además `create` crea también todos los elementos internos. 
+
+```js
+var html = jsToHtml.html;
+
+document.body.appendChild(
+    html.div([
+        html.h1('Log in'),
+        html.div([
+            html.input({name: 'user', placeholder:'user'}),
+            html.input({name: 'pass', type: 'password'})
+        ])
+    ]).create()
+);
+  
 ```
 
 ## Notas
