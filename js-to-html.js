@@ -64,56 +64,59 @@ jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
 function identity(x){ return x; }
 
 var validDirectProperties={
-    true:{
-        textNode:{
-            checks:[
-                {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
-                {check:jsToHtml.couldDirectTextContent, text:"must be string or number"}
-            ], 
-            transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
+    textNode:{
+        className:'HtmlTextNode',
+        properties:{
+            textNode:{
+                checks:[
+                    {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
+                    {check:jsToHtml.couldDirectTextContent, text:"must be string or number"}
+                ], 
+                transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
+            }
         }
     },
-    false:{
-        tagName:   {checks:[
-            {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
-            {check:function(x){
-                if(!jsToHtml.htmlTags[x]){ 
-                    throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
-                } 
-                return true;
-            }}  
-        ]},
-        attributes:{checks:[
-            {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
-            {check:function(attributes){
-                /*jshint forin:false */
-                for(var attrName in attributes){
-                    /*jshint forin:true */
-                    var attrValue=attributes[attrName];
-                    if(attrValue==null){
-                        throw new Error('js-to-html: attributes must not contain null value');
-                    }
-                    if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
-                        var pattWhiteSpaces=new RegExp( "\\s");
-                        if(pattWhiteSpaces.test(attrValue)){   
-                            throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces');
+    tagName:{
+        className:'Html',
+        properties:{
+            tagName:   {checks:[
+                {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
+                {check:function(x){
+                    if(!jsToHtml.htmlTags[x]){ 
+                        throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
+                    } 
+                    return true;
+                }}  
+            ]},
+            attributes:{checks:[
+                {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
+                {check:function(attributes){
+                    /*jshint forin:false */
+                    for(var attrName in attributes){
+                        /*jshint forin:true */
+                        var attrValue=attributes[attrName];
+                        if(attrValue==null){
+                            throw new Error('js-to-html: attributes must not contain null value');
                         }
-                        if(attrValue instanceof Array){
-                            attrValue = attrValue.join('');
+                        if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
+                            var pattWhiteSpaces=new RegExp( "\\s");
+                            if(pattWhiteSpaces.test(attrValue)){   
+                                throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces');
+                            }
+                            if(attrValue instanceof Array){
+                                attrValue = attrValue.join('');
+                            }
                         }
                     }
-                }
-                return true;
-            }}
-        ]},
-        content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"}]},
+                    return true;
+                }}
+            ]},
+            content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"}]},
+        }
     }
 };
-    
 
-jsToHtml.Html=function Html(directObject){
-    var isTextNode='textNode' in directObject;
-    var validProperties=validDirectProperties[isTextNode];
+function HtmlBase(directObject, validProperties){
     /*jshint forin:false */
     for(var property in validProperties){
         /*jshint forin:true */
@@ -139,7 +142,17 @@ jsToHtml.Html=function Html(directObject){
     }
 };
 
-jsToHtml.Html.prototype.attributesToHtmlText=function attributesToHtmlText(){
+jsToHtml.Html=function Html(directObject){
+    HtmlBase.call(this, directObject, validDirectProperties.tagName.properties);
+};
+jsToHtml.Html.prototype = Object.create(HtmlBase.prototype);
+
+jsToHtml.HtmlTextNode=function HtmlTextNode(directObject){
+    HtmlBase.call(this, directObject, validDirectProperties.textNode.properties);
+};
+jsToHtml.HtmlTextNode.prototype = Object.create(HtmlBase.prototype);
+
+HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     var pattNonWordChar=new RegExp(/\W/);
     return Object.keys(this.attributes).map(function(attrName){
         var attrVal=this.attributes[attrName];
@@ -156,13 +169,13 @@ jsToHtml.Html.prototype.attributesToHtmlText=function attributesToHtmlText(){
     },this).join('');
 };
 
-jsToHtml.Html.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
+HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
     return this.content.map(function(node){
         return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
     }).join('');
 };
 
-jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+HtmlBase.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     if('textNode' in this){
         return escapeChar(this.textNode);
     }
@@ -186,7 +199,11 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
 };
 
 jsToHtml.direct=function direct(directObject){
-    return new jsToHtml.Html(directObject);
+    for(var mainAttr in validDirectProperties){
+        if(mainAttr in directObject){
+            return new jsToHtml[validDirectProperties[mainAttr].className](directObject);
+        }
+    }
 };
 
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
@@ -351,6 +368,26 @@ Object.keys(jsToHtml.htmlTags).map(function(tagName){
         return jsToHtml.indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
     };
 });
+
+jsToHtml.HtmlTextNode.prototype.create = function create(){
+    return document.createTextNode(this.textNode);
+}
+
+jsToHtml.htmlAttributes={
+    "class":{ domName:'className' },
+    "for"  :{ domName:'htmlFor'   },
+}
+
+jsToHtml.Html.prototype.create = function create(){
+    var element = document.createElement(this.tagName);
+    for(var attr in this.attributes){
+        element[(jsToHtml.htmlAttributes[attr]||{}).domName||attr] = this.attributes[attr];
+    }
+    this.content.forEach(function(node){
+        element.appendChild(node.create());
+    });
+    return element;
+}
 
 return jsToHtml;
 
