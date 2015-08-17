@@ -29,3 +29,6 @@ node_modules
 
 # For use local .npmrc
 .npmrc
+
+local-*
+*-local.*
