@@ -228,7 +228,8 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
 };
 
 jsToHtml.htmlAttrs={
-    "class"        :{listType:true, rejectSpaces:true}
+    "class"        :{ domName:'className', listType:'classList', rejectSpaces:true},
+    "for"          :{ domName:'htmlFor'  },
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
@@ -373,15 +374,18 @@ jsToHtml.HtmlTextNode.prototype.create = function create(){
     return document.createTextNode(this.textNode);
 }
 
-jsToHtml.htmlAttributes={
-    "class":{ domName:'className' },
-    "for"  :{ domName:'htmlFor'   },
-}
-
 jsToHtml.Html.prototype.create = function create(){
     var element = document.createElement(this.tagName);
     for(var attr in this.attributes){
-        element[(jsToHtml.htmlAttributes[attr]||{}).domName||attr] = this.attributes[attr];
+        var value=this.attributes[attr];
+        var defAttr=jsToHtml.htmlAttrs[attr]||{};
+        if(('listType' in defAttr) && (typeof value!=="string")){
+            Array.prototype.forEach.call(value,function(subValue){
+                element[defAttr.listType].add(subValue);
+            });
+        }else{
+            element[defAttr.domName||attr] = value;
+        }
     }
     this.content.forEach(function(node){
         element.appendChild(node.create());

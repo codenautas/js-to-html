@@ -255,7 +255,15 @@ describe('js-to-dom', function(){
                 expect(div.innerHTML).to.be(pairsOrHtml);
             }else{
                 for(var prop in pairsOrHtml){
-                    expect(element[prop]).to.be(pairsOrHtml[prop]);
+                    if(pairsOrHtml[prop] instanceof Array){
+                        var obtained=element[prop];
+                        if(!(obtained instanceof Array) && 'length' in obtained){
+                            obtained=Array.prototype.slice.call(obtained,0);
+                        }
+                        expect(obtained).to.eql(pairsOrHtml[prop]);
+                    }else{
+                        expect(element[prop]).to.be(pairsOrHtml[prop]);
+                    }
                 }
             }
             setTimeout(done,100);
@@ -333,86 +341,12 @@ describe('js-to-dom', function(){
                 done
             );
         });
-//        it('should concat list values for list-type attributes', function(){
-//            expect(
-//                html.p({"class":['names', 'other']},'text').toHtmlText()
-//            ).to.eql("<p class='names other'>text</p>");
-//        });
-//        it('should accept numbers', function(){
-//            expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
-//                "<p><span>3</span>1.1</p>"
-//            );
-//            expect(html.p({"class": "the_class_name"}, 314).toHtmlText()).to.eql(
-//                "<p class=the_class_name>314</p>"
-//            );
-//        });
-//    });
-//    describe('controls of direct function.', function(){
-//        var html = jsToHtml.html;
-//        var direct = jsToHtml.direct;
-//        it('should control the presence of content', function(){
-//            expect(function(){
-//                direct({tagName:'div', attributes:{}})
-//            }).to.throwError(/must include content/);
-//        });
-//        it('should control the type of content', function(){
-//            expect(function(){
-//                direct({tagName:'div', attributes:{}, content:"must not be a string"})
-//            }).to.throwError(/content must be an Array/);
-//        });
-//        it('should control the type of attributes', function(){
-//            expect(function(){
-//                direct({tagName:'div', content:[], attributes:['must not be an array']})
-//            }).to.throwError(/attributes must be a plain Object/);
-//        });
-//        it('should control the type of tagName', function(){
-//            expect(function(){
-//                direct({tagName:8, content:[], attributes:{valid:true}});
-//            }).to.throwError(/tagName must be a string/);
-//        });
-//        it('should control attributes with null value', function(){
-//            expect(function(){
-//                direct({tagName:'p', content:[], attributes:{display:null}});
-//            }).to.throwError(/attributes must not contain null value/);
-//        });
-//        it('should not permit de presence of other attributes', function(){
-//            expect(function(){
-//                direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
-//            }).to.throwError(/not recognized other property/);
-//        });
-//        it('should not permit de presence of other attributes in a TextNode', function(){
-//            expect(function(){
-//                direct({textNode:'a phrase', thisAttribute:"no good"})
-//            }).to.throwError(/not recognized thisAttribute property/);
-//        });
-//        it('should not permit null in a TextNode', function(){
-//            expect(function(){
-//                direct({textNode:null})
-//            }).to.throwError(/textNodes must not contains null/);
-//        });
-//        it('should reject double content (probably a mismatch)', function(){
-//            expect(function(){
-//                html.p("texto", "otro texto")
-//            }).to.throwError(/the first parameter is not an attribute object then must there no be a second parameter/);
-//        });
-//    });
-//    describe('controls of html.TAGS parameters', function(){
-//        var html = jsToHtml.html;
-//        it('should reject null in escapeChar by _text', function(){
-//            expect(function(){
-//                html._text()
-//            }).to.throwError(/textNodes must not contains null/);
-//        });
-//        it('should reject null in escapeChar by attributes', function(){
-//            expect(function(){
-//                html.p({'class':null})
-//            }).to.throwError(/attributes must not contain null value/);
-//        });
-//        it('should reject other objects', function(){
-//            expect(function(){
-//                var complexObject=moment();
-//                html.p(complexObject);
-//            }).to.throwError(/expects plain object of attributes or array of content/);
-//        });
+        it('should concat list values for list-type attributes', function(done){
+            control(
+                html.p({"class":['names', 'other']},'text'),
+                {"classList": ['names','other']},
+                done
+            );
+        });
     });
 });
