@@ -1,7 +1,7 @@
 {
   "name": "js-to-html",
   "description": "Create HTML text from JS object",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/js-to-html",
@@ -51,7 +51,9 @@
   },
   "qa-control": {
     "package-version": "0.0.1",
+    "coverage": 90,
     "run-in": "both",
-    "stability": "extending"
+    "stability": "extending",
+    "type": "lib"
   }
 }

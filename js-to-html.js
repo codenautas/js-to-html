@@ -1,19 +1,10 @@
-/*!
- * js-to-html
- * 2015 Codenautas
- * GNU Licensed
- */
-
-/**
- * Module dependencies.
- */
-
 "use strict";
 /*jshint eqnull:true */
 /*jshint globalstrict:true */
 /*jshint node:true */
 (function webpackUniversalModuleDefinition(root, factory) {
     /* global define */
+    /* global globalModuleName */
     /* istanbul ignore next */
     if(typeof root.globalModuleName !== 'string'){
         root.globalModuleName = factory.name;
@@ -33,8 +24,10 @@
 /*jshint +W040 */
 
 /*jshint -W004 */
-var jsToHtml={};
+var jsToHtml = {};
 /*jshint +W004 */
+
+/* global document */
 
 function isPlainObject(x){
     return typeof x==="object" && x && x.constructor === Object;
@@ -140,7 +133,7 @@ function HtmlBase(directObject, validProperties){
             throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
         }
     }
-};
+}
 
 jsToHtml.Html=function Html(directObject){
     HtmlBase.call(this, directObject, validDirectProperties.tagName.properties);
@@ -372,11 +365,12 @@ Object.keys(jsToHtml.htmlTags).map(function(tagName){
 
 jsToHtml.HtmlTextNode.prototype.create = function create(){
     return document.createTextNode(this.textNode);
-}
+};
 
 jsToHtml.Html.prototype.create = function create(){
     var element = document.createElement(this.tagName);
-    for(var attr in this.attributes){
+    /*jshint -W089 */
+    Object.keys(this.attributes).map(function(attr){
         var value=this.attributes[attr];
         var defAttr=jsToHtml.htmlAttrs[attr]||{};
         if(('listType' in defAttr) && (typeof value!=="string")){
@@ -386,12 +380,13 @@ jsToHtml.Html.prototype.create = function create(){
         }else{
             element[defAttr.domName||attr] = value;
         }
-    }
+    },this);
     this.content.forEach(function(node){
         element.appendChild(node.create());
     });
+    /*jshint +W089 */
     return element;
-}
+};
 
 return jsToHtml;
 
