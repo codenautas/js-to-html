@@ -151,6 +151,12 @@ document.body.appendChild(
 <!--lang:es-->
 ## Notas
  * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
+<!--lang:en--]
+
+## Notes
+ * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
+ 
+[!--lang:es-->
 
 <!--lang:en--]
 ## Notes
