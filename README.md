@@ -36,6 +36,7 @@ Returns an Html object with TAGNAME, attributes and content.
    * a string expression
    * an Html object
 
+
 **attributes** must be a plain object. Each property of the object will be an html attribute (example: `{colspan:3, id:"abc"}`).
 Some attributes names are reserved words, you can use them with the same name (example: `{class:'examples'}`).
 Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`).
@@ -91,6 +92,8 @@ document.body.appendChild(
 
 ```
 
+## Notes
+ * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
 
 ## Notes
  * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
