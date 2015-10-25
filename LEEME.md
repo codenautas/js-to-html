@@ -64,11 +64,14 @@ Returns an Html object with TAGNAME, attributes and content.
    * an Html object
 
 [!--lang:es-->
-**attributes** debe ser un objeto plano (sin tipo). Cada propiedad del objeto será un atributo html (ejemplo:`{colspan:3,id:"abc"}`).
+
+**attributes** debe ser un objeto plano (sin tipo). 
+Cada propiedad del objeto será un atributo html (ejemplo:`{colspan:3,id:"abc"}`).
 Algunos nombres de atributos son palabras reservadas, se pueden usar con el mismo nombre (ejemplo:`{'class':'ejemplos'}`).
 Algunos atributos (como **class**) pueden contener listas (ejemplo: `{'class':['ejemplos','listas']}`).
    
 <!--lang:en--]
+
 **attributes** must be a plain object. Each property of the object will be an html attribute (example: `{colspan:3, id:"abc"}`). 
 Some attributes names are reserved words, you can use them with the same name (example: `{class:'examples'}`). 
 Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`). 
@@ -151,8 +154,8 @@ document.body.appendChild(
 <!--lang:es-->
 ## Notas
  * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
-<!--lang:en--]
 
+<!--lang:en--]
 ## Notes
  * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
  
