@@ -411,6 +411,10 @@ jsToHtml.HtmlTextNode.prototype.create = function create(){
     return document.createTextNode(this.textNode);
 };
 
+jsToHtml.html.includeHtmlValidator=function(htmlText){
+    return /^((<[^<>]+>)|[^<>]+|\n)*$/.test(htmlText);
+}
+
 jsToHtml.Html.prototype.create = function create(){
     var element = document.createElement(this.tagName);
     /*jshint -W089 */

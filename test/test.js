@@ -254,6 +254,15 @@ describe('js-to-html', function(){
     describe('insecure',function(){
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
+        it('should reject insecure html for includeHtml',function(){
+            expect(function(){
+                html.insecureModeEnabled=true;
+                html.includeHtml("<div> a > b </div>");
+            }).to.throwError(/invalid htmlCode/);
+        });
+        it('should accept secure html for includeHtml',function(){
+            html.includeHtml('<div class="this one">\ndo &amp; code\n</div>' );
+        });
         it('should include HTML code', function(){
             var html = jsToHtml.html;
             html.insecureModeEnabled = true;
