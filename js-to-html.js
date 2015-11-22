@@ -113,9 +113,9 @@ var validDirectProperties={
             htmlCode:{
                 checks:[
                     {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
-                    {check:function(x){ return typeof x == "string"}, text:"htmlCode must be a string"},
-                    {check:function(){ return jsToHtml.html.insecureModeEnabled}, text:"insecure functions not allowed"},
-                    {check:function(x,o){ return o.validator(x)}, text:"invalid htmlCode"},
+                    {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
+                    {check:function(){ return jsToHtml.html.insecureModeEnabled; }, text:"insecure functions not allowed"},
+                    {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"},
                 ]
             },
             validator:{
@@ -396,7 +396,7 @@ jsToHtml.html._text=function _text(text){
 
 jsToHtml.html.includeHtml=function _text(htmlCode){
     if(!this.insecureModeEnabled){
-        throw new Error("jsToHtml.html.includeHtml: insecure functions not allowed")
+        throw new Error("jsToHtml.html.includeHtml: insecure functions not allowed");
     }
     return jsToHtml.direct({htmlCode:htmlCode, validator:this.includeHtmlValidator});
 };

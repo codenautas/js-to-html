@@ -69,7 +69,17 @@ console.log(
   <p>First paragraph</p>
   <p>Second paragraph</p>
 </div>
-)
+*/
+```
+
+### Html.toHtmlDoc(opts)
+
+Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line:
+
+
+```html
+<!doctype html>
+<...>
 ```
 
 ## Using with DOM in client-side
@@ -92,8 +102,13 @@ document.body.appendChild(
 
 ```
 
-## Notes
- * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
+## Insecure mode
+
+
+```js
+html.insecureModeEnabled = true;
+console.log(html.div({id:'this'}, html.includeHtml('<svg xml:....> </svg>')));
+```
 
 ## Notes
  * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
