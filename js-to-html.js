@@ -106,6 +106,24 @@ var validDirectProperties={
             ]},
             content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"}]},
         }
+    },
+    htmlCode:{
+        className:'HtmlDirectNode',
+        properties:{
+            htmlCode:{
+                checks:[
+                    {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
+                    {check:function(x){ return typeof x == "string"}, text:"htmlCode must be a string"},
+                    {check:function(){ return jsToHtml.html.insecureModeEnabled}, text:"insecure functions not allowed"},
+                    {check:function(x,o){ return o.validator(x)}, text:"invalid htmlCode"},
+                ]
+            },
+            validator:{
+                checks:[
+                    {check:function(x){ return x instanceof Function; }, text: "validator must be a function"}
+                ]
+            }
+        },
     }
 };
 
@@ -120,7 +138,7 @@ function HtmlBase(directObject, validProperties){
         }
         for(var c=0; c<propertyDef.checks.length; c++){
             var check=propertyDef.checks[c];
-            if(!check.check(value)){
+            if(!check.check(value, directObject)){
                 throw new Error('jsToHtml.Html error: directObject '+property+' '+check.text);
             }
         }
@@ -145,6 +163,11 @@ jsToHtml.HtmlTextNode=function HtmlTextNode(directObject){
 };
 jsToHtml.HtmlTextNode.prototype = Object.create(HtmlBase.prototype);
 
+jsToHtml.HtmlDirectNode=function HtmlDirectNode(directObject){
+    HtmlBase.call(this, directObject, validDirectProperties.htmlCode.properties);
+};
+jsToHtml.HtmlDirectNode.prototype = Object.create(HtmlBase.prototype);
+
 HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     var pattNonWordChar=new RegExp(/\W/);
     return Object.keys(this.attributes).map(function(attrName){
@@ -168,10 +191,15 @@ HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts
     }).join('');
 };
 
+HtmlBase.prototype.toHtmlDoc=function toHtmlText(opts,recurseOpts){
+    return '<!doctype html>\n'+this.toHtmlText(opts,recurseOpts);
+};
+/* istanbul ignore next */
 HtmlBase.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
-    if('textNode' in this){
-        return escapeChar(this.textNode);
-    }
+    throw new Error('must implement toHtmlText');
+};
+
+jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     opts=opts||{};
     recurseOpts=recurseOpts||{};
     recurseOpts.margin=recurseOpts.margin||0;
@@ -191,12 +219,21 @@ HtmlBase.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
         (isvoidTag?'':"</"+this.tagName+">")+nl;
 };
 
+jsToHtml.HtmlTextNode.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+    return escapeChar(this.textNode);
+};
+
+jsToHtml.HtmlDirectNode.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+    return this.htmlCode;
+};
+
 jsToHtml.direct=function direct(directObject){
     for(var mainAttr in validDirectProperties){
         if(mainAttr in directObject){
             return new jsToHtml[validDirectProperties[mainAttr].className](directObject);
         }
     }
+    throw new Error('js-to-html.direct error: invalid arguments to direct function');
 };
 
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
@@ -355,6 +392,13 @@ jsToHtml.html={
 
 jsToHtml.html._text=function _text(text){
     return jsToHtml.direct({textNode:text});
+};
+
+jsToHtml.html.includeHtml=function _text(htmlCode){
+    if(!this.insecureModeEnabled){
+        throw new Error("jsToHtml.html.includeHtml: insecure functions not allowed")
+    }
+    return jsToHtml.direct({htmlCode:htmlCode, validator:this.includeHtmlValidator});
 };
 
 Object.keys(jsToHtml.htmlTags).map(function(tagName){

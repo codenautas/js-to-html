@@ -1,8 +1,11 @@
 "use strict";
 
-// var expect = require('expect.js');
-// var jsToHtml = require('../js-to-html.js');
-// var moment = require('moment');
+if(typeof document === 'undefined'){
+    global.jsToHtml = require('../js-to-html.js');
+    global.expect = require('expect.js');
+    global.moment = require('moment');
+    global.sinon = require('sinon');
+}
 
 describe('js-to-html', function(){
     describe('basic test', function(){
@@ -107,7 +110,8 @@ describe('js-to-html', function(){
                 ]
             });
             expect(div).to.eql(object);
-            expect(object.toHtmlText()).to.eql(
+            expect(object.toHtmlDoc()).to.eql(
+                "<!doctype html>\n"+
                 "<div class=the_class id=47>"+
                 "<p>First paragraph</p>"+
                 "<p>Second paragraph</p>"+
@@ -154,6 +158,11 @@ describe('js-to-html', function(){
             expect(function(){
                 direct({tagName:"not-exists", attributes:{}, content:[]})
             }).to.throwError(/tagName not-exists not exists/);
+        });
+        it('should not admit an invalid main argument', function(){
+            expect(function(){
+                direct({inexistingMain:"not-exists"})
+            }).to.throwError(/invalid arguments to direct function/);
         });
         it('should render void elements without closing tag', function(){
             expect(
@@ -242,111 +251,140 @@ describe('js-to-html', function(){
             }).to.throwError(/expects plain object of attributes or array of content/);
         });
     });
-});
-
-describe('js-to-dom', function(){
-    function control(htmlObject, pairsOrHtml, done){
-        try{
-            var div = document.createElement('div');
-            document.body.appendChild(div);
-            var element = htmlObject.create();
-            div.appendChild(element);
-            if(typeof pairsOrHtml=="string"){
-                expect(div.innerHTML).to.be(pairsOrHtml);
-            }else{
-                for(var prop in pairsOrHtml){
-                    if(pairsOrHtml[prop] instanceof Array){
-                        var obtained=element[prop];
-                        if(!(obtained instanceof Array) && 'length' in obtained){
-                            obtained=Array.prototype.slice.call(obtained,0);
-                        }
-                        expect(obtained).to.eql(pairsOrHtml[prop]);
-                    }else{
-                        expect(element[prop]).to.be(pairsOrHtml[prop]);
-                    }
-                }
-            }
-            setTimeout(done,100);
-        }catch(err){
-            done(err);
-        }
-    }
-    describe('basic test', function(){
+    describe('insecure',function(){
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
-        beforeEach(function(){
+        it('should include HTML code', function(){
+            var html = jsToHtml.html;
+            html.insecureModeEnabled = true;
+            var htmlCode = 'the html code';
+            html.includeHtmlValidator=sinon.stub();
+            html.includeHtmlValidator.returns(true);
+            var code = html.includeHtml(htmlCode);
+            expect(code).to.eql(direct({htmlCode:htmlCode, validator:html.includeHtmlValidator}));
+            expect(code.toHtmlText()).to.eql(htmlCode);
+            expect(html.includeHtmlValidator.callCount).to.eql(2);
+            expect(html.includeHtmlValidator.firstCall.args).to.eql([htmlCode]);
         });
-        it('should render a simple text', function(done){
-            var textNode=direct({textNode:"simple text"});
-            control(textNode, "simple text", done);
+        it('should reject insecure functions for includeHtml',function(){
+            expect(function(){
+                html.insecureModeEnabled=false;
+                html.includeHtml("hello");
+            }).to.throwError(/insecure functions not allowed/);
         });
-        it('should render a simple empty text', function(done){
-            var textNode=direct({textNode:""});
-            control(textNode, "", done);
-        });
-        it('should render an element without content', function(done){
-            var div=direct({
-                tagName:'div',
-                attributes:{},
-                content:[]
-            });
-            control(div,"<div></div>",done);
-        });
-        it('should render an element with content', function(done){
-            var p=direct({
-                tagName:'p',
-                attributes:{},
-                content:[direct({textNode: 'The first example'})]
-            });
-            control(p,"<p>The first example</p>",done);
-        });
-        it('should construct and render a div with other elements inside', function(done){
-            var div=html.div({'class':'the_class'},[
-                html.p('First paragraph'),
-                html.p('Second paragraph')
-            ]);
-            control(div,
-                '<div class="the_class">'+
-                "<p>First paragraph</p>"+
-                "<p>Second paragraph</p>"+
-                "</div>",
-                done
-            );
-        });
-        it('should create attribute value if contains some not alphabetic chars', function(done){
-            control(
-                html.p({"class":'names', title:'this title'},'text'),
-                    {title:"this title"},
-                done
-            );
-        });
-        it('should escape text', function(done){
-            control(
-                direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}),
-                'esto &lt; esto &amp; &gt; aquello \'sí\' y "no"',
-                done
-            );
-        });
-        it('should escape attributes', function(done){
-            control(
-                html.p({title:'esto < esto & > aquello \'sí\' y "no"'}),
-                {title:'esto < esto & > aquello \'sí\' y "no"'},
-                done
-            );
-        });
-        it('should render void elements without closing tag', function(done){
-            control(
-                direct({tagName:"img", attributes:{src:'img.png'}, content:[]}),
-                '<img src="img.png">',
-                done
-            );
-        });
-        it('should concat list values for list-type attributes', function(done){
-            control(
-                html.p({"class":['names', 'other']},'text'),
-                {"classList": ['names','other']},
-                done
-            );
+        it('should reject insecure functions for direct',function(){
+            expect(function(){
+                direct({htmlCode:"hello"});
+            }).to.throwError(/insecure functions not allowed/);
         });
     });
 });
+
+if(typeof document !== 'undefined'){
+    describe('js-to-dom', function(){
+        function control(htmlObject, pairsOrHtml, done){
+            try{
+                var div = document.createElement('div');
+                document.body.appendChild(div);
+                var element = htmlObject.create();
+                div.appendChild(element);
+                if(typeof pairsOrHtml=="string"){
+                    expect(div.innerHTML).to.be(pairsOrHtml);
+                }else{
+                    for(var prop in pairsOrHtml){
+                        if(pairsOrHtml[prop] instanceof Array){
+                            var obtained=element[prop];
+                            if(!(obtained instanceof Array) && 'length' in obtained){
+                                obtained=Array.prototype.slice.call(obtained,0);
+                            }
+                            expect(obtained).to.eql(pairsOrHtml[prop]);
+                        }else{
+                            expect(element[prop]).to.be(pairsOrHtml[prop]);
+                        }
+                    }
+                }
+                setTimeout(done,100);
+            }catch(err){
+                done(err);
+            }
+        }
+        describe('basic test', function(){
+            var html = jsToHtml.html;
+            var direct = jsToHtml.direct;
+            beforeEach(function(){
+            });
+            it('should render a simple text', function(done){
+                var textNode=direct({textNode:"simple text"});
+                control(textNode, "simple text", done);
+            });
+            it('should render a simple empty text', function(done){
+                var textNode=direct({textNode:""});
+                control(textNode, "", done);
+            });
+            it('should render an element without content', function(done){
+                var div=direct({
+                    tagName:'div',
+                    attributes:{},
+                    content:[]
+                });
+                control(div,"<div></div>",done);
+            });
+            it('should render an element with content', function(done){
+                var p=direct({
+                    tagName:'p',
+                    attributes:{},
+                    content:[direct({textNode: 'The first example'})]
+                });
+                control(p,"<p>The first example</p>",done);
+            });
+            it('should construct and render a div with other elements inside', function(done){
+                var div=html.div({'class':'the_class'},[
+                    html.p('First paragraph'),
+                    html.p('Second paragraph')
+                ]);
+                control(div,
+                    '<div class="the_class">'+
+                    "<p>First paragraph</p>"+
+                    "<p>Second paragraph</p>"+
+                    "</div>",
+                    done
+                );
+            });
+            it('should create attribute value if contains some not alphabetic chars', function(done){
+                control(
+                    html.p({"class":'names', title:'this title'},'text'),
+                        {title:"this title"},
+                    done
+                );
+            });
+            it('should escape text', function(done){
+                control(
+                    direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}),
+                    'esto &lt; esto &amp; &gt; aquello \'sí\' y "no"',
+                    done
+                );
+            });
+            it('should escape attributes', function(done){
+                control(
+                    html.p({title:'esto < esto & > aquello \'sí\' y "no"'}),
+                    {title:'esto < esto & > aquello \'sí\' y "no"'},
+                    done
+                );
+            });
+            it('should render void elements without closing tag', function(done){
+                control(
+                    direct({tagName:"img", attributes:{src:'img.png'}, content:[]}),
+                    '<img src="img.png">',
+                    done
+                );
+            });
+            it('should concat list values for list-type attributes', function(done){
+                control(
+                    html.p({"class":['names', 'other']},'text'),
+                    {"classList": ['names','other']},
+                    done
+                );
+            });
+        });
+    });
+}

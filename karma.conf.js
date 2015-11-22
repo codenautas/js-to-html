@@ -17,6 +17,7 @@ module.exports = function(config) {
     files: [
       'node_modules/es6-promise/dist/es6-promise.min.js',
       'node_modules/moment/min/moment-with-locales.min.js',
+      'node_modules/sinon/pkg/sinon-1.17.2.js',
       'js-to-html.js',
       'test/*.js'
     ],

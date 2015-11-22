@@ -119,7 +119,23 @@ console.log(
   <p>First paragraph</p>
   <p>Second paragraph</p>
 </div>
-)
+*/
+```
+
+<!--lang:*-->
+### Html.toHtmlDoc(opts)
+
+<!--lang:es-->
+Igual que `Html.toHtmlText(opts)` pero devuelve el `doctype` en la primera línea:
+
+<!--lang:en--]
+Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line:
+
+[!--lang:*-->
+
+```html
+<!doctype html>
+<...>
 ```
 
 <!--lang:es-->
@@ -152,14 +168,22 @@ document.body.appendChild(
 ```
 
 <!--lang:es-->
-## Notas
- * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
+## Modo inseguro
+ * En modo inseguro permite ingresar código HTML proveniente de expresiones de texto
 
 <!--lang:en--]
-## Notes
- * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
+## Insecure mode
+
+[!--lang:*-->
+
+```js
+html.insecureModeEnabled = true;
+console.log(html.div({id:'this'}, html.includeHtml('<svg xml:....> </svg>')));
+```
  
-[!--lang:es-->
+<!--lang:es-->
+## Notas
+ * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
 
 <!--lang:en--]
 ## Notes
