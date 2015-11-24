@@ -128,6 +128,17 @@ var validDirectProperties={
                 ]
             }
         },
+    },
+    commentText:{
+        className:'HtmlComment',
+        properties:{
+            commentText:{
+                checks:[
+                    {check:function(x){ return typeof x == "string"; }, text:"commentText must be a string"},
+                    {check:function(x){ return !/-->/.test(x);}, text:"invalid text in comment"}
+                ]
+            }
+        },
     }
 };
 
@@ -171,6 +182,11 @@ jsToHtml.HtmlDirectNode=function HtmlDirectNode(directObject){
     HtmlBase.call(this, directObject, validDirectProperties.htmlCode.properties);
 };
 jsToHtml.HtmlDirectNode.prototype = Object.create(HtmlBase.prototype);
+
+jsToHtml.HtmlComment=function HtmlComment(directObject){
+    HtmlBase.call(this, directObject, validDirectProperties.commentText.properties);
+};
+jsToHtml.HtmlComment.prototype = Object.create(HtmlBase.prototype);
 
 HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     var pattNonWordChar=new RegExp(/\W/);
@@ -274,6 +290,10 @@ jsToHtml.HtmlTextNode.prototype.toHtmlText=function toHtmlText(opts,recurseOpts)
 
 jsToHtml.HtmlDirectNode.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
     return this.htmlCode;
+};
+
+jsToHtml.HtmlComment.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
+    return "<!--"+this.commentText+"-->";
 };
 
 jsToHtml.direct=function direct(directObject){
@@ -438,6 +458,10 @@ jsToHtml.htmlTags={
 
 jsToHtml.html._text=function _text(text){
     return jsToHtml.direct({textNode:text});
+};
+
+jsToHtml.html._comment=function _comment(text){
+    return jsToHtml.direct({commentText:text});
 };
 
 jsToHtml.html.includeHtml=function _text(htmlCode){

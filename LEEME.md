@@ -197,6 +197,24 @@ document.body.appendChild(
 ```
 
 <!--lang:es-->
+## Comportamiento especial
+
+tipo     | nombre        | uso
+---------|---------------|--------------
+función  | html._text    | Introduce texto suelto (equivale a `createTextNode`)
+función  | html._comment | Introduce un comentario (equivale a `< !-- ... -- >`)
+atributo | classList     | para cargar una lista de nombres de clases (el módulo no acepta {"class": "una otra separada por espacio"} )
+
+<!--lang:en--]
+## Special behavior
+
+type      | name          | use
+----------|---------------|--------------
+function  | html._text    | simple text (like `createTextNode`)
+function  | html._comment | html comment (like `< !-- ... -- >`)
+attribute | classList     | for a class name list (this module rejects class with spaces like {"class": "una otra separada por espacio"} )
+
+[!--lang:es-->
 ## Modo inseguro
  * En modo inseguro permite ingresar código HTML proveniente de expresiones de texto
 

@@ -78,6 +78,19 @@ describe('js-to-html', function(){
             var p=html._text('A text node that could not be created with document.createElement');
             expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));
         });
+        it('should construct a commentNode', function(){
+            var p=html._comment('A text node that could only be created with <!--');
+            expect(p).to.eql(direct({commentText: 'A text node that could only be created with <!--'}));
+        });
+        it('should construct a commentNode', function(){
+            var t=html._comment('A text node that could \nonly be created with <!--').toHtmlText();
+            expect(t).to.eql('<!--A text node that could \nonly be created with <!---->');
+        });
+        it('should rejeect a commentNode with invalid texts', function(){
+            expect(function(){
+                html._comment('A text node that could only be created with <!-- ... -->');
+            }).to.throwError(/invalid text in comment/);
+        });
         it('should construct a p object', function(){
             var p=html.p('The first example');
             expect(p).to.eql(direct({

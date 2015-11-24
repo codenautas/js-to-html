@@ -123,6 +123,14 @@ document.body.appendChild(
 
 ```
 
+## Special behavior
+
+type      | name          | use
+----------|---------------|--------------
+function  | html._text    | simple text (like `createTextNode`)
+function  | html._comment | html comment (like `< !-- ... -- >`)
+attribute | classList     | for a class name list (this module rejects class with spaces like {"class": "una otra separada por espacio"} )
+
 ## Insecure mode
 
 
