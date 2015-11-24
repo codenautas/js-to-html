@@ -74,13 +74,34 @@ console.log(
 
 ### Html.toHtmlDoc(opts)
 
-Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line:
+Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line and completes with con HTML, HEAD, BODY and TITLE elements:
 
 
 ```html
+var html = require("js-to-html").html;
+
+console.log(
+    html.img({src:'photo.png'}).toHtmlDoc({title:"my photo", pretty:true})
+)
+
+/*
 <!doctype html>
-<...>
+<html>
+  <head>
+    <title>my photo</title>
+  </head>
+  <body>
+    <img src=photo.png>
+  </body>
+</html>
+*/
 ```
+
+opt        | value
+-----------|-------
+pretty     | returns a pretty and indented text
+incomplete | do not complete with  html, head y body tags
+title      | text title
 
 ## Using with DOM in client-side
 

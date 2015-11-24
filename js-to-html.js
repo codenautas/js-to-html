@@ -459,7 +459,7 @@ jsToHtml.HtmlTextNode.prototype.create = function create(){
 
 jsToHtml.html.includeHtmlValidator=function(htmlText){
     return /^((<[^<>]+>)|[^<>]+|\n)*$/.test(htmlText);
-}
+};
 
 jsToHtml.Html.prototype.create = function create(){
     var element = document.createElement(this.tagName);

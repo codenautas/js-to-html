@@ -54,7 +54,7 @@
   },
   "qa-control": {
     "package-version": "0.0.2",
-    "coverage": 90,
+    "coverage": 100,
     "run-in": "both",
     "stability": "extending",
     "type": "lib"

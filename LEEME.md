@@ -126,16 +126,31 @@ console.log(
 ### Html.toHtmlDoc(opts)
 
 <!--lang:es-->
-Igual que `Html.toHtmlText(opts)` pero devuelve el `doctype` en la primera línea:
+Igual que `Html.toHtmlText(opts)` pero devuelve el `doctype` en la primera línea y completa con HTML, HEAD, BODY y TITLE:
 
 <!--lang:en--]
-Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line:
+Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line and completes with con HTML, HEAD, BODY and TITLE elements:
 
 [!--lang:*-->
 
 ```html
+var html = require("js-to-html").html;
+
+console.log(
+    html.img({src:'photo.png'}).toHtmlDoc({title:"my photo", pretty:true})
+)
+
+/*
 <!doctype html>
-<...>
+<html>
+  <head>
+    <title>my photo</title>
+  </head>
+  <body>
+    <img src=photo.png>
+  </body>
+</html>
+*/
 ```
 
 <!--lang:es-->
