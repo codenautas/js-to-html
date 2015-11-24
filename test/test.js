@@ -187,6 +187,11 @@ describe('js-to-html', function(){
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
         });
+        it('should understand synonyms', function(){
+            expect(
+                html.p({"classList":['names', 'other']},'text').toHtmlText()
+            ).to.eql("<p class='names other'>text</p>");
+        });
         it('should accept numbers', function(){
             expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
                 "<p><span>3</span>1.1</p>"
@@ -457,6 +462,13 @@ if(typeof document !== 'undefined'){
                 control(
                     html.p({"class":['names', 'other']},'text'),
                     {"classList": ['names','other']},
+                    done
+                );
+            });
+            it('should concat list values for list-type attributes', function(done){
+                control(
+                    html.p({"class":['names', 'other']},'text'),
+                    '<p class="names other">text</p>',
                     done
                 );
             });

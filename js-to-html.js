@@ -192,11 +192,13 @@ HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     var pattNonWordChar=new RegExp(/\W/);
     return Object.keys(this.attributes).map(function(attrName){
         var attrVal=this.attributes[attrName];
-        var textAttrVal=attrVal;          
-        if( (attrName in jsToHtml.htmlAttrs) && 
-            ('listType' in jsToHtml.htmlAttrs[attrName]) &&
-            (typeof attrVal!=="string") 
-        ){
+        var textAttrVal=attrVal;
+        var attrDefinition=jsToHtml.htmlAttrs[attrName] || {};
+        if(attrDefinition.synonym){
+            attrName=attrDefinition.synonym;
+            attrDefinition=jsToHtml.htmlAttrs[attrName] || {};
+        }
+        if(attrDefinition.listType && typeof attrVal!=="string"){
             textAttrVal=attrVal.join(' ');
         } 
         var escapedAttrVal=escapeChar(textAttrVal);
@@ -329,7 +331,10 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
 jsToHtml.htmlAttrs={
     "class"        :{ domName:'className', listType:'classList', rejectSpaces:true},
     "for"          :{ domName:'htmlFor'  },
+    classList      :{ synonym:'class' },
+    htmlFor        :{ synonym:'for' }
 };
+
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
 jsToHtml.htmlTags={

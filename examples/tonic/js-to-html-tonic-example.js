@@ -9,4 +9,4 @@ var myArticle = html.article(
     ]
 );
 
-myArticle.toHtmlDoc({pretty:true});
+myArticle.toHtmlDoc({pretty:true, title:'example'});
