@@ -196,7 +196,7 @@ HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
         var attrDefinition=jsToHtml.htmlAttrs[attrName] || {};
         if(attrDefinition.synonym){
             attrName=attrDefinition.synonym;
-            attrDefinition=jsToHtml.htmlAttrs[attrName] || {};
+            attrDefinition=jsToHtml.htmlAttrs[attrName];
         }
         if(attrDefinition.listType && typeof attrVal!=="string"){
             textAttrVal=attrVal.join(' ');
@@ -216,9 +216,6 @@ HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts
 HtmlBase.prototype.toHtmlDoc=function toHtmlDoc(opts,recurseOpts){
     opts = opts||{};
     var html = jsToHtml.html;
-    if(!opts.incomplete && jsToHtml.html.mandatoryTitle && !jsToHtml.html.defaultTitle && !opts.title){
-        throw new Error("toHtmlDoc ERROR: missing mandatory title");
-    }
     var target=this;
     if(!opts.incomplete){
         var source=this;
@@ -256,6 +253,8 @@ HtmlBase.prototype.toHtmlDoc=function toHtmlDoc(opts,recurseOpts){
             var titleText = opts.title||html.defaultTitle;
             if(titleText){
                 head.content.unshift(html.title(titleText));
+            }else if(jsToHtml.html.mandatoryTitle){
+                throw new Error("toHtmlDoc ERROR: missing mandatory title");
             }
         }
     }
@@ -332,6 +331,7 @@ jsToHtml.htmlAttrs={
     "class"        :{ domName:'className', listType:'classList', rejectSpaces:true},
     "for"          :{ domName:'htmlFor'  },
     classList      :{ synonym:'class' },
+    className      :{ synonym:'class' },
     htmlFor        :{ synonym:'for' }
 };
 

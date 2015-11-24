@@ -187,7 +187,12 @@ describe('js-to-html', function(){
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
         });
-        it('should understand synonyms', function(){
+        it('should understand synonyms with definition', function(){
+            expect(
+                html.p({"classList":['names', 'other']},'text').toHtmlText()
+            ).to.eql("<p class='names other'>text</p>");
+        });
+        it('should understand synonyms without definition', function(){
             expect(
                 html.p({"classList":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
@@ -298,7 +303,14 @@ describe('js-to-html', function(){
                 html.html([html.head([html.meta()]),html.br(),html.img()]).toHtmlDoc()
             ).to.eql("<!doctype html>\n<html><head><title>the default title</title><meta></head><body><br><img></body></html>");
         });
-        it('should mantain the title', function(){
+        it('should mantain the title when no default', function(){
+            html.mandatoryTitle=true;
+            html.defaultTitle=false;
+            expect(
+                html.html([html.head([html.meta(),html.title("this")]),html.body([html.br()])]).toHtmlDoc()
+            ).to.eql("<!doctype html>\n<html><head><meta><title>this</title></head><body><br></body></html>");
+        });
+        it('should mantain the title when haves default', function(){
             html.mandatoryTitle=true;
             html.defaultTitle='the default title';
             expect(
