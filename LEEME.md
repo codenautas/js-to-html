@@ -139,6 +139,20 @@ Same as `Html.toHtmlText(opts)` but returns `doctype` in the first line:
 ```
 
 <!--lang:es-->
+opción     | valor
+-----------|-------
+pretty     | devuelve un texto indentado
+incomplete | no completa con los tags html, head y body cuando corresponde
+title      | el texto para el TAG title
+
+<!--lang:en--]
+opt        | value
+-----------|-------
+pretty     | returns a pretty and indented text
+incomplete | do not complete with  html, head y body tags
+title      | text title
+
+<!--lang:es-->
 ## Usándolo en el navegador
 
 Los objetos html tienen un método `create` que se usa para crear el elemento del DOM

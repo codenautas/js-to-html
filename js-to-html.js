@@ -45,6 +45,10 @@ var htmlReservedSymbols={
     '"' :'&quot;'
 };
 
+jsToHtml.html={
+    mandatoryTitle:true
+};
+
 function escapeChar(simpleText){
     simpleText=''+simpleText;
     return /[&<>'"]/.test(simpleText)?simpleText.replace(/[&<>'"]/g,function(c){ return htmlReservedSymbols[c]; }):simpleText;
@@ -94,7 +98,7 @@ var validDirectProperties={
                         if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
                             if(pattWhiteSpaces.test(attrValue)){   
-                                throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces');
+                                throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use classList attribute.');
                             }
                             if(attrValue instanceof Array){
                                 attrValue = attrValue.join('');
@@ -191,8 +195,53 @@ HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts
     }).join('');
 };
 
-HtmlBase.prototype.toHtmlDoc=function toHtmlText(opts,recurseOpts){
-    return '<!doctype html>\n'+this.toHtmlText(opts,recurseOpts);
+HtmlBase.prototype.toHtmlDoc=function toHtmlDoc(opts,recurseOpts){
+    opts = opts||{};
+    var html = jsToHtml.html;
+    if(!opts.incomplete && jsToHtml.html.mandatoryTitle && !jsToHtml.html.defaultTitle && !opts.title){
+        throw new Error("toHtmlDoc ERROR: missing mandatory title");
+    }
+    var target=this;
+    if(!opts.incomplete){
+        var source=this;
+        var head;
+        if(source.tagName==='html'){
+            target=source;
+        }else{
+            target=html.html([source]);
+        }
+        if(!target.content.length){
+            target.content.push(html.body());
+        }
+        if(target.content[0].tagName==='head'){
+            head=target.content[0];
+        }else{
+            head=html.head();
+            target.content.unshift(head);
+        }
+        if(target.content[1].tagName!=='body'){
+            target.content.shift();
+            // var body=html.body([target.content[0]]);
+            var body=html.body(target.content);
+            target.content=[head, body];
+        }
+        var titles=head.content.filter(function(element){
+            return element.tagName==='title';
+        });
+        if(titles.length>1){
+            throw new Error("toHtmlDoc ERROR: multiple title");
+        }else if(titles.length==1){
+            if(opts.title){
+                throw new Error("toHtmlDoc ERROR: double title");
+            }
+        }else{
+            var titleText = opts.title||html.defaultTitle;
+            if(titleText){
+                head.content.unshift(html.title(titleText));
+            }
+        }
+    }
+    return '<!doctype html>\n'+target.toHtmlText(opts,recurseOpts);
 };
 /* istanbul ignore next */
 HtmlBase.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
@@ -385,9 +434,6 @@ jsToHtml.htmlTags={
     "var"          :{type:'HTML4', description:"Defines a variable"},
     "video"        :{type:'HTML5', description:"Defines a video or movie"},
     "wbr"          :{type:'HTML5', description:"Defines a possible line-break"}
-};
-
-jsToHtml.html={
 };
 
 jsToHtml.html._text=function _text(text){

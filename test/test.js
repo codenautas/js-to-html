@@ -110,7 +110,7 @@ describe('js-to-html', function(){
                 ]
             });
             expect(div).to.eql(object);
-            expect(object.toHtmlDoc()).to.eql(
+            expect(object.toHtmlDoc({incomplete:true})).to.eql(
                 "<!doctype html>\n"+
                 "<div class=the_class id=47>"+
                 "<p>First paragraph</p>"+
@@ -249,6 +249,59 @@ describe('js-to-html', function(){
                 var complexObject=moment();
                 html.p(complexObject);
             }).to.throwError(/expects plain object of attributes or array of content/);
+        });
+    });
+    describe("toHtmlDoc", function(){
+        var html = jsToHtml.html;
+        var dt="<!doctype html>\n";
+        it('should reject toHtmlDoc without mandatoryTitle', function(){
+            expect(function(){
+                html.div().toHtmlDoc()
+            }).to.throwError(/missing mandatory title/);
+        });
+        it('should complete the HTML tag in simple html', function(){
+            html.mandatoryTitle=false;
+            expect(html.div().toHtmlDoc()).to.eql("<!doctype html>\n<html><head></head><body><div></div></body></html>");
+        });
+        it('should complete the HTML tag when no head', function(){
+            html.mandatoryTitle=false;
+            expect(html.body([html.br()]).toHtmlDoc()).to.eql("<!doctype html>\n<html><head></head><body><br></body></html>");
+        });
+        it('should complete the HTML tag when no title explicit', function(){
+            html.mandatoryTitle=true;
+            expect(
+                html.html([html.head(),html.body([html.br()])]).toHtmlDoc({title:'the title'})
+            ).to.eql("<!doctype html>\n<html><head><title>the title</title></head><body><br></body></html>");
+        });
+        it('should complete the HTML tag when no title with default', function(){
+            html.mandatoryTitle=true;
+            html.defaultTitle='the default title';
+            expect(
+                html.html([html.head([html.meta()]),html.br(),html.img()]).toHtmlDoc()
+            ).to.eql("<!doctype html>\n<html><head><title>the default title</title><meta></head><body><br><img></body></html>");
+        });
+        it('should mantain the title', function(){
+            html.mandatoryTitle=true;
+            html.defaultTitle='the default title';
+            expect(
+                html.html([html.head([html.meta(),html.title("this")]),html.body([html.br()])]).toHtmlDoc()
+            ).to.eql("<!doctype html>\n<html><head><meta><title>this</title></head><body><br></body></html>");
+        });
+        it('should reject double title', function(){
+            html.mandatoryTitle=true;
+            expect(function(){
+                html.html([html.head([html.meta(),html.title("this")]),html.body([html.br()])]).toHtmlDoc({title:'other'})
+            }).to.throwError(/double title/);
+        });
+        it('should reject multiple title', function(){
+            html.mandatoryTitle=true;
+            expect(function(){
+                html.html([html.head([html.title("that"),html.title("this")]),html.body([html.br()])]).toHtmlDoc()
+            }).to.throwError(/multiple title/);
+        });
+        it('should complete the HTML only tag', function(){
+            html.defaultTitle='t';
+            expect(html.html({lang: "es"}).toHtmlDoc()).to.eql("<!doctype html>\n<html lang=es><head><title>t</title></head><body></body></html>");
         });
     });
     describe('insecure',function(){
