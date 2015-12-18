@@ -283,6 +283,7 @@ jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
         this.contentToHtmlText(opts,recurseOpts)+
         (firstChildInline?sp(recurseOpts.margin):'')+
         (isvoidTag?'':"</"+this.tagName+">")+nl;
+
 };
 
 jsToHtml.HtmlTextNode.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){

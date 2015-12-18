@@ -45,6 +45,16 @@ describe('js-to-html', function(){
             var htmlText=p.toHtmlText();
             expect(htmlText).to.eql("<p>The first example</p>");
         });
+        it('should render an input element with a date', function(){
+            var input=direct({
+                tagName:'input',
+                attributes:{'class':'date'},
+                content:[direct({textNode: '3/12/2015'})]
+            });
+            expect(input).to.be.a(jsToHtml.Html);
+            var htmlText=input.toHtmlText();
+            expect(htmlText).to.eql("<input class=date>3/12/2015");
+        });
         it('should exclude null and undefined  in content', function(){
             var p=html.p(['sí', null, html.img(), undefined, 1, '', 'no', 0]);
             expect(p).to.eql(direct({
