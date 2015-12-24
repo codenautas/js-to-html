@@ -108,7 +108,10 @@ var validDirectProperties={
                     return true;
                 }}
             ]},
-            content:{checks:[{check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"}]},
+            content:{checks:[
+                {check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"},
+                {check:function(x,o){ return !jsToHtml.htmlTags[o.tagName]["void"] || !x.length; }, text:"void elements must not have content"},
+            ]},
         }
     },
     htmlCode:{
