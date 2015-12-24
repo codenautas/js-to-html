@@ -17,7 +17,12 @@ if(karmaIndex>0){
     var karma = require('karma');
     var karmaConfig = require('../../karma.conf.js');
     var options;
-    karmaConfig({set:function(opts){ options=opts; }});
+    karmaConfig({set:function(opts){ 
+        options=opts; 
+        if(process.argv.indexOf('--single-run')>0){
+            options.singleRun=true;
+        }
+    }});
     console.log('karma starting');
     var karmaServer = new karma.Server(options, function(exitCode) {
         console.log('Karma has exited with ' + exitCode);
