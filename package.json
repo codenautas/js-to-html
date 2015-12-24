@@ -25,6 +25,7 @@
     "karma-coverage": "~0.5.3",
     "karma-expect": "^1.1.1",
     "karma-firefox-launcher": "^0.1.7",
+    "karma-ie-launcher": "^0.2.0",
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^0.2.2",
     "karma-safari-launcher": "^0.1.1",
@@ -43,7 +44,7 @@
     "infinito": "node examples/server/server.js --karma karma.conf.js",
     "test": "node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss": "mocha --reporter spec --bail --check-leaks test/", 
-    "test-cov": "set SINGLE_RUN=1 && node examples/server/server.js --karma karma.conf.js",
+    "test-cov": "node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
     "start": "node example/server.js"
   },
