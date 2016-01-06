@@ -386,6 +386,26 @@ describe('js-to-html', function(){
             }).to.throwError(/insecure functions not allowed/);
         });
     });
+    describe("custom attributes",function(){
+        var direct = jsToHtml.direct;
+        it('must reject inexistent attributes',function(){
+            expect(function(){
+                direct({tagName:'p', attributes:{thisnotexists:'one'}, content:[]})
+            }).to.throwError(/inexistent attribute/);
+        })
+        it('must reject not matching attributes',function(){
+            expect(function(){
+                direct({tagName:'p', attributes:{href:'http://p.must.not.contains.it'}, content:[]})
+            }).to.throwError(/attribute does not match with tagName/);
+        })
+        it('must accept dashed attributes',function(){
+            expect(
+                direct({tagName:'div', attributes:{"this-is-special":'yeah'}, content:[]}).toHtmlText()
+            ).to.eql(
+                "<div this-is-special=yeah></div>"
+            );
+        })
+    });
 });
 
 if(typeof document !== 'undefined'){
