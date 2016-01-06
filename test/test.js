@@ -160,8 +160,8 @@ describe('js-to-html', function(){
         });
         it('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
             expect(
-                html.p({"class":'names', title:'this title', empty:''},'text').toHtmlText()
-            ).to.eql("<p class=names title='this title' empty=''>text</p>");
+                html.p({"class":'names', title:'this title', lang:''},'text').toHtmlText()
+            ).to.eql("<p class=names title='this title' lang=''>text</p>");
         });
         it('should escape text', function(){
             expect(direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
@@ -267,7 +267,7 @@ describe('js-to-html', function(){
         });
         it('should reject content for void elements', function(){
             expect(function(){
-                direct({tagName:'link', attributes:{src: "http://correct.com"}, content:["content"]})
+                direct({tagName:'link', attributes:{href: "http://correct.com"}, content:["content"]})
             }).to.throwError(/void elements must not have content/);
         });
     });

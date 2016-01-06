@@ -106,7 +106,24 @@ var validDirectProperties={
                         }
                     }
                     return true;
-                }}
+                }},
+                {check:function(attributes, o){  
+                    /*jshint forin:false */
+                    for(var attrName in attributes){
+                        /*jshint forin:true */
+                        var htmlName = (jsToHtml.htmlAttrs[attrName]||{}).synonym||attrName;
+                        var attrInfo=jsToHtml.htmlAttributes[htmlName];
+                        if(/-/.test(htmlName)){
+                        }else if(!attrInfo){
+                            throw new Error("inexistent attribute");
+                        }else{
+                            if(!attrInfo[o.tagName] && !attrInfo["HTML elements"]){
+                                throw new Error("attribute does not match with tagName");
+                            }
+                        }
+                    }
+                    return true;
+                }},
             ]},
             content:{checks:[
                 {check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"},
@@ -313,7 +330,7 @@ jsToHtml.direct=function direct(directObject){
 jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
     if(!thereAreAttributes && contentOrAttributes instanceof Object && !(contentOrAttributes instanceof Array)){
-        throw new Error('jsToHmlt.'+tagName+' expects plain object of attributes or array of content');
+        throw new Error('jsToHtml.'+tagName+' expects plain object of attributes or array of content');
     }
     var attributes = thereAreAttributes?contentOrAttributes:{};
     var content    = thereAreAttributes?contentIfThereAreAttributes:contentOrAttributes;
