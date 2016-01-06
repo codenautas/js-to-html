@@ -1032,13 +1032,17 @@ jsToHtml.Html.prototype.create = function create(){
     /*jshint -W089 */
     Object.keys(this.attributes).map(function(attr){
         var value=this.attributes[attr];
-        var defAttr=jsToHtml.htmlAttrs[attr]||{};
-        if(('listType' in defAttr) && (typeof value!=="string")){
-            Array.prototype.forEach.call(value,function(subValue){
-                element[defAttr.listType].add(subValue);
-            });
+        if(/-/.test(attr)){
+            element.setAttribute(attr, value);
         }else{
-            element[defAttr.domName||attr] = value;
+            var defAttr=jsToHtml.htmlAttrs[attr]||{};
+            if(('listType' in defAttr) && (typeof value!=="string")){
+                Array.prototype.forEach.call(value,function(subValue){
+                    element[defAttr.listType].add(subValue);
+                });
+            }else{
+                element[defAttr.domName||attr] = value;
+            }
         }
     },this);
     this.content.forEach(function(node){

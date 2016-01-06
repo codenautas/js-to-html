@@ -520,6 +520,13 @@ if(typeof document !== 'undefined'){
                     done
                 );
             });
+            it('should define special dashed attributes', function(done){
+                control(
+                    html.p({"one-special-attr":'the value'}),
+                    '<p one-special-attr="the value"></p>',
+                    done
+                );
+            });
         });
     });
 }
