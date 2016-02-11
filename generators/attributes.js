@@ -205,9 +205,24 @@ var html2idl = {
   "valuetype": "valueType" 
 };
 
+var htmlAttrsSpecials={
+    "class"        :{ domName:'className', listName:'classList', rejectSpaces:true},
+    "for"          :{ domName:'htmlFor'  },
+    classList      :{ synonym:'class' },
+    className      :{ synonym:'class' },
+    htmlFor        :{ synonym:'for' }
+};
+
+
 lista.forEach(function(linea){
     var clave=linea[0];
     mapa[clave]=mapa[clave]||{tags:{}, idl:html2idl[clave]||clave};
+    if(htmlAttrsSpecials[clave].rejectSpaces){
+        mapa[clave].rejectSpaces=htmlAttrsSpecials[clave].rejectSpaces;
+    }
+    if(htmlAttrsSpecials[clave].listName){
+        mapa[clave].listName=htmlAttrsSpecials[clave].listName;
+    }
     linea[1].split('; ').forEach(function(tagName){
         mapa[clave].tags[tagName]={
             description:linea[2], 

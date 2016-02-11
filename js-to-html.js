@@ -95,7 +95,7 @@ var validDirectProperties={
                         if(attrValue==null){
                             throw new Error('js-to-html: attributes must not contain null value');
                         }
-                        if((attrName in jsToHtml.htmlAttrs) && (jsToHtml.htmlAttrs[attrName].rejectSpaces)){
+                        if((attrName in jsToHtml.htmlAttributes) && (jsToHtml.htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
                             if(pattWhiteSpaces.test(attrValue)){   
                                 throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use classList attribute.');
@@ -111,11 +111,10 @@ var validDirectProperties={
                     /*jshint forin:false */
                     for(var attrName in attributes){
                         /*jshint forin:true */
-                        var htmlName = (jsToHtml.htmlAttrs[attrName]||{}).synonym||attrName;
-                        var attrInfo=jsToHtml.htmlAttributes[htmlName];
-                        if(/-/.test(htmlName)){
+                        var attrInfo=jsToHtml.htmlAttributes[attrName];
+                        if(/-/.test(attrName)){
                         }else if(!attrInfo){
-                            throw new Error("inexistent attribute");
+                            throw new Error("inexistent attribute "+JSON.stringify(attrName));
                         }else{
                             if(!attrInfo.tags[o.tagName] && !attrInfo.tags["HTML elements"]){
                                 throw new Error("attribute "+JSON.stringify(attrName)+" does not match with tagName "+JSON.stringify(o.tagName)+"");
@@ -213,12 +212,8 @@ HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     return Object.keys(this.attributes).map(function(attrName){
         var attrVal=this.attributes[attrName];
         var textAttrVal=attrVal;
-        var attrDefinition=jsToHtml.htmlAttrs[attrName] || {};
-        if(attrDefinition.synonym){
-            attrName=attrDefinition.synonym;
-            attrDefinition=jsToHtml.htmlAttrs[attrName];
-        }
-        if(attrDefinition.listType && typeof attrVal!=="string"){
+        var attrDefinition=jsToHtml.htmlAttributes[attrName] || {};
+        if(attrDefinition.listName && typeof attrVal!=="string"){
             textAttrVal=attrVal.join(' ');
         } 
         var escapedAttrVal=escapeChar(textAttrVal);
@@ -347,15 +342,6 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
         })
     });
 };
-
-jsToHtml.htmlAttrs={
-    "class"        :{ domName:'className', listType:'classList', rejectSpaces:true},
-    "for"          :{ domName:'htmlFor'  },
-    classList      :{ synonym:'class' },
-    className      :{ synonym:'class' },
-    htmlFor        :{ synonym:'for' }
-};
-
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
 jsToHtml.htmlTags={
@@ -594,7 +580,9 @@ jsToHtml.htmlAttributes={
         "tags": {
             "HTML elements": {"description": "Classes to which the element belongs","value": "Set of space-separated tokens"}
         },
-        "idl": "className"
+        "idl": "className",
+        "rejectSpaces": true,
+        "listName": "classList"
     },
     "cols": {
         "tags": {
@@ -1401,13 +1389,13 @@ jsToHtml.Html.prototype.create = function create(){
         if(/-/.test(attr)){
             element.setAttribute(attr, value);
         }else{
-            var defAttr=jsToHtml.htmlAttrs[attr]||{};
-            if(('listType' in defAttr) && (typeof value!=="string")){
+            var defAttr=jsToHtml.htmlAttributes[attr]||{};
+            if(('listName' in defAttr) && (typeof value!=="string")){
                 Array.prototype.forEach.call(value,function(subValue){
-                    element[defAttr.listType].add(subValue);
+                    element[defAttr.listName].add(subValue);
                 });
             }else{
-                element[defAttr.domName||attr] = value;
+                element[defAttr.idl] = value;
             }
         }
     },this);

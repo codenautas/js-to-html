@@ -49,12 +49,12 @@ describe('js-to-html', function(){
             // esto es inválido, no entiendo por qué lo pusimos
             var input=direct({
                 tagName:'input',
-                attributes:{'class':'date'},
-                content:[direct({textNode: '3/12/2015'})]
+                attributes:{'class':'date', value:direct({textNode: '3/12/2015'})},
+                content:[]
             });
             expect(input).to.be.a(jsToHtml.Html);
             var htmlText=input.toHtmlText();
-            expect(htmlText).to.eql("<input class=date>3/12/2015");
+            expect(htmlText).to.eql('<input class=date value="2015/12/3">');
         });
         it('should exclude null and undefined  in content', function(){
             var p=html.p(['sí', null, html.img(), undefined, 1, '', 'no', 0]);
@@ -196,16 +196,6 @@ describe('js-to-html', function(){
         it('should concat list values for list-type attributes', function(){
             expect(
                 html.p({"class":['names', 'other']},'text').toHtmlText()
-            ).to.eql("<p class='names other'>text</p>");
-        });
-        it('should understand synonyms with definition', function(){
-            expect(
-                html.p({"classList":['names', 'other']},'text').toHtmlText()
-            ).to.eql("<p class='names other'>text</p>");
-        });
-        it('should understand synonyms without definition', function(){
-            expect(
-                html.p({"classList":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
         });
         it('should accept numbers', function(){
@@ -391,7 +381,7 @@ describe('js-to-html', function(){
         it('must reject inexistent attributes',function(){
             expect(function(){
                 direct({tagName:'p', attributes:{thisnotexists:'one'}, content:[]})
-            }).to.throwError(/inexistent attribute/);
+            }).to.throwError(/inexistent attribute "thisnotexists"/);
         })
         it('must reject not matching attributes',function(){
             expect(function(){
@@ -524,6 +514,13 @@ if(typeof document !== 'undefined'){
                 control(
                     html.p({"one-special-attr":'the value'}),
                     '<p one-special-attr="the value"></p>',
+                    done
+                );
+            });
+            it('should translate HTML attributes to IDL attributes', function(done){
+                control(
+                    html.td({colspan:3}),
+                    {colSpan:3},
                     done
                 );
             });
