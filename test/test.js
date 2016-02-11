@@ -396,7 +396,7 @@ describe('js-to-html', function(){
         it('must reject not matching attributes',function(){
             expect(function(){
                 direct({tagName:'p', attributes:{href:'http://p.must.not.contains.it'}, content:[]})
-            }).to.throwError(/attribute does not match with tagName/);
+            }).to.throwError(/attribute .* does not match with tagName/);
         })
         it('must accept dashed attributes',function(){
             expect(
