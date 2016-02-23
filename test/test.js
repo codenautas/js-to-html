@@ -526,4 +526,12 @@ if(typeof document !== 'undefined'){
             });
         });
     });
+    describe('mixed objects', function(){
+        it('must accept DOMElements in html element list', function(){
+            var html = jsToHtml.html;
+            var b=html.b("world").create();
+            var d=html.div(["hello ", b, html._text("!")]).create();
+            expect(d.innerHTML).to.eql("hello <b>world</b>!")
+        });
+    });
 }

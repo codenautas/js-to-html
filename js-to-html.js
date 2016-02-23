@@ -1400,7 +1400,7 @@ jsToHtml.Html.prototype.create = function create(){
         }
     },this);
     this.content.forEach(function(node){
-        element.appendChild(node.create());
+        element.appendChild(node instanceof HTMLElement?node:node.create());
     });
     /*jshint +W089 */
     return element;
