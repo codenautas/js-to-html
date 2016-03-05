@@ -22,6 +22,10 @@ if(karmaIndex>0){
         if(process.argv.indexOf('--single-run')>0){
             options.singleRun=true;
         }
+        var posBrowsers = process.argv.indexOf('--browsers')
+        if(posBrowsers>0){
+            options.browsers=(process.argv[posBrowsers+1]||'').split(',');
+        }
     }});
     console.log('karma starting');
     var karmaServer = new karma.Server(options, function(exitCode) {

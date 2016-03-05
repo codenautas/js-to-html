@@ -33,7 +33,11 @@ module.exports = function(config) {
     preprocessors: {
       'js-to-html.js': ['coverage']
     },
-    coverageReporter: process.env.TRAVIS||true?{type:'lcov'}:{
+
+    coverageReporter: process.env.TRAVIS?{
+      type:'lcov',
+      dir : 'coverage/'
+    }:{
       type : 'html',
       dir : 'coverage/'
     },
@@ -41,7 +45,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: [/*'progress', */'coverage', 'coverage-html-index'],
 
 
     // web server port

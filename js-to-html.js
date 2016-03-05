@@ -2,9 +2,9 @@
 /*jshint eqnull:true */
 /*jshint globalstrict:true */
 /*jshint node:true */
+
 (function codenautasModuleDefinition(root, name, factory) {
     /* global define */
-    /* global globalModuleName */
     /* istanbul ignore next */
     if(typeof root.globalModuleName !== 'string'){
         root.globalModuleName = name;
