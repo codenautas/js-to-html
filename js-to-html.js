@@ -1389,7 +1389,7 @@ jsToHtml.Html.prototype.create = function create(){
         if(/-/.test(attr)){
             element.setAttribute(attr, value);
         }else{
-            var defAttr=jsToHtml.htmlAttributes[attr]||{};
+            var defAttr=jsToHtml.htmlAttributes[attr];
             if(('listName' in defAttr) && (typeof value!=="string")){
                 Array.prototype.forEach.call(value,function(subValue){
                     element[defAttr.listName].add(subValue);
