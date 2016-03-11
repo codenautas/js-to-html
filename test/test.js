@@ -145,11 +145,13 @@ describe('js-to-html', function(){
         it('should render a div with other elements inside in a pretty way', function(){
             expect(html.div({'class':'the_class', id:'47'},[
                 html.h1('First title'),
-                html.h2(['Second title with ',html.b('something'),' bold'])
+                html.h2(['Second title with ',html.b('something'),' bold']),
+                "text content"
             ]).toHtmlText({pretty:true},{margin:4})).to.eql(
                 "    <div class=the_class id=47>\n"+
                 "      <h1>First title</h1>\n"+
                 "      <h2>Second title with <b>something</b> bold</h2>\n"+
+                "text content"+ // doubt
                 "    </div>\n"
             );
         });
@@ -395,6 +397,35 @@ describe('js-to-html', function(){
                 "<div this-is-special=yeah></div>"
             );
         })
+    });
+    describe("arrayToHtmlText", function(){
+        var html = jsToHtml.html;
+        it('should list off nodes', function(){
+            expect(jsToHtml.arrayToHtmlText([
+                html.h1('First title'),
+                html.h2(['Second title with ',html.b('something'),' bold'])
+            ],{pretty:true},{margin:4})).to.eql(
+                "    <h1>First title</h1>\n"+
+                "    <h2>Second title with <b>something</b> bold</h2>\n"
+            );
+        });
+        it('should list off any nodes', function(){
+            expect(jsToHtml.arrayToHtmlText([
+                html.h1('The title'),
+                "content"
+            ],{pretty:true})).to.eql(
+                "<h1>The title</h1>\n"+
+                "content"
+            );
+        });
+        it('should list off any nodes uggly', function(){
+            expect(jsToHtml.arrayToHtmlText([
+                html.h1('The title'),
+                html._text("content"),
+            ])).to.eql(
+                "<h1>The title</h1>content"
+            );
+        });
     });
 });
 

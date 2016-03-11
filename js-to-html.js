@@ -222,10 +222,21 @@ HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
     },this).join('');
 };
 
-HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
-    return this.content.map(function(node){
-        return node.toHtmlText(opts,{margin:recurseOpts.margin+2});
+function internalArrayToHtmlText(listOfObjects, opts, recurseOpts){
+    return listOfObjects.map(function(node){
+        return node.toHtmlText(opts,recurseOpts);
     }).join('');
+}
+
+jsToHtml.arrayToHtmlText = function arrayToHtmlText(listOfObjects, opts, recurseOpts){
+    recurseOpts=recurseOpts||{margin:0};
+    return listOfObjects.map(function(node){
+        return (typeof node === "string"?jsToHtml.html._text(node):node).toHtmlText(opts,recurseOpts);
+    }).join('');
+}
+
+HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
+    return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
 };
 
 HtmlBase.prototype.toHtmlDoc=function toHtmlDoc(opts,recurseOpts){
