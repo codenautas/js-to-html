@@ -1,3 +1,4 @@
+"use strict";
 
 var fs=require('fs');
 
@@ -206,22 +207,21 @@ var html2idl = {
 };
 
 var htmlAttrsSpecials={
-    "class"        :{ domName:'className', listName:'classList', rejectSpaces:true},
-    "for"          :{ domName:'htmlFor'  },
+    "class"        :{ reserved:true, domName:'className', listName:'classList', rejectSpaces:true},
+    "for"          :{ reserved:true, domName:'htmlFor'  },
     classList      :{ synonym:'class' },
     className      :{ synonym:'class' },
     htmlFor        :{ synonym:'for' }
 };
 
-
 lista.forEach(function(linea){
     var clave=linea[0];
     mapa[clave]=mapa[clave]||{tags:{}, idl:html2idl[clave]||clave};
-    if(htmlAttrsSpecials[clave].rejectSpaces){
-        mapa[clave].rejectSpaces=htmlAttrsSpecials[clave].rejectSpaces;
-    }
-    if(htmlAttrsSpecials[clave].listName){
-        mapa[clave].listName=htmlAttrsSpecials[clave].listName;
+    for(let featureName of 'rejectSpaces,listName,reserved'.split(',')){
+        if(htmlAttrsSpecials[clave] && htmlAttrsSpecials[clave][featureName]){
+            console.log('ck',clave,featureName,htmlAttrsSpecials[clave][featureName])
+            mapa[clave][featureName]=htmlAttrsSpecials[clave][featureName];
+        }
     }
     linea[1].split('; ').forEach(function(tagName){
         mapa[clave].tags[tagName]={

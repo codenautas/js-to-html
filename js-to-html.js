@@ -593,7 +593,8 @@ jsToHtml.htmlAttributes={
         },
         "idl": "className",
         "rejectSpaces": true,
-        "listName": "classList"
+        "listName": "classList",
+        "reserved": true
     },
     "cols": {
         "tags": {
@@ -734,7 +735,8 @@ jsToHtml.htmlAttributes={
             "label": {"description": "Associate the label with form control","value": "ID*"},
             "output": {"description": "Specifies controls from which the output was calculated","value": "Unordered set of unique space-separated tokens, case-sensitive, consisting of IDs*"}
         },
-        "idl": "htmlFor"
+        "idl": "htmlFor",
+        "reserved": true
     },
     "form": {
         "tags": {
