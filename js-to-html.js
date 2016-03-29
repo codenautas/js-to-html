@@ -927,7 +927,8 @@ jsToHtml.htmlAttributes={
         "tags": {
             "input": {"description": "List of autocomplete options","value": "ID*"}
         },
-        "idl": "list"
+        "idl": "list",
+        noProperty: true
     },
     "loop": {
         "tags": {
@@ -1409,8 +1410,8 @@ jsToHtml.Html.prototype.create = function create(){
                     element[defAttr.listName].add(subValue);
                 });
             }else{
-                if(defAttr.idl==='list') {
-                    element.setAttribute('list', value);
+                if(defAttr.noProperty) {
+                    element.setAttribute(defAttr.idl, value);
                 }else{
                     element[defAttr.idl] = value;
                 }
