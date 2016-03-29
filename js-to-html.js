@@ -1399,6 +1399,7 @@ jsToHtml.Html.prototype.create = function create(){
     /*jshint -W089 */
     Object.keys(this.attributes).map(function(attr){
         var value=this.attributes[attr];
+        //console.log("attr", attr, "value", value);
         if(/-/.test(attr)){
             element.setAttribute(attr, value);
         }else{
@@ -1408,7 +1409,11 @@ jsToHtml.Html.prototype.create = function create(){
                     element[defAttr.listName].add(subValue);
                 });
             }else{
-                element[defAttr.idl] = value;
+                if(defAttr.idl==='list') {
+                    element.setAttribute('list', value);
+                }else{
+                    element[defAttr.idl] = value;
+                }
             }
         }
     },this);

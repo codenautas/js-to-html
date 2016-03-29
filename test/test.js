@@ -555,6 +555,13 @@ if(typeof document !== 'undefined'){
                     done
                 );
             });
+            it('should create input with list attribute', function(done){
+                control(
+                    html.input({list: 'esto'}),
+                    '<input list="esto">',
+                    done
+                );
+            });
         });
     });
     describe('mixed objects', function(){
