@@ -211,13 +211,14 @@ var htmlAttrsSpecials={
     "for"          :{ reserved:true, domName:'htmlFor'  },
     classList      :{ synonym:'class' },
     className      :{ synonym:'class' },
-    htmlFor        :{ synonym:'for' }
+    htmlFor        :{ synonym:'for' },
+    list           :{ noProperty: true }
 };
 
 lista.forEach(function(linea){
     var clave=linea[0];
     mapa[clave]=mapa[clave]||{tags:{}, idl:html2idl[clave]||clave};
-    for(let featureName of 'rejectSpaces,listName,reserved'.split(',')){
+    for(let featureName of 'rejectSpaces,listName,reserved,noProperty'.split(',')){
         if(htmlAttrsSpecials[clave] && htmlAttrsSpecials[clave][featureName]){
             console.log('ck',clave,featureName,htmlAttrsSpecials[clave][featureName])
             mapa[clave][featureName]=htmlAttrsSpecials[clave][featureName];

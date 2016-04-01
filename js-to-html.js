@@ -928,7 +928,7 @@ jsToHtml.htmlAttributes={
             "input": {"description": "List of autocomplete options","value": "ID*"}
         },
         "idl": "list",
-        noProperty: true
+        "noProperty": true
     },
     "loop": {
         "tags": {
