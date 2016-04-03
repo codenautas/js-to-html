@@ -11,6 +11,7 @@ Create HTML text from JS object
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
 [![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
+[![qa-control](http://codenautas.com/github/codenautas/js-to-html.svg)](http://codenautas.com/github/codenautas/js-to-html)
 
 
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
