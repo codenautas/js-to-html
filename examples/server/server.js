@@ -9,7 +9,7 @@ var Promises = require('best-promise');
 var fs = require('fs-promise');
 var path = require('path');
 var extensionServeStatic = require('extension-serve-static');
-var jade = require('jade');
+var MiniTools = require('mini-tools');
 
 var karma;
 var karmaIndex=process.argv.indexOf('--karma');
@@ -39,28 +39,8 @@ if(karmaIndex>0){
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
 
-function serveJade(pathToFile,anyFile){
-    return function(req,res,next){
-        if(path.extname(req.path)){
-            return next();
-        }
-        Promise.resolve().then(function(){
-            var fileName=pathToFile+(anyFile?req.path+'.jade':'');
-            return fs.readFile(fileName, {encoding: 'utf8'})
-        }).catch(function(err){
-            if(anyFile && err.code==='ENOENT'){
-                throw new Error('next');
-            }
-            throw err;
-        }).then(function(fileContent){
-            var htmlText=jade.render(fileContent);
-            serveHtmlText(htmlText)(req,res);
-        }).catch(serveErr(req,res,next));
-    }
-}
-
 // probar con http://localhost:12348/ajax-example
-app.use('/',serveJade('examples/client',true));
+app.use('/',MiniTools.serveJade('examples/client',true));
 
 function serveHtmlText(htmlText){
     return function(req,res){
