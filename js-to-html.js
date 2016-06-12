@@ -27,7 +27,6 @@ var jsToHtml = {};
 /*jshint +W004 */
 
 /* global document */
-/* global HTMLElement */
 
 function isPlainObject(x){
     return typeof x==="object" && x && x.constructor === Object;
@@ -122,11 +121,11 @@ var validDirectProperties={
                         }
                     }
                     return true;
-                }},
+                }}
             ]},
             content:{checks:[
                 {check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"},
-                {check:function(x,o){ return !jsToHtml.htmlTags[o.tagName]["void"] || !x.length; }, text:"void elements must not have content"},
+                {check:function(x,o){ return !jsToHtml.htmlTags[o.tagName]["void"] || !x.length; }, text:"void elements must not have content"}
             ]},
         }
     },
@@ -138,7 +137,7 @@ var validDirectProperties={
                     {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
                     {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
                     {check:function(){ return jsToHtml.html.insecureModeEnabled; }, text:"insecure functions not allowed"},
-                    {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"},
+                    {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"}
                 ]
             },
             validator:{
@@ -1381,7 +1380,10 @@ jsToHtml.html.includeHtml=function _text(htmlCode){
     return jsToHtml.direct({htmlCode:htmlCode, validator:this.includeHtmlValidator});
 };
 
+// var ok=Object.keys(jsToHtml.htmlTags)
+
 Object.keys(jsToHtml.htmlTags).map(function(tagName){
+// ok.map(function(tagName){    
     jsToHtml.html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
         return jsToHtml.indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
     };
@@ -1418,7 +1420,7 @@ jsToHtml.Html.prototype.create = function create(){
         }
     },this);
     this.content.forEach(function(node){
-        element.appendChild(node instanceof HTMLElement?node:node.create());
+        element.appendChild(node instanceof HtmlBase?node.create():node);
     });
     return element;
 };

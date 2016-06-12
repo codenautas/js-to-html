@@ -16,8 +16,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/es6-promise/dist/es6-promise.min.js',
+      'node_modules/require-bro/lib/polyfills-bro.js',
       'node_modules/moment/min/moment-with-locales.min.js',
-      'node_modules/sinon/pkg/sinon-1.17.2.js',
+      'node_modules/sinon/pkg/sinon.js',
       'js-to-html.js',
       'test/*.js'
     ],
@@ -31,7 +32,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'js-to-html.js': ['coverage']
+      'js-to-html.js': !!process.env.SINGLE_RUN ? ['coverage'] : []
     },
 
     coverageReporter: process.env.TRAVIS?{

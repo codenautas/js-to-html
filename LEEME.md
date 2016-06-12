@@ -87,13 +87,13 @@ Devuelve un texto HTML
 Returns an Html Text
 
 <!--lang:es-->
-opción  | valor
------|-------
-pretty | devuelve un texto indentado
+opción  |valor
+--------|-------
+pretty  | devuelve un texto indentado
 
 <!--lang:en--]
-opt  | value
------|-------
+opt    |value
+-------|-------
 pretty | returns a pretty and indented text
 
 [!--lang:es-->
@@ -155,14 +155,14 @@ console.log(
 ```
 
 <!--lang:es-->
-opción     | valor
+opción     |valor
 -----------|-------
 pretty     | devuelve un texto indentado
 incomplete | no completa con los tags html, head y body cuando corresponde
 title      | el texto para el TAG title
 
 <!--lang:en--]
-opt        | value
+opt        |value
 -----------|-------
 pretty     | returns a pretty and indented text
 incomplete | do not complete with  html, head y body tags
@@ -200,7 +200,7 @@ document.body.appendChild(
 <!--lang:es-->
 ## Comportamiento especial
 
-tipo     | nombre        | uso
+tipo     |nombre         |uso
 ---------|---------------|--------------
 función  | html._text    | Introduce texto suelto (equivale a `createTextNode`)
 función  | html._comment | Introduce un comentario (equivale a `< !-- ... -- >`)
@@ -209,7 +209,7 @@ atributo | classList     | para cargar una lista de nombres de clases (el módul
 <!--lang:en--]
 ## Special behavior
 
-type      | name          | use
+type      |name           |use
 ----------|---------------|--------------
 function  | html._text    | simple text (like `createTextNode`)
 function  | html._comment | html comment (like `< !-- ... -- >`)
@@ -236,8 +236,24 @@ console.log(html.div({id:'this'}, html.includeHtml('<svg xml:....> </svg>')));
 <!--lang:en--]
 ## Notes
  * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
- 
+
 [!--lang:es-->
+## Pruebas en dispositivos reales
+
+<!--lang:en--]
+## Tests with real devices
+
+[!--lang:*-->
+
+NPM version |Device                  |OS             |nav                      |obs
+------------|------------------------|---------------|-------------------------|----
+0.9.1       | HTC Desire             | Android 2.2.2 | Android 2.2.2           | polyfill:classList
+0.9.1       | Samgsung Galaxy Note 4 | Android 6.0.1 | Chrome Mobile 44.0.2403 |
+0.9.1       | Blue Vivo Air LTE      | Android 5.0.2 | Chrome Mobile 50.0.2661 |
+0.9.1       | iPad mini Retina       | iOS 8.4.0     | Mobile Safari 8.0.0     |
+0.9.1       | VMWare                 | WinXP         | IE 8.0.0                | polyfill:many
+ 
+<!--lang:es-->
 
 ## Licencias
 

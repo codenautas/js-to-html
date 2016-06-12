@@ -90,10 +90,12 @@ describe('js-to-html', function(){
             expect(p).to.eql(direct({textNode: 'A text node that could not be created with document.createElement'}));
         });
         it('should construct a commentNode', function(){
+            this.timeout(9000);
             var p=html._comment('A text node that could only be created with <!--');
             expect(p).to.eql(direct({commentText: 'A text node that could only be created with <!--'}));
         });
-        it('should construct a commentNode', function(){
+        it('should construct a commentNode and text it', function(){
+            this.timeout(9000);
             var t=html._comment('A text node that could \nonly be created with <!--').toHtmlText();
             expect(t).to.eql('<!--A text node that could \nonly be created with <!---->');
         });
@@ -161,26 +163,31 @@ describe('js-to-html', function(){
             );
         });
         it('should delimite with simple quotes attribute value if contains some not alphabetic chars', function(){
+            this.timeout(9000);
             expect(
                 html.p({"class":'names', title:'this title', lang:''},'text').toHtmlText()
             ).to.eql("<p class=names title='this title' lang=''>text</p>");
         });
         it('should escape text', function(){
+            this.timeout(9000);
             expect(direct({textNode:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
                 'esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'
             );
         });
         it('should escape attributes', function(){
+            this.timeout(9000);
             expect(html.p({title:'esto < esto & > aquello \'sí\' y "no"'}).toHtmlText()).to.eql(
                 "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
             );
         });
         it('should control space in class atribute', function(){
+            this.timeout(9000);
             expect(function(){
                 html.p({"class":'three class names'},'text')
             }).to.throwError(/class attribute could not contain spaces/);
         });
         it('should not admit an invalid element', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:"not-exists", attributes:{}, content:[]})
             }).to.throwError(/tagName not-exists not exists/);
@@ -191,16 +198,19 @@ describe('js-to-html', function(){
             }).to.throwError(/invalid arguments to direct function/);
         });
         it('should render void elements without closing tag', function(){
+            this.timeout(9000);
             expect(
                 direct({tagName:"img", attributes:{src:'img.png'}, content:[]}).toHtmlText()
             ).to.eql("<img src='img.png'>");
         });
         it('should concat list values for list-type attributes', function(){
+            this.timeout(9000);
             expect(
                 html.p({"class":['names', 'other']},'text').toHtmlText()
             ).to.eql("<p class='names other'>text</p>");
         });
         it('should accept numbers', function(){
+            this.timeout(9000);
             expect(html.p([html.span(3),1.1]).toHtmlText()).to.eql(
                 "<p><span>3</span>1.1</p>"
             );
@@ -213,16 +223,19 @@ describe('js-to-html', function(){
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
         it('should control the presence of content', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:'div', attributes:{}})
             }).to.throwError(/must include content/);
         });
         it('should control the type of content', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:'div', attributes:{}, content:"must not be a string"})
             }).to.throwError(/content must be an Array/);
         });
         it('should control the type of attributes', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:'div', content:[], attributes:['must not be an array']})
             }).to.throwError(/attributes must be a plain Object/);
@@ -233,26 +246,31 @@ describe('js-to-html', function(){
             }).to.throwError(/tagName must be a string/);
         });
         it('should control attributes with null value', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:'p', content:[], attributes:{display:null}});
             }).to.throwError(/attributes must not contain null value/);
         });
         it('should not permit de presence of other attributes', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({tagName:'div', attributes:{}, content:["ok"], other:"no good"})
             }).to.throwError(/not recognized other property/);
         });
         it('should not permit de presence of other attributes in a TextNode', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({textNode:'a phrase', thisAttribute:"no good"})
             }).to.throwError(/not recognized thisAttribute property/);
         });
         it('should not permit null in a TextNode', function(){
+            this.timeout(9000);
             expect(function(){
                 direct({textNode:null})
             }).to.throwError(/textNodes must not contains null/);
         });
         it('should reject double content (probably a mismatch)', function(){
+            this.timeout(9000);
             expect(function(){
                 html.p("texto", "otro texto")
             }).to.throwError(/the first parameter is not an attribute object then must there no be a second parameter/);
@@ -271,11 +289,13 @@ describe('js-to-html', function(){
             }).to.throwError(/textNodes must not contains null/);
         });
         it('should reject null in escapeChar by attributes', function(){
+            this.timeout(9000);
             expect(function(){
                 html.p({'class':null})
             }).to.throwError(/attributes must not contain null value/);
         });
         it('should reject other objects', function(){
+            this.timeout(9000);
             expect(function(){
                 var complexObject=moment();
                 html.p(complexObject);
@@ -286,25 +306,30 @@ describe('js-to-html', function(){
         var html = jsToHtml.html;
         var dt="<!doctype html>\n";
         it('should reject toHtmlDoc without mandatoryTitle', function(){
+            this.timeout(9000);
             expect(function(){
                 html.div().toHtmlDoc()
             }).to.throwError(/missing mandatory title/);
         });
         it('should complete the HTML tag in simple html', function(){
+            this.timeout(9000);
             html.mandatoryTitle=false;
             expect(html.div().toHtmlDoc()).to.eql("<!doctype html>\n<html><head></head><body><div></div></body></html>");
         });
         it('should complete the HTML tag when no head', function(){
+            this.timeout(9000);
             html.mandatoryTitle=false;
             expect(html.body([html.br()]).toHtmlDoc()).to.eql("<!doctype html>\n<html><head></head><body><br></body></html>");
         });
         it('should complete the HTML tag when no title explicit', function(){
+            this.timeout(9000);
             html.mandatoryTitle=true;
             expect(
                 html.html([html.head(),html.body([html.br()])]).toHtmlDoc({title:'the title'})
             ).to.eql("<!doctype html>\n<html><head><title>the title</title></head><body><br></body></html>");
         });
         it('should complete the HTML tag when no title with default', function(){
+            this.timeout(9000);
             html.mandatoryTitle=true;
             html.defaultTitle='the default title';
             expect(
@@ -312,6 +337,7 @@ describe('js-to-html', function(){
             ).to.eql("<!doctype html>\n<html><head><title>the default title</title><meta></head><body><br><img></body></html>");
         });
         it('should mantain the title when no default', function(){
+            this.timeout(9000);
             html.mandatoryTitle=true;
             html.defaultTitle=false;
             expect(
@@ -326,12 +352,14 @@ describe('js-to-html', function(){
             ).to.eql("<!doctype html>\n<html><head><meta><title>this</title></head><body><br></body></html>");
         });
         it('should reject double title', function(){
+            this.timeout(9000);
             html.mandatoryTitle=true;
             expect(function(){
                 html.html([html.head([html.meta(),html.title("this")]),html.body([html.br()])]).toHtmlDoc({title:'other'})
             }).to.throwError(/double title/);
         });
         it('should reject multiple title', function(){
+            this.timeout(9000);
             html.mandatoryTitle=true;
             expect(function(){
                 html.html([html.head([html.title("that"),html.title("this")]),html.body([html.br()])]).toHtmlDoc()
@@ -346,6 +374,7 @@ describe('js-to-html', function(){
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
         it('should reject insecure html for includeHtml',function(){
+            this.timeout(9000);
             expect(function(){
                 html.insecureModeEnabled=true;
                 html.includeHtml("<div> a > b </div>");
@@ -438,12 +467,14 @@ if(typeof document !== 'undefined'){
                 var element = htmlObject.create();
                 div.appendChild(element);
                 if(typeof pairsOrHtml=="string"){
-                    expect(div.innerHTML).to.be(pairsOrHtml);
+                    expect(div.innerHTML.replace(/<[^ >]*[ >]/g,function(x){ return x.toLowerCase(); })).to.be(pairsOrHtml);
+                }else if(pairsOrHtml instanceof RegExp){
+                    expect(div.innerHTML).to.match(pairsOrHtml);
                 }else{
                     for(var prop in pairsOrHtml){
                         if(pairsOrHtml[prop] instanceof Array){
                             var obtained=element[prop];
-                            if(!(obtained instanceof Array) && 'length' in obtained){
+                            if(!(obtained instanceof Array) && 'length' in obtained || '_updateClassName' in obtained){
                                 obtained=Array.prototype.slice.call(obtained,0);
                             }
                             expect(obtained).to.eql(pairsOrHtml[prop]);
@@ -470,6 +501,7 @@ if(typeof document !== 'undefined'){
                 var textNode=direct({textNode:""});
                 control(textNode, "", done);
             });
+            // function done(){};
             it('should render an element without content', function(done){
                 var div=direct({
                     tagName:'div',
@@ -491,6 +523,12 @@ if(typeof document !== 'undefined'){
                     html.p('First paragraph'),
                     html.p('Second paragraph')
                 ]);
+                control(
+                    div,
+                    /^<div class="?the_class"?>\r?\n?<p>First paragraph<\/p>\r?\n?<p>Second paragraph<\/p>\r?\n?<\/div>$/i,
+                    done
+                );
+                /*
                 control(div,
                     '<div class="the_class">'+
                     "<p>First paragraph</p>"+
@@ -498,6 +536,7 @@ if(typeof document !== 'undefined'){
                     "</div>",
                     done
                 );
+                */
             });
             it('should create attribute value if contains some not alphabetic chars', function(done){
                 control(
@@ -549,6 +588,7 @@ if(typeof document !== 'undefined'){
                 );
             });
             it('should translate HTML attributes to IDL attributes', function(done){
+                this.timeout(9000);
                 control(
                     html.td({colspan:3}),
                     {colSpan:3},
@@ -569,7 +609,7 @@ if(typeof document !== 'undefined'){
             var html = jsToHtml.html;
             var b=html.b("world").create();
             var d=html.div(["hello ", b, html._text("!")]).create();
-            expect(d.innerHTML).to.eql("hello <b>world</b>!")
+            expect(d.innerHTML.toLowerCase()).to.eql("hello <b>world</b>!")
         });
     });
 }

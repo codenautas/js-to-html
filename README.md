@@ -46,8 +46,8 @@ Some attributes (like **class**) could contain lists (example: `{class:['example
 
 Returns an Html Text
 
-opt  | value
------|-------
+opt    |value
+-------|-------
 pretty | returns a pretty and indented text
 
 ## Example
@@ -98,7 +98,7 @@ console.log(
 */
 ```
 
-opt        | value
+opt        |value
 -----------|-------
 pretty     | returns a pretty and indented text
 incomplete | do not complete with  html, head y body tags
@@ -126,7 +126,7 @@ document.body.appendChild(
 
 ## Special behavior
 
-type      | name          | use
+type      |name           |use
 ----------|---------------|--------------
 function  | html._text    | simple text (like `createTextNode`)
 function  | html._comment | html comment (like `< !-- ... -- >`)
@@ -142,6 +142,17 @@ console.log(html.div({id:'this'}, html.includeHtml('<svg xml:....> </svg>')));
 
 ## Notes
  * In the future it will be smart to handle **style** attribute like `{style:{color: "blue", background: "none"}}`
+
+## Tests with real devices
+
+
+NPM version |Device                  |OS             |nav                      |obs
+------------|------------------------|---------------|-------------------------|----
+0.9.1       | HTC Desire             | Android 2.2.2 | Android 2.2.2           | polyfill:classList
+0.9.1       | Samgsung Galaxy Note 4 | Android 6.0.1 | Chrome Mobile 44.0.2403 |
+0.9.1       | Blue Vivo Air LTE      | Android 5.0.2 | Chrome Mobile 50.0.2661 |
+0.9.1       | iPad mini Retina       | iOS 8.4.0     | Mobile Safari 8.0.0     |
+0.9.1       | VMWare                 | WinXP         | IE 8.0.0                | polyfill:many
 
 ## License
 
