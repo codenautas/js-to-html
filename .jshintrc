@@ -1,0 +1,9 @@
+{
+    "asi": false,
+    "forin": false,
+    "curly": true,
+    "browser": true,
+    "strict": "global",
+    "eqnull": true,
+    "predef": [ "module", "Promise", "exports", "require" ]
+}

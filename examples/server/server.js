@@ -5,7 +5,6 @@ var express = require('express');
 var app = express();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var Promises = require('best-promise');
 var fs = require('fs-promise');
 var path = require('path');
 var extensionServeStatic = require('extension-serve-static');

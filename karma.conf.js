@@ -1,3 +1,5 @@
+"use strict";
+/* global process */
 // Karma configuration
 // Generated on Wed Jul 22 2015 16:41:45 GMT-0300 (Hora estándar de Argentina)
 
@@ -32,7 +34,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'js-to-html.js': !!process.env.SINGLE_RUN ? ['coverage'] : []
+      'js-to-html.js': process.env.SINGLE_RUN ? ['coverage'] : []
     },
 
     coverageReporter: process.env.TRAVIS?{

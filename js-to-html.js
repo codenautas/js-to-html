@@ -1,6 +1,4 @@
 "use strict";
-/*jshint eqnull:true */
-/*jshint node:true */
 
 (function codenautasModuleDefinition(root, name, factory) {
     /* global define */
@@ -112,6 +110,7 @@ var validDirectProperties={
                         /*jshint forin:true */
                         var attrInfo=jsToHtml.htmlAttributes[attrName];
                         if(/-/.test(attrName)){
+                            /*eslint no-empty: 0 */
                         }else if(!attrInfo){
                             throw new Error("inexistent attribute "+JSON.stringify(attrName));
                         }else{
