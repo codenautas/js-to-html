@@ -612,4 +612,11 @@ if(typeof document !== 'undefined'){
             expect(d.innerHTML.toLowerCase()).to.eql("hello <b>world</b>!")
         });
     });
+    describe('style attribute', function(){
+        it('must accept style text attribute', function(){
+            var html = jsToHtml.html;
+            var div=html.div({style:"width:80%"}, "world").create();
+            expect(div.style.width).to.eql("80%");
+        });
+    });
 }
