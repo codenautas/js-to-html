@@ -1,46 +1,49 @@
 {
   "name": "js-to-html",
   "description": "Create HTML text from JS object",
-  "version": "0.9.3",
+  "version": "0.9.5",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/js-to-html",
-  "contributors": [{
-    "name": "Emilio Platzer", "email": "emilioplatzer@gmail.com"
-  }],
-  "main": "js-to-html.js", 
-  "files": ["js-to-html.js"],
-  "dependencies": {
-  },
+  "contributors": [
+    {
+      "name": "Emilio Platzer",
+      "email": "emilioplatzer@gmail.com"
+    }
+  ],
+  "main": "js-to-html.js",
+  "files": [
+    "js-to-html.js"
+  ],
+  "dependencies": {},
   "devDependencies": {
-    "body-parser": "~1.17.2",
+    "body-parser": "~1.18.2",
     "classlist.js": "~1.1.20150312",
     "cookie-parser": "~1.4.3",
-    "es6-promise": "~4.1.1",
+    "es6-promise": "~4.2.4",
     "expect.js": "~0.3.1",
-    "express": "~4.15.3",
-    "express-session": "~1.15.4",
+    "express": "~4.16.3",
+    "express-session": "~1.15.6",
     "fs-promise": "~2.0.3",
     "istanbul": "~0.4.5",
-    "karma": "~1.7.0",
+    "karma": "~2.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "~1.1.1",
     "karma-coverage-html-index-reporter": "~1.0.2",
     "karma-expect": "~1.1.3",
-    "karma-firefox-launcher": "~1.0.1",
+    "karma-firefox-launcher": "~1.1.0",
     "karma-ie-launcher": "~1.0.0",
     "karma-mocha": "~1.3.0",
     "karma-phantomjs-launcher": "~1.0.4",
     "karma-safari-launcher": "~1.0.0",
-    "mocha": "~3.4.2",
-    "moment": "~2.18.1",
+    "mocha": "~5.0.4",
+    "moment": "~2.21.0",
     "phantomjs-prebuilt": "~2.1",
-    "pug": "~2.0.0-rc.2",
-    "sinon": "~2.4.1",
-    
+    "pug": "~2.0.1",
+    "sinon": "~4.4.3",
     "extension-serve-static": "~0.1.6",
-    "mini-tools": "~0.3.17",
-    "require-bro": "~0.1.5"
+    "mini-tools": "~0.3.22",
+    "require-bro": "~0.1.10"
   },
   "engines": {
     "node": ">= 0.12.0"
@@ -48,7 +51,7 @@
   "scripts": {
     "infinito": "node examples/server/server.js --karma karma.conf.js",
     "test": "node examples/server/server.js --karma karma.conf.js --single-run",
-    "test-ss": "mocha --reporter spec --bail --check-leaks test/", 
+    "test-ss": "mocha --reporter spec --bail --check-leaks test/",
     "test-cov": "node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
     "start": "node example/server.js",
