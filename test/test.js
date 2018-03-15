@@ -1,5 +1,9 @@
 "use strict";
 
+var jsToHtml = require('js-to-html')
+
+var moment = require('moment')
+
 if(typeof document === 'undefined'){
     global.jsToHtml = require('../js-to-html.js');
     global.expect = require('expect.js');

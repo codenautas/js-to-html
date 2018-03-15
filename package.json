@@ -11,9 +11,9 @@
       "email": "emilioplatzer@gmail.com"
     }
   ],
-  "main": "js-to-html.js",
+  "main": "lib/js-to-html.js",
   "files": [
-    "js-to-html.js"
+    "lib"
   ],
   "dependencies": {},
   "devDependencies": {

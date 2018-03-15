@@ -1,31 +1,5 @@
 "use strict";
 
-(function codenautasModuleDefinition(root, name, factory) {
-    /* global define */
-    /* istanbul ignore next */
-    if(typeof root.globalModuleName !== 'string'){
-        root.globalModuleName = name;
-    }
-    /* istanbul ignore next */
-    if(typeof exports === 'object' && typeof module === 'object'){
-        module.exports = factory();
-    }else if(typeof define === 'function' && define.amd){
-        define(factory);
-    }else if(typeof exports === 'object'){
-        exports[root.globalModuleName] = factory();
-    }else{
-        root[root.globalModuleName] = factory();
-    }
-    root.globalModuleName = null;
-})(/*jshint -W040 */this, 'jsToHtml', function() {
-/*jshint +W040 */
-
-/*jshint -W004 */
-var jsToHtml = {};
-/*jshint +W004 */
-
-/* global document */
-
 function isPlainObject(x){
     return typeof x==="object" && x && x.constructor === Object;
 }
@@ -42,41 +16,295 @@ var htmlReservedSymbols={
     '"' :'&quot;'
 };
 
-jsToHtml.html={
-    mandatoryTitle:true
-};
+export var html={
+    defaultTitle:"",
+    insecureModeEnabled:true,
+    mandatoryTitle:true,
+    _text(text){
+        return direct({textNode:text})
+    },
+    _comment(text){
+        return direct({commentText:text});
+    },
+    includeHtml(htmlCode){
+        if(!this.insecureModeEnabled){
+            throw new Error("jsToHtml.html.includeHtml: insecure functions not allowed");
+        }
+        return direct({htmlCode:htmlCode, validator:this.includeHtmlValidator});
+    },
+    includeHtmlValidator(htmlText){
+        return /^((<[^<>]+>)|[^<>]+|\n)*$/.test(htmlText);
+    }
+}
 
 function escapeChar(simpleText){
     simpleText=''+simpleText;
     return /[&<>'"]/.test(simpleText)?simpleText.replace(/[&<>'"]/g,function(c){ return htmlReservedSymbols[c]; }):simpleText;
 }
 
-jsToHtml.couldDirectTextContent=function couldDirectTextContent(x){
+function couldDirectTextContent(x){
     return typeof x==="string" || typeof x==="number";
 };
 
 function identity(x){ return x; }
 
-var validDirectProperties={
+type KeyValidProperties="textNode"|"tagName"
+
+export type ValidPropertiesChecker=object;
+export type ValidPropertydProperty={
+    tagName?:ValidPropertiesChecker
+    attributes?:ValidPropertiesChecker
+    content?:ValidPropertiesChecker
+    textNode?:ValidPropertiesChecker
+    htmlCode?:ValidPropertiesChecker
+    validator?:ValidPropertiesChecker
+    commentText?:ValidPropertiesChecker
+}
+type ValidPropertyInfo={
+    classConstructor:typeof HtmlBase,
+    properties:ValidPropertydProperty
+}
+type ValidProperties={
+    textNode:ValidPropertyInfo,
+    tagName:ValidPropertyInfo,
+    htmlCode:ValidPropertyInfo,
+    commentText:ValidPropertyInfo,
+}
+
+export type DirectObject={
+    
+}
+
+export abstract class HtmlBase{
+    tagName:string
+    attributes:{[key:string]:any}
+    content:HtmlBase[]
+    textNode:string
+    htmlCode:string
+    commentText:string
+    constructor(directObject:DirectObject, validProperties:ValidPropertydProperty){
+        /*jshint forin:false */
+        for(var property in validProperties){
+            /*jshint forin:true */
+            var propertyDef=validProperties[property];
+            var value=(propertyDef.transform||identity)(directObject[property]);
+            if(!(property in directObject)){
+                throw new Error('jsToHtml.Html error: directObject must include '+property);
+            }
+            for(var c=0; c<propertyDef.checks.length; c++){
+                var check=propertyDef.checks[c];
+                if(!check.check(value, directObject)){
+                    throw new Error('jsToHtml.Html error: directObject '+property+' '+check.text);
+                }
+            }
+            this[property]=value;
+        }
+        /*jshint forin:false */
+        for(property in directObject){
+            /*jshint forin:true */
+            if(!(property in validProperties)){
+                throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
+            }
+        }
+    }
+    attributesToHtmlText(){
+        var pattNonWordChar=new RegExp(/\W/);
+        return Object.keys(this.attributes).map(function(attrName){
+            var attrVal=this.attributes[attrName];
+            var textAttrVal=attrVal;
+            var attrDefinition=htmlAttributes[attrName] || {};
+            if(attrDefinition.listName && typeof attrVal!=="string"){
+                textAttrVal=attrVal.join(' ');
+            } 
+            var escapedAttrVal=escapeChar(textAttrVal);
+            var quotingAttrVal=textAttrVal===''||pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+            return ' '+attrName+'='+quotingAttrVal;
+        },this).join('');
+    }
+    contentToHtmlText(opts,recurseOpts){
+        return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
+    }
+    toHtmlDoc(opts,recurseOpts){
+        opts = opts||{};
+        var target=this;
+        if(!opts.incomplete){
+            var source=this;
+            var head;
+            if(source.tagName==='html'){
+                target=source;
+            }else{
+                target=html.html([source]);
+            }
+            if(!target.content.length){
+                target.content.push(html.body());
+            }
+            if(target.content[0].tagName==='head'){
+                head=target.content[0];
+            }else{
+                head=html.head();
+                target.content.unshift(head);
+            }
+            if(target.content[1].tagName!=='body'){
+                target.content.shift();
+                // var body=html.body([target.content[0]]);
+                var body=html.body(target.content);
+                target.content=[head, body];
+            }
+            var titles=head.content.filter(function(element){
+                return element.tagName==='title';
+            });
+            if(titles.length>1){
+                throw new Error("toHtmlDoc ERROR: multiple title");
+            }else if(titles.length==1){
+                if(opts.title){
+                    throw new Error("toHtmlDoc ERROR: double title");
+                }
+            }else{
+                var titleText = opts.title||html.defaultTitle;
+                if(titleText){
+                    head.content.unshift(html.title(titleText));
+                }else if(html.mandatoryTitle){
+                    throw new Error("toHtmlDoc ERROR: missing mandatory title");
+                }
+            }
+        }
+        return '<!doctype html>\n'+target.toHtmlText(opts,recurseOpts);
+    }
+    toHtmlText(opts,recurseOpts):string{
+        throw new Error('must implement toHtmlText');
+    }
+    create():HTMLElement|Text{
+        throw new Error('create not implemented')
+    }
+}
+
+export function arrayToHtmlText(listOfObjects, opts, recurseOpts){
+    recurseOpts=recurseOpts||{margin:0};
+    return listOfObjects.map(function(node){
+        return (typeof node === "string"?html._text(node):node).toHtmlText(opts,recurseOpts);
+    }).join('');
+}
+
+
+export class Html extends HtmlBase{
+    constructor(directObject){
+        super(directObject, validDirectProperties.tagName.properties)
+    }
+    toHtmlText(opts,recurseOpts):string{
+        opts=opts||{};
+        recurseOpts=recurseOpts||{};
+        recurseOpts.margin=recurseOpts.margin||0;
+        var tagInfo=htmlTags[this.tagName];
+        var tagInfoFirstChild=(this.content.length && 'tagName' in this.content[0])?htmlTags[this.content[0].tagName]:{}
+        var isvoidTag=tagInfo["void"]||false;
+        var inlineBlock=((tagInfo.display||'inline')==='inline');
+        var firstChildInline=(tagInfoFirstChild.display||'inline')!=='inline';
+        var nl=(opts.pretty && !inlineBlock?'\n':'');
+        var sp=(opts.pretty && !inlineBlock?spaces:function(){return ''; });
+        return sp(recurseOpts.margin)+"<"+
+            this.tagName+
+            this.attributesToHtmlText()+
+            ">"+(firstChildInline?nl:'')+
+            this.contentToHtmlText(opts,recurseOpts)+
+            (firstChildInline?sp(recurseOpts.margin):'')+
+            (isvoidTag?'':"</"+this.tagName+">")+nl;
+    
+    }
+    create(){
+        var element = document.createElement(this.tagName);
+        Object.keys(this.attributes).map(function(attr){
+            var value=this.attributes[attr];
+            //console.log("attr", attr, "value", value);
+            if(/-/.test(attr)){
+                element.setAttribute(attr, value);
+            }else{
+                var defAttr=htmlAttributes[attr];
+                if(('listName' in defAttr) && (typeof value!=="string")){
+                    Array.prototype.forEach.call(value,function(subValue){
+                        element[defAttr.listName].add(subValue);
+                    });
+                }else{
+                    if(defAttr.noProperty) {
+                        element.setAttribute(defAttr.idl, value);
+                    }else{
+                        element[defAttr.idl] = value;
+                    }
+                }
+            }
+        },this);
+        this.content.forEach(function(node){
+            element.appendChild(node instanceof HtmlBase?node.create():node);
+        });
+        return element;
+    }
+}
+
+export class HtmlTextNode extends HtmlBase{
+    constructor(directObject){
+        super(directObject, validDirectProperties.textNode.properties)
+    }
+    toHtmlText(opts,recurseOpts){
+        return escapeChar(this.textNode);
+    }
+    create(){
+        return document.createTextNode(this.textNode);
+    }
+}
+
+export class HtmlDirectNode extends HtmlBase{
+    constructor(directObject){
+        super(directObject, validDirectProperties.htmlCode.properties)
+    }
+    toHtmlText(/*opts,recurseOpts*/){
+        return this.htmlCode;
+    }
+}
+
+class HtmlComment extends HtmlBase{
+    constructor(directObject){
+        super(directObject, validDirectProperties.commentText.properties)
+    }
+    toHtmlText(/*opts,recurseOpts*/){
+        return "<!--"+this.commentText+"-->";
+    }
+}
+
+function internalArrayToHtmlText(listOfObjects, opts, recurseOpts){
+    return listOfObjects.map(function(node){
+        return node.toHtmlText(opts,recurseOpts);
+    }).join('');
+}
+
+// https://www.typescriptlang.org/play/index.html#src=%0D%0Aclass%20X%20%7B%0D%0A%20%20%20%20constructor(public%20hola%3Astring)%7B%7D%0D%0A%20%20%20%20show()%20%7B%0D%0A%20%20%20%20%20%20%20%20alert(this.hola)%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%7D%0D%0A%0D%0Aclass%20Y%20extends%20X%7B%0D%0A%20%20%20%20constructor(hola_che)%20%7B%0D%0A%20%20%20%20%20%20%20%20super(hola_che%2B%22%20che!%22)%0D%0A%20%20%20%20%7D%0D%0A%7D%0D%0A%0D%0Avar%20t%3Atypeof%20X%20%0D%0A%0D%0At%20%3D%20Y%0D%0A%0D%0Avar%20t1%20%3D%20%7B%0D%0A%20%20%20%20t2%3At%0D%0A%7D%0D%0A%0D%0Avar%20x%20%3D%20new%20t1.t2(%22hola%22))%3B%0D%0A%0D%0Ax.show()%3B
+export function direct(directObject:DirectObject){
+    for(var mainAttr in validDirectProperties){
+        if(mainAttr in directObject){
+            return new validDirectProperties[mainAttr].classConstructor(directObject);
+        }
+    }
+    throw new Error('js-to-html.direct error: invalid arguments to direct function');
+};
+
+var validDirectProperties:ValidProperties={
     textNode:{
-        className:'HtmlTextNode',
+        classConstructor:HtmlTextNode,
         properties:{
             textNode:{
                 checks:[
                     {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
-                    {check:jsToHtml.couldDirectTextContent, text:"must be string or number"}
+                    {check:couldDirectTextContent, text:"must be string or number"}
                 ], 
                 transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
             }
         }
     },
     tagName:{
-        className:'Html',
+        classConstructor:Html,
         properties:{
-            tagName:   {checks:[
+            tagName:{checks:[
                 {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
                 {check:function(x){
-                    if(!jsToHtml.htmlTags[x]){ 
+                    if(!htmlTags[x]){ 
                         throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
                     } 
                     return true;
@@ -92,7 +320,7 @@ var validDirectProperties={
                         if(attrValue==null){
                             throw new Error('js-to-html: attributes must not contain null value');
                         }
-                        if((attrName in jsToHtml.htmlAttributes) && (jsToHtml.htmlAttributes[attrName].rejectSpaces)){
+                        if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
                             if(pattWhiteSpaces.test(attrValue)){   
                                 throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use classList attribute.');
@@ -108,7 +336,7 @@ var validDirectProperties={
                     /*jshint forin:false */
                     for(var attrName in attributes){
                         /*jshint forin:true */
-                        var attrInfo=jsToHtml.htmlAttributes[attrName];
+                        var attrInfo=htmlAttributes[attrName];
                         if(/-/.test(attrName)){
                             /*eslint no-empty: 0 */
                         }else if(!attrInfo){
@@ -124,18 +352,18 @@ var validDirectProperties={
             ]},
             content:{checks:[
                 {check:function(x){ return typeof x==="object" && x instanceof Array; }, text:"must be an Array"},
-                {check:function(x,o){ return !jsToHtml.htmlTags[o.tagName]["void"] || !x.length; }, text:"void elements must not have content"}
+                {check:function(x,o){ return !htmlTags[o.tagName]["void"] || !x.length; }, text:"void elements must not have content"}
             ]},
         }
     },
     htmlCode:{
-        className:'HtmlDirectNode',
+        classConstructor:HtmlDirectNode,
         properties:{
             htmlCode:{
                 checks:[
                     {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
                     {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
-                    {check:function(){ return jsToHtml.html.insecureModeEnabled; }, text:"insecure functions not allowed"},
+                    {check:function(){ return html.insecureModeEnabled; }, text:"insecure functions not allowed"},
                     {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"}
                 ]
             },
@@ -147,7 +375,7 @@ var validDirectProperties={
         },
     },
     commentText:{
-        className:'HtmlComment',
+        classConstructor:HtmlComment,
         properties:{
             commentText:{
                 checks:[
@@ -159,179 +387,7 @@ var validDirectProperties={
     }
 };
 
-function HtmlBase(directObject, validProperties){
-    /*jshint forin:false */
-    for(var property in validProperties){
-        /*jshint forin:true */
-        var propertyDef=validProperties[property];
-        var value=(propertyDef.transform||identity)(directObject[property]);
-        if(!(property in directObject)){
-            throw new Error('jsToHtml.Html error: directObject must include '+property);
-        }
-        for(var c=0; c<propertyDef.checks.length; c++){
-            var check=propertyDef.checks[c];
-            if(!check.check(value, directObject)){
-                throw new Error('jsToHtml.Html error: directObject '+property+' '+check.text);
-            }
-        }
-        this[property]=value;
-    }
-    /*jshint forin:false */
-    for(property in directObject){
-        /*jshint forin:true */
-        if(!(property in validProperties)){
-            throw new Error('jsToHtml.Html error: directObject not recognized '+property+' property');
-        }
-    }
-}
-
-jsToHtml.Html=function Html(directObject){
-    HtmlBase.call(this, directObject, validDirectProperties.tagName.properties);
-};
-jsToHtml.Html.prototype = Object.create(HtmlBase.prototype);
-
-jsToHtml.HtmlTextNode=function HtmlTextNode(directObject){
-    HtmlBase.call(this, directObject, validDirectProperties.textNode.properties);
-};
-jsToHtml.HtmlTextNode.prototype = Object.create(HtmlBase.prototype);
-
-jsToHtml.HtmlDirectNode=function HtmlDirectNode(directObject){
-    HtmlBase.call(this, directObject, validDirectProperties.htmlCode.properties);
-};
-jsToHtml.HtmlDirectNode.prototype = Object.create(HtmlBase.prototype);
-
-jsToHtml.HtmlComment=function HtmlComment(directObject){
-    HtmlBase.call(this, directObject, validDirectProperties.commentText.properties);
-};
-jsToHtml.HtmlComment.prototype = Object.create(HtmlBase.prototype);
-
-HtmlBase.prototype.attributesToHtmlText=function attributesToHtmlText(){
-    var pattNonWordChar=new RegExp(/\W/);
-    return Object.keys(this.attributes).map(function(attrName){
-        var attrVal=this.attributes[attrName];
-        var textAttrVal=attrVal;
-        var attrDefinition=jsToHtml.htmlAttributes[attrName] || {};
-        if(attrDefinition.listName && typeof attrVal!=="string"){
-            textAttrVal=attrVal.join(' ');
-        } 
-        var escapedAttrVal=escapeChar(textAttrVal);
-        var quotingAttrVal=textAttrVal===''||pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
-        return ' '+attrName+'='+quotingAttrVal;
-    },this).join('');
-};
-
-function internalArrayToHtmlText(listOfObjects, opts, recurseOpts){
-    return listOfObjects.map(function(node){
-        return node.toHtmlText(opts,recurseOpts);
-    }).join('');
-}
-
-jsToHtml.arrayToHtmlText = function arrayToHtmlText(listOfObjects, opts, recurseOpts){
-    recurseOpts=recurseOpts||{margin:0};
-    return listOfObjects.map(function(node){
-        return (typeof node === "string"?jsToHtml.html._text(node):node).toHtmlText(opts,recurseOpts);
-    }).join('');
-};
-
-HtmlBase.prototype.contentToHtmlText=function contentToHtmlText(opts,recurseOpts){
-    return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
-};
-
-HtmlBase.prototype.toHtmlDoc=function toHtmlDoc(opts,recurseOpts){
-    opts = opts||{};
-    var html = jsToHtml.html;
-    var target=this;
-    if(!opts.incomplete){
-        var source=this;
-        var head;
-        if(source.tagName==='html'){
-            target=source;
-        }else{
-            target=html.html([source]);
-        }
-        if(!target.content.length){
-            target.content.push(html.body());
-        }
-        if(target.content[0].tagName==='head'){
-            head=target.content[0];
-        }else{
-            head=html.head();
-            target.content.unshift(head);
-        }
-        if(target.content[1].tagName!=='body'){
-            target.content.shift();
-            // var body=html.body([target.content[0]]);
-            var body=html.body(target.content);
-            target.content=[head, body];
-        }
-        var titles=head.content.filter(function(element){
-            return element.tagName==='title';
-        });
-        if(titles.length>1){
-            throw new Error("toHtmlDoc ERROR: multiple title");
-        }else if(titles.length==1){
-            if(opts.title){
-                throw new Error("toHtmlDoc ERROR: double title");
-            }
-        }else{
-            var titleText = opts.title||html.defaultTitle;
-            if(titleText){
-                head.content.unshift(html.title(titleText));
-            }else if(jsToHtml.html.mandatoryTitle){
-                throw new Error("toHtmlDoc ERROR: missing mandatory title");
-            }
-        }
-    }
-    return '<!doctype html>\n'+target.toHtmlText(opts,recurseOpts);
-};
-/* istanbul ignore next */
-HtmlBase.prototype.toHtmlText=function toHtmlText(/*opts,recurseOpts*/){
-    throw new Error('must implement toHtmlText');
-};
-
-jsToHtml.Html.prototype.toHtmlText=function toHtmlText(opts,recurseOpts){
-    opts=opts||{};
-    recurseOpts=recurseOpts||{};
-    recurseOpts.margin=recurseOpts.margin||0;
-    var tagInfo=jsToHtml.htmlTags[this.tagName];
-    var tagInfoFirstChild=jsToHtml.htmlTags[(this.content[0]||{}).tagName]||{};
-    var isvoidTag=tagInfo["void"]||false;
-    var inlineBlock=((tagInfo.display||'inline')==='inline');
-    var firstChildInline=(tagInfoFirstChild.display||'inline')!=='inline';
-    var nl=(opts.pretty && !inlineBlock?'\n':'');
-    var sp=(opts.pretty && !inlineBlock?spaces:function(){return ''; });
-    return sp(recurseOpts.margin)+"<"+
-        this.tagName+
-        this.attributesToHtmlText()+
-        ">"+(firstChildInline?nl:'')+
-        this.contentToHtmlText(opts,recurseOpts)+
-        (firstChildInline?sp(recurseOpts.margin):'')+
-        (isvoidTag?'':"</"+this.tagName+">")+nl;
-
-};
-
-jsToHtml.HtmlTextNode.prototype.toHtmlText=function toHtmlText(/*opts,recurseOpts*/){
-    return escapeChar(this.textNode);
-};
-
-jsToHtml.HtmlDirectNode.prototype.toHtmlText=function toHtmlText(/*opts,recurseOpts*/){
-    return this.htmlCode;
-};
-
-jsToHtml.HtmlComment.prototype.toHtmlText=function toHtmlText(/*opts,recurseOpts*/){
-    return "<!--"+this.commentText+"-->";
-};
-
-jsToHtml.direct=function direct(directObject){
-    for(var mainAttr in validDirectProperties){
-        if(mainAttr in directObject){
-            return new jsToHtml[validDirectProperties[mainAttr].className](directObject);
-        }
-    }
-    throw new Error('js-to-html.direct error: invalid arguments to direct function');
-};
-
-jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
+function indirect(tagName,contentOrAttributes,contentIfThereAreAttributes){
     var thereAreAttributes=isPlainObject(contentOrAttributes);
     if(!thereAreAttributes && contentOrAttributes instanceof Object && !(contentOrAttributes instanceof Array)){
         throw new Error('jsToHtml.'+tagName+' expects plain object of attributes or array of content');
@@ -341,19 +397,19 @@ jsToHtml.indirect=function indirect(tagName,contentOrAttributes,contentIfThereAr
     if(!thereAreAttributes && (arguments.length>3 || contentIfThereAreAttributes != null)){
         throw new Error('jsToHtml.'+tagName+' ERROR: the first parameter is not an attribute object then must there no be a second parameter');
     }
-    return jsToHtml.direct({
+    return direct({
         tagName:tagName,
         attributes:attributes,
         content:(content instanceof Array?content:[content]).filter(function(element){
             return element!==null && element!==undefined;
         }).map(function(element){
-            return jsToHtml.couldDirectTextContent(element)?jsToHtml.direct({textNode:element}):element;
+            return couldDirectTextContent(element)?direct({textNode:element}):element;
         })
     });
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
-jsToHtml.htmlTags={
+export let htmlTags={
     "a"            :{type:'HTML4', description:"Defines a hyperlink"},
     "abbr"         :{type:'HTML4', description:"Defines an abbreviation"},
     "acronym"      :{type:'HTML4', description:"Not supported in HTML5. Defines an acronym"},
@@ -479,7 +535,7 @@ jsToHtml.htmlTags={
 
 //
 // generated by generators/attributes.js
-jsToHtml.htmlAttributes={
+export let htmlAttributes={
     "abbr": {
         "tags": {
             "th": {"description": "Alternative label to use for the header cell when referencing the cell in other contexts","value": "Text*"}
@@ -1365,66 +1421,12 @@ jsToHtml.htmlAttributes={
 //
 
 
-jsToHtml.html._text=function _text(text){
-    return jsToHtml.direct({textNode:text});
-};
-
-jsToHtml.html._comment=function _comment(text){
-    return jsToHtml.direct({commentText:text});
-};
-
-jsToHtml.html.includeHtml=function _text(htmlCode){
-    if(!this.insecureModeEnabled){
-        throw new Error("jsToHtml.html.includeHtml: insecure functions not allowed");
-    }
-    return jsToHtml.direct({htmlCode:htmlCode, validator:this.includeHtmlValidator});
-};
-
 // var ok=Object.keys(jsToHtml.htmlTags)
 
-Object.keys(jsToHtml.htmlTags).map(function(tagName){
+Object.keys(htmlTags).map(function(tagName){
 // ok.map(function(tagName){    
-    jsToHtml.html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
-        return jsToHtml.indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
+    html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
+        return indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
     };
 });
 
-jsToHtml.HtmlTextNode.prototype.create = function create(){
-    return document.createTextNode(this.textNode);
-};
-
-jsToHtml.html.includeHtmlValidator=function(htmlText){
-    return /^((<[^<>]+>)|[^<>]+|\n)*$/.test(htmlText);
-};
-
-jsToHtml.Html.prototype.create = function create(){
-    var element = document.createElement(this.tagName);
-    Object.keys(this.attributes).map(function(attr){
-        var value=this.attributes[attr];
-        //console.log("attr", attr, "value", value);
-        if(/-/.test(attr)){
-            element.setAttribute(attr, value);
-        }else{
-            var defAttr=jsToHtml.htmlAttributes[attr];
-            if(('listName' in defAttr) && (typeof value!=="string")){
-                Array.prototype.forEach.call(value,function(subValue){
-                    element[defAttr.listName].add(subValue);
-                });
-            }else{
-                if(defAttr.noProperty) {
-                    element.setAttribute(defAttr.idl, value);
-                }else{
-                    element[defAttr.idl] = value;
-                }
-            }
-        }
-    },this);
-    this.content.forEach(function(node){
-        element.appendChild(node instanceof HtmlBase?node.create():node);
-    });
-    return element;
-};
-
-return jsToHtml;
-
-});

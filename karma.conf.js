@@ -20,8 +20,9 @@ module.exports = function(config) {
       'node_modules/es6-promise/dist/es6-promise.min.js',
       'node_modules/require-bro/lib/polyfills-bro.js',
       'node_modules/moment/min/moment-with-locales.min.js',
+      'node_modules/require-bro/lib/require-bro.js',
       'node_modules/sinon/pkg/sinon.js',
-      'js-to-html.js',
+      'lib/js-to-html.js',
       'test/*.js'
     ],
 
