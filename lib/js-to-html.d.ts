@@ -1,2243 +1,2856 @@
+export declare type Content = string | (HtmlBase | string)[];
 export declare var html: {
     defaultTitle: string;
     insecureModeEnabled: boolean;
     mandatoryTitle: boolean;
-    _text(text: any): any;
-    _comment(text: any): any;
-    includeHtml(htmlCode: any): any;
-    includeHtmlValidator(htmlText: any): boolean;
+    _text(text: string): HtmlBase;
+    _comment(text: string): HtmlBase;
+    includeHtml(htmlCode: string): HtmlBase;
+    includeHtmlValidator(htmlText: string): boolean;
+    a(optsOrContent?: string | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        href?: any;
+        target?: any;
+        download?: any;
+        ping?: any;
+        rel?: any;
+        hreflang?: any;
+        type?: any;
+        referrerpolicy?: any;
+    } | (string | HtmlBase)[], content?: Content): any;
+    abbr(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    address(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    area(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        alt?: any;
+        coords?: any;
+        shape?: any;
+        href?: any;
+        target?: any;
+        download?: any;
+        ping?: any;
+        rel?: any;
+        referrerpolicy?: any;
+    }): any;
+    article(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    aside(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    audio(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        crossorigin?: any;
+        preload?: any;
+        autoplay?: any;
+        loop?: any;
+        muted?: any;
+        controls?: any;
+    }, content?: Content): any;
+    b(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    base(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        href?: any;
+        target?: any;
+    }): any;
+    bdi(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    bdo(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    blockquote(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        cite?: any;
+    }, content?: Content): any;
+    body(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        onafterprint?: any;
+        onbeforeprint?: any;
+        onbeforeunload?: any;
+        onhashchange?: any;
+        onlanguagechange?: any;
+        onmessage?: any;
+        onmessageerror?: any;
+        onoffline?: any;
+        ononline?: any;
+        onpagehide?: any;
+        onpageshow?: any;
+        onpopstate?: any;
+        onrejectionhandled?: any;
+        onstorage?: any;
+        onunhandledrejection?: any;
+        onunload?: any;
+    }, content?: Content): any;
+    br(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }): any;
+    button(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        autofocus?: any;
+        disabled?: any;
+        form?: any;
+        formaction?: any;
+        formenctype?: any;
+        formmethod?: any;
+        formnovalidate?: any;
+        formtarget?: any;
+        name?: any;
+        type?: any;
+        value?: any;
+    }, content?: Content): any;
+    canvas(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        width?: any;
+        height?: any;
+    }, content?: Content): any;
+    caption(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    cite(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    code(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    col(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        span?: any;
+    }): any;
+    colgroup(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        span?: any;
+    }, content?: Content): any;
+    data(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        value?: any;
+    }, content?: Content): any;
+    datalist(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    dd(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    del(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        cite?: any;
+        datetime?: any;
+    }, content?: Content): any;
+    details(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        open?: any;
+    }, content?: Content): any;
+    dfn(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    dialog(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        open?: any;
+    }, content?: Content): any;
+    div(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    dl(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    dt(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    em(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    embed(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        type?: any;
+        width?: any;
+        height?: any;
+        any?: any;
+    }): any;
+    fieldset(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        disabled?: any;
+        form?: any;
+        name?: any;
+    }, content?: Content): any;
+    figcaption(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    figure(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    footer(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    form(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        "accept-charset"?: any;
+        action?: any;
+        autocomplete?: any;
+        enctype?: any;
+        method?: any;
+        name?: any;
+        novalidate?: any;
+        target?: any;
+    }, content?: Content): any;
+    h1(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    h2(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    h3(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    h4(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    h5(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    h6(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    head(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    header(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    hgroup(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    hr(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }): any;
+    html(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        manifest?: any;
+    }, content?: Content): any;
+    i(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    iframe(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        srcdoc?: any;
+        name?: any;
+        sandbox?: any;
+        allowfullscreen?: any;
+        allowpaymentrequest?: any;
+        allowusermedia?: any;
+        width?: any;
+        height?: any;
+        referrerpolicy?: any;
+    }): any;
+    img(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        alt?: any;
+        src?: any;
+        srcset?: any;
+        crossorigin?: any;
+        usemap?: any;
+        ismap?: any;
+        width?: any;
+        height?: any;
+        decoding?: any;
+        referrerpolicy?: any;
+    }): any;
+    input(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        accept?: any;
+        alt?: any;
+        autocomplete?: any;
+        autofocus?: any;
+        checked?: any;
+        dirname?: any;
+        disabled?: any;
+        form?: any;
+        formaction?: any;
+        formenctype?: any;
+        formmethod?: any;
+        formnovalidate?: any;
+        formtarget?: any;
+        height?: any;
+        list?: any;
+        max?: any;
+        maxlength?: any;
+        min?: any;
+        minlength?: any;
+        multiple?: any;
+        name?: any;
+        pattern?: any;
+        placeholder?: any;
+        readonly?: any;
+        required?: any;
+        size?: any;
+        src?: any;
+        step?: any;
+        type?: any;
+        value?: any;
+        width?: any;
+    }): any;
+    ins(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        cite?: any;
+        datetime?: any;
+    }, content?: Content): any;
+    kbd(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    label(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        for?: any;
+    }, content?: Content): any;
+    legend(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    li(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        value?: any;
+    }, content?: Content): any;
+    link(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        href?: any;
+        crossorigin?: any;
+        rel?: any;
+        as?: any;
+        media?: any;
+        hreflang?: any;
+        type?: any;
+        sizes?: any;
+        referrerpolicy?: any;
+        integrity?: any;
+    }): any;
+    main(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    map(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        name?: any;
+    }, content?: Content): any;
+    mark(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    math(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        "translateper [MATHML]"?: any;
+    }, content?: Content): any;
+    menu(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    meta(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        name?: any;
+        "http-equiv"?: any;
+        content?: any;
+        charset?: any;
+    }): any;
+    meter(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        value?: any;
+        min?: any;
+        max?: any;
+        low?: any;
+        high?: any;
+        optimum?: any;
+    }, content?: Content): any;
+    nav(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    noscript(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    object(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        data?: any;
+        type?: any;
+        typemustmatch?: any;
+        name?: any;
+        usemap?: any;
+        form?: any;
+        width?: any;
+        height?: any;
+    }, content?: Content): any;
+    ol(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        reversed?: any;
+        start?: any;
+        type?: any;
+    }, content?: Content): any;
+    optgroup(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        disabled?: any;
+        label?: any;
+    }, content?: Content): any;
+    option(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        disabled?: any;
+        label?: any;
+        selected?: any;
+        value?: any;
+    }, content?: Content): any;
+    output(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        for?: any;
+        form?: any;
+        name?: any;
+    }, content?: Content): any;
+    p(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    param(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        name?: any;
+        value?: any;
+    }): any;
+    picture(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    pre(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    progress(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        value?: any;
+        max?: any;
+    }, content?: Content): any;
+    q(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        cite?: any;
+    }, content?: Content): any;
+    rp(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    rt(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    ruby(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    s(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    samp(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    script(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        type?: any;
+        async?: any;
+        defer?: any;
+        crossorigin?: any;
+        integrity?: any;
+    }, content?: Content): any;
+    section(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    select(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        autocomplete?: any;
+        autofocus?: any;
+        disabled?: any;
+        form?: any;
+        multiple?: any;
+        name?: any;
+        required?: any;
+        size?: any;
+    }, content?: Content): any;
+    slot(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        name?: any;
+    }, content?: Content): any;
+    small(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    source(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        "type srcset"?: any;
+        sizes?: any;
+        media?: any;
+    }): any;
+    span(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    strong(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    style(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        media?: any;
+    }, content?: Content): any;
+    sub(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    summary(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    sup(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    svg(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        "translateper [SVG]"?: any;
+    }, content?: Content): any;
+    table(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    tbody(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    td(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        colspan?: any;
+        rowspan?: any;
+        headers?: any;
+    }, content?: Content): any;
+    template(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }): any;
+    textarea(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        autofocus?: any;
+        cols?: any;
+        dirname?: any;
+        disabled?: any;
+        form?: any;
+        maxlength?: any;
+        minlength?: any;
+        name?: any;
+        placeholder?: any;
+        readonly?: any;
+        required?: any;
+        rows?: any;
+        wrap?: any;
+    }, content?: Content): any;
+    tfoot(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    th(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        colspan?: any;
+        rowspan?: any;
+        headers?: any;
+        scope?: any;
+        abbr?: any;
+    }, content?: Content): any;
+    thead(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    time(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        datetime?: any;
+    }, content?: Content): any;
+    title(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    tr(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    track(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        default?: any;
+        kind?: any;
+        label?: any;
+        src?: any;
+        srclang?: any;
+    }): any;
+    u(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    ul(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    var(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }, content?: Content): any;
+    video(optsOrContent?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+        src?: any;
+        crossorigin?: any;
+        poster?: any;
+        preload?: any;
+        autoplay?: any;
+        playsinline?: any;
+        loop?: any;
+        muted?: any;
+        controls?: any;
+        width?: any;
+        height?: any;
+    }, content?: Content): any;
+    wbr(opts?: string | (string | HtmlBase)[] | {
+        accesskey?: any;
+        autocapitalize?: any;
+        contenteditable?: any;
+        dir?: any;
+        draggable?: any;
+        hidden?: any;
+        inputmode?: any;
+        is?: any;
+        itemid?: any;
+        itemprop?: any;
+        itemref?: any;
+        itemscope?: any;
+        itemtype?: any;
+        lang?: any;
+        nonce?: any;
+        spellcheck?: any;
+        style?: any;
+        tabindex?: any;
+        title?: any;
+        translate?: any;
+    }): any;
 };
-export declare type ValidPropertiesChecker = object;
+export declare type Checker = {
+    check: (value: any, directObject: DirectObject) => boolean;
+    text?: string;
+};
+export declare type ValidPropertiesChecker = {
+    checks: Checker[];
+    transform?: (x: any) => any;
+};
 export declare type ValidPropertydProperty = {
+    textNode?: ValidPropertiesChecker;
     tagName?: ValidPropertiesChecker;
     attributes?: ValidPropertiesChecker;
     content?: ValidPropertiesChecker;
-    textNode?: ValidPropertiesChecker;
     htmlCode?: ValidPropertiesChecker;
     validator?: ValidPropertiesChecker;
     commentText?: ValidPropertiesChecker;
+    readonly [key: string]: ValidPropertiesChecker;
 };
-export declare type DirectObject = {};
-export declare abstract class HtmlBase {
+export declare type DirectObject = {
+    textNode?: string;
+    tagName?: string;
+    attributes?: object;
+    content?: HtmlBase[];
+    htmlCode?: string;
+    validator?: (content: any) => boolean;
+    commentText?: string;
+    readonly [key: string]: any;
+};
+export declare type PrintOpts = {
+    pretty?: boolean;
+    incomplete?: boolean;
+    title?: string;
+};
+export declare type PrintRecurseOpts = {
+    margin?: number;
+};
+export declare class HtmlBase {
+    readonly [key: string]: any;
+    constructor(directObject: DirectObject, validProperties?: ValidPropertydProperty);
+    attributesToHtmlText(): string;
+    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+    create(): HTMLElement | Text;
+}
+export declare function arrayToHtmlText(listOfObjects: (string | HtmlBase)[], opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+export declare class Html extends HtmlBase {
     tagName: string;
     attributes: {
         [key: string]: any;
     };
     content: HtmlBase[];
-    textNode: string;
-    htmlCode: string;
-    commentText: string;
-    constructor(directObject: DirectObject, validProperties: ValidPropertydProperty);
-    attributesToHtmlText(): string;
-    contentToHtmlText(opts: any, recurseOpts: any): any;
-    toHtmlDoc(opts: any, recurseOpts: any): string;
-    toHtmlText(opts: any, recurseOpts: any): string;
-    create(): HTMLElement | Text;
-}
-export declare function arrayToHtmlText(listOfObjects: any, opts: any, recurseOpts: any): any;
-export declare class Html extends HtmlBase {
-    constructor(directObject: any);
-    toHtmlText(opts: any, recurseOpts: any): string;
-    create(): HTMLElement;
+    constructor(directObject: DirectObject);
+    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+    contentToHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+    create(): any;
+    toHtmlDoc(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
 }
 export declare class HtmlTextNode extends HtmlBase {
-    constructor(directObject: any);
-    toHtmlText(opts: any, recurseOpts: any): any;
+    textNode: string;
+    constructor(directObject: DirectObject);
+    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
     create(): Text;
 }
 export declare class HtmlDirectNode extends HtmlBase {
-    constructor(directObject: any);
-    toHtmlText(): string;
+    htmlCode: string;
+    constructor(directObject: DirectObject);
+    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
 }
-export declare function direct(directObject: DirectObject): any;
-export declare let htmlTags: {
-    "a": {
-        type: string;
-        description: string;
-    };
-    "abbr": {
-        type: string;
-        description: string;
-    };
-    "acronym": {
-        type: string;
-        description: string;
-    };
-    "address": {
-        type: string;
-        description: string;
-    };
-    "applet": {
-        type: string;
-        description: string;
-    };
-    "area": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "article": {
-        type: string;
-        description: string;
-    };
-    "aside": {
-        type: string;
-        description: string;
-    };
-    "audio": {
-        type: string;
-        description: string;
-    };
-    "b": {
-        type: string;
-        description: string;
-    };
-    "base": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "basefont": {
-        type: string;
-        description: string;
-    };
-    "bdi": {
-        type: string;
-        description: string;
-    };
-    "bdo": {
-        type: string;
-        description: string;
-    };
-    "big": {
-        type: string;
-        description: string;
-    };
-    "blockquote": {
-        type: string;
-        description: string;
-    };
-    "body": {
-        type: string;
-        description: string;
-    };
-    "br": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "button": {
-        type: string;
-        description: string;
-    };
-    "canvas": {
-        type: string;
-        description: string;
-    };
-    "caption": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "center": {
-        type: string;
-        description: string;
-    };
-    "cite": {
-        type: string;
-        description: string;
-    };
-    "code": {
-        type: string;
-        description: string;
-    };
-    "col": {
-        type: string;
-        display: string;
-        "void": boolean;
-        description: string;
-    };
-    "colgroup": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "command": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "datalist": {
-        type: string;
-        description: string;
-    };
-    "dd": {
-        type: string;
-        description: string;
-    };
-    "del": {
-        type: string;
-        description: string;
-    };
-    "details": {
-        type: string;
-        description: string;
-    };
-    "dfn": {
-        type: string;
-        description: string;
-    };
-    "dialog": {
-        type: string;
-        description: string;
-    };
-    "dir": {
-        type: string;
-        description: string;
-    };
-    "div": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "dl": {
-        type: string;
-        description: string;
-    };
-    "dt": {
-        type: string;
-        description: string;
-    };
-    "em": {
-        type: string;
-        description: string;
-    };
-    "embed": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "fieldset": {
-        type: string;
-        description: string;
-    };
-    "figcaption": {
-        type: string;
-        description: string;
-    };
-    "figure": {
-        type: string;
-        description: string;
-    };
-    "font": {
-        type: string;
-        description: string;
-    };
-    "footer": {
-        type: string;
-        description: string;
-    };
-    "form": {
-        type: string;
-        description: string;
-    };
-    "frame": {
-        type: string;
-        description: string;
-    };
-    "frameset": {
-        type: string;
-        description: string;
-    };
-    "h1": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "h2": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "h3": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "h4": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "h5": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "h6": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "head": {
-        type: string;
-        description: string;
-    };
-    "header": {
-        type: string;
-        description: string;
-    };
-    "hgroup": {
-        type: string;
-        description: string;
-    };
-    "hr": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "html": {
-        type: string;
-        description: string;
-    };
-    "i": {
-        type: string;
-        description: string;
-    };
-    "iframe": {
-        type: string;
-        description: string;
-    };
-    "img": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "input": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "ins": {
-        type: string;
-        description: string;
-    };
-    "kbd": {
-        type: string;
-        description: string;
-    };
-    "keygen": {
-        type: string;
-        description: string;
-    };
-    "label": {
-        type: string;
-        description: string;
-    };
-    "legend": {
-        type: string;
-        description: string;
-    };
-    "li": {
-        type: string;
-        description: string;
-    };
-    "link": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "map": {
-        type: string;
-        description: string;
-    };
-    "mark": {
-        type: string;
-        description: string;
-    };
-    "menu": {
-        type: string;
-        description: string;
-    };
-    "meta": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "meter": {
-        type: string;
-        description: string;
-    };
-    "nav": {
-        type: string;
-        description: string;
-    };
-    "noframes": {
-        type: string;
-        description: string;
-    };
-    "noscript": {
-        type: string;
-        description: string;
-    };
-    "object": {
-        type: string;
-        description: string;
-    };
-    "ol": {
-        type: string;
-        description: string;
-    };
-    "optgroup": {
-        type: string;
-        description: string;
-    };
-    "option": {
-        type: string;
-        description: string;
-    };
-    "output": {
-        type: string;
-        description: string;
-    };
-    "p": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "param": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "pre": {
-        type: string;
-        description: string;
-    };
-    "progress": {
-        type: string;
-        description: string;
-    };
-    "q": {
-        type: string;
-        description: string;
-    };
-    "rp": {
-        type: string;
-        description: string;
-    };
-    "rt": {
-        type: string;
-        description: string;
-    };
-    "ruby": {
-        type: string;
-        description: string;
-    };
-    "s": {
-        type: string;
-        description: string;
-    };
-    "samp": {
-        type: string;
-        description: string;
-    };
-    "script": {
-        type: string;
-        description: string;
-    };
-    "section": {
-        type: string;
-        description: string;
-    };
-    "select": {
-        type: string;
-        description: string;
-    };
-    "small": {
-        type: string;
-        description: string;
-    };
-    "source": {
-        type: string;
-        "void": boolean;
-        description: string;
-    };
-    "span": {
-        type: string;
-        description: string;
-    };
-    "strike": {
-        type: string;
-        description: string;
-    };
-    "strong": {
-        type: string;
-        description: string;
-    };
-    "style": {
-        type: string;
-        description: string;
-    };
-    "sub": {
-        type: string;
-        description: string;
-    };
-    "summary": {
-        type: string;
-        description: string;
-    };
-    "sup": {
-        type: string;
-        description: string;
-    };
-    "table": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "tbody": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "td": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "textarea": {
-        type: string;
-        description: string;
-    };
-    "tfoot": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "th": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "thead": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "time": {
-        type: string;
-        description: string;
-    };
-    "title": {
-        type: string;
-        description: string;
-    };
-    "tr": {
-        type: string;
-        display: string;
-        description: string;
-    };
-    "track": {
-        type: string;
-        description: string;
-    };
-    "tt": {
-        type: string;
-        description: string;
-    };
-    "u": {
-        type: string;
-        description: string;
-    };
-    "ul": {
-        type: string;
-        description: string;
-    };
-    "var": {
-        type: string;
-        description: string;
-    };
-    "video": {
-        type: string;
-        description: string;
-    };
-    "wbr": {
-        type: string;
-        description: string;
+export declare class HtmlComment extends HtmlBase {
+    commentText: string;
+    constructor(directObject: DirectObject);
+    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+}
+export declare function direct(directObject: DirectObject): HtmlBase;
+export declare type HtmlTagDef = {
+    type: string;
+    void?: boolean;
+    display?: string;
+    description: string;
+};
+export declare type HtmlTags = {
+    readonly [key: string]: HtmlTagDef;
+};
+export declare let htmlTags: HtmlTags;
+export declare type HtmlAttributes = {
+    [key: string]: {
+        tags: {
+            [key: string]: {
+                description: string;
+                value: string;
+            };
+        };
+        idl: string;
+        listName?: string;
+        rejectSpaces?: boolean;
+        reserved?: boolean;
+        noProperty?: boolean;
     };
 };
-export declare let htmlAttributes: {
-    "abbr": {
-        "tags": {
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "accept": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "accept-charset": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "accesskey": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "action": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "allowfullscreen": {
-        "tags": {
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "alt": {
-        "tags": {
-            "area": {
-                "description": string;
-                "value": string;
-            };
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "async": {
-        "tags": {
-            "script": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "autocomplete": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "autofocus": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "autoplay": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "challenge": {
-        "tags": {
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "charset": {
-        "tags": {
-            "meta": {
-                "description": string;
-                "value": string;
-            };
-            "script": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "checked": {
-        "tags": {
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "cite": {
-        "tags": {
-            "blockquote": {
-                "description": string;
-                "value": string;
-            };
-            "del": {
-                "description": string;
-                "value": string;
-            };
-            "ins": {
-                "description": string;
-                "value": string;
-            };
-            "q": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "class": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-        "rejectSpaces": boolean;
-        "listName": string;
-        "reserved": boolean;
-    };
-    "cols": {
-        "tags": {
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "colspan": {
-        "tags": {
-            "td": {
-                "description": string;
-                "value": string;
-            };
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "content": {
-        "tags": {
-            "meta": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "contenteditable": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "contextmenu": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "controls": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "coords": {
-        "tags": {
-            "area": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "crossorigin": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-            "script": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "data": {
-        "tags": {
-            "object": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "datetime": {
-        "tags": {
-            "del": {
-                "description": string;
-                "value": string;
-            };
-            "ins": {
-                "description": string;
-                "value": string;
-            };
-            "time": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "default": {
-        "tags": {
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "track": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "defer": {
-        "tags": {
-            "script": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "dir": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-            "bdo": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "dirname": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "disabled": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "fieldset": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-            "optgroup": {
-                "description": string;
-                "value": string;
-            };
-            "option": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "download": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "area": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "draggable": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "dropzone": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "enctype": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "for": {
-        "tags": {
-            "label": {
-                "description": string;
-                "value": string;
-            };
-            "output": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-        "reserved": boolean;
-    };
-    "form": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "fieldset": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-            "label": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-            "output": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "formaction": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "formenctype": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "formmethod": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "formnovalidate": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "formtarget": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "headers": {
-        "tags": {
-            "td": {
-                "description": string;
-                "value": string;
-            };
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "height": {
-        "tags": {
-            "canvas": {
-                "description": string;
-                "value": string;
-            };
-            "embed": {
-                "description": string;
-                "value": string;
-            };
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "hidden": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "high": {
-        "tags": {
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "href": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "area": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-            "base": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "hreflang": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "http-equiv": {
-        "tags": {
-            "meta": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "icon": {
-        "tags": {
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "id": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "inputmode": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "ismap": {
-        "tags": {
-            "img": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "itemid": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "itemprop": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "itemref": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "itemscope": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "itemtype": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "keytype": {
-        "tags": {
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "kind": {
-        "tags": {
-            "track": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "label": {
-        "tags": {
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "menu": {
-                "description": string;
-                "value": string;
-            };
-            "optgroup": {
-                "description": string;
-                "value": string;
-            };
-            "option": {
-                "description": string;
-                "value": string;
-            };
-            "track": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "lang": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "list": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-        "noProperty": boolean;
-    };
-    "loop": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "low": {
-        "tags": {
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "manifest": {
-        "tags": {
-            "html": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "max": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-            "progress": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "maxlength": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "media": {
-        "tags": {
-            "link": {
-                "description": string;
-                "value": string;
-            };
-            "style": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "mediagroup": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "menu": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "method": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "min": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "minlength": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "multiple": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "muted": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "name": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "fieldset": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "keygen": {
-                "description": string;
-                "value": string;
-            };
-            "output": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-            "form": {
-                "description": string;
-                "value": string;
-            };
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-            "map": {
-                "description": string;
-                "value": string;
-            };
-            "meta": {
-                "description": string;
-                "value": string;
-            };
-            "param": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "nonce": {
-        "tags": {
-            "script": {
-                "description": string;
-                "value": string;
-            };
-            "style": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "novalidate": {
-        "tags": {
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "open": {
-        "tags": {
-            "details": {
-                "description": string;
-                "value": string;
-            };
-            "dialog": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "optimum": {
-        "tags": {
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "pattern": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "ping": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "area": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "placeholder": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "poster": {
-        "tags": {
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "preload": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "radiogroup": {
-        "tags": {
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "readonly": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "rel": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "area": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "required": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "reversed": {
-        "tags": {
-            "ol": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "rows": {
-        "tags": {
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "rowspan": {
-        "tags": {
-            "td": {
-                "description": string;
-                "value": string;
-            };
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "sandbox": {
-        "tags": {
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "spellcheck": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "scope": {
-        "tags": {
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "scoped": {
-        "tags": {
-            "style": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "seamless": {
-        "tags": {
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "selected": {
-        "tags": {
-            "option": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "shape": {
-        "tags": {
-            "area": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "size": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "select": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "sizes": {
-        "tags": {
-            "link": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "sortable": {
-        "tags": {
-            "table": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "sorted": {
-        "tags": {
-            "th": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "span": {
-        "tags": {
-            "col": {
-                "description": string;
-                "value": string;
-            };
-            "colgroup": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "src": {
-        "tags": {
-            "audio": {
-                "description": string;
-                "value": string;
-            };
-            "embed": {
-                "description": string;
-                "value": string;
-            };
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "script": {
-                "description": string;
-                "value": string;
-            };
-            "source": {
-                "description": string;
-                "value": string;
-            };
-            "track": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "srcdoc": {
-        "tags": {
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "srclang": {
-        "tags": {
-            "track": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "srcset": {
-        "tags": {
-            "img": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "start": {
-        "tags": {
-            "ol": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "step": {
-        "tags": {
-            "input": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "style": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-        "noProperty": boolean;
-    };
-    "tabindex": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "target": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "area": {
-                "description": string;
-                "value": string;
-            };
-            "base": {
-                "description": string;
-                "value": string;
-            };
-            "form": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "title": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-            "abbr": {
-                "description": string;
-                "value": string;
-            };
-            "dfn": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-            "style": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "translate": {
-        "tags": {
-            "HTML elements": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "type": {
-        "tags": {
-            "a": {
-                "description": string;
-                "value": string;
-            };
-            "link": {
-                "description": string;
-                "value": string;
-            };
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "embed": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-            "script": {
-                "description": string;
-                "value": string;
-            };
-            "source": {
-                "description": string;
-                "value": string;
-            };
-            "style": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "menu": {
-                "description": string;
-                "value": string;
-            };
-            "menuitem": {
-                "description": string;
-                "value": string;
-            };
-            "ol": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "typemustmatch": {
-        "tags": {
-            "object": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "usemap": {
-        "tags": {
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "value": {
-        "tags": {
-            "button": {
-                "description": string;
-                "value": string;
-            };
-            "option": {
-                "description": string;
-                "value": string;
-            };
-            "data": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "li": {
-                "description": string;
-                "value": string;
-            };
-            "meter": {
-                "description": string;
-                "value": string;
-            };
-            "progress": {
-                "description": string;
-                "value": string;
-            };
-            "param": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "width": {
-        "tags": {
-            "canvas": {
-                "description": string;
-                "value": string;
-            };
-            "embed": {
-                "description": string;
-                "value": string;
-            };
-            "iframe": {
-                "description": string;
-                "value": string;
-            };
-            "img": {
-                "description": string;
-                "value": string;
-            };
-            "input": {
-                "description": string;
-                "value": string;
-            };
-            "object": {
-                "description": string;
-                "value": string;
-            };
-            "video": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-    "wrap": {
-        "tags": {
-            "textarea": {
-                "description": string;
-                "value": string;
-            };
-        };
-        "idl": string;
-    };
-};
+export declare let htmlAttributes: HtmlAttributes;

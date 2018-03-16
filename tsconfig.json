@@ -5,6 +5,7 @@
         "module": "umd",
         "target": "es5",
         "sourceMap": true,
+        "noImplicitAny": true,
         "moduleResolution": "node",
         "lib": [ "es5", "dom" ]
     },
