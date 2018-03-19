@@ -265,6 +265,9 @@ var output=lines.map(function(line){
     var [tags,description,category,parents,children,attributes,htmlinterface]=line.split(/\t/);
     var empty = children==="empty"
     return tags.split(/,\s*/).map(function(tag){
+        if(/per\s+\[\w+\]/.test(attributes)){
+            return null;
+        }
         return tag+"(opts"+(!empty?"OrContent":"")+"?:{"+
             (globalAttributes+attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).map(function(attribute){
                 attribute=attribute.replace('*','')
@@ -273,8 +276,10 @@ var output=lines.map(function(line){
                 }
                 return escapeChar(attribute)+'?:any';
             }).join(', ')+"}|Content"+
-            (!empty?', content?:Content':'')+'){ return indirect("'+tag+'", '+(!empty?'optsOrContent, content':'opts')+'); }';
-    }).join(',\n');
-}).join(',\n')
+            (!empty?', content?:Content':'')+'){ return indirect("'+tag+'", '+(!empty?'optsOrContent, content':'opts')+')'+
+            ' as HtmlTag<'+htmlinterface+'>'+
+            '; },\n';
+    }).join('');
+}).join('')
 
 fs.writeFile('tagInterfaces.data',output);
