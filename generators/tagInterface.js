@@ -231,7 +231,9 @@ wbr	Line breaking opportunity	flow; phrasing	phrasing	empty	globals	HTMLElement`
 .replace(/MathML\s+/g,'')
 .replace(/SVG\s+/g,'');
 
-var globalAttributes=`accesskey
+var globalAttributes=`class
+id
+accesskey
 autocapitalize
 contenteditable
 dir
@@ -260,6 +262,8 @@ function escapeChar(simpleText){
     return !/^\w+$/.test(simpleText)?'"'+simpleText.replace(/["]/g,'\\"')+'"':simpleText;
 }
 
+var attrTypesDefs = [];
+var attrTypes = {};
 
 var output=lines.map(function(line){
     var [tags,description,category,parents,children,attributes,htmlinterface]=line.split(/\t/);
@@ -268,14 +272,25 @@ var output=lines.map(function(line){
         if(/per\s+\[\w+\]/.test(attributes)){
             return null;
         }
-        return tag+"(opts"+(!empty?"OrContent":"")+"?:{"+
-            (globalAttributes+attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).map(function(attribute){
+        if(htmlinterface=='HTMLElement'){
+            return ;
+        }
+        var attrTypeName='Attr4'+htmlinterface;
+        if(!(attrTypeName in attrTypes)){
+            var attrList = (attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).filter(function(attribute){
+                return true // !attribute.trim();
+            });
+            var def='export interface '+attrTypeName+' extends Attr4HTMLElement {'+attrList.map(function(attribute){ 
                 attribute=attribute.replace('*','')
                 if(!attribute){
                     return null;
                 }
-                return escapeChar(attribute)+'?:any';
-            }).join(', ')+"}|Content"+
+                return escapeChar(attribute)+'?:any,';
+            }).join('')+'}\n';
+            attrTypesDefs.push(def)
+            attrTypes[attrTypeName]=def;
+        }
+        return tag+"(opts"+(!empty?"OrContent":"")+"?:"+attrTypeName+"|Content"+
             (!empty?', content?:Content':'')+'){ return indirect("'+tag+'", '+(!empty?'optsOrContent, content':'opts')+')'+
             ' as HtmlTag<'+htmlinterface+'>'+
             '; },\n';
@@ -283,3 +298,4 @@ var output=lines.map(function(line){
 }).join('')
 
 fs.writeFile('tagInterfaces.data',output);
+fs.writeFile('attrTypes.data',attrTypesDefs.join(''));

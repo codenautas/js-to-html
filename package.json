@@ -12,6 +12,7 @@
     }
   ],
   "main": "lib/js-to-html.js",
+  "types": "lib/js-to-html.d.ts",
   "files": [
     "lib"
   ],
