@@ -624,14 +624,16 @@ var validDirectProperties:ValidProperties={
 };
 
 function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfThereAreAttributes?:Content){
-    var attributes:object;
-    var content:Content;
+    var attributes:object={};
+    var content:Content=[];
     if(typeof contentOrAttributes=="object" && !(contentOrAttributes instanceof Array) ){
-        if(!isPlainObject(contentOrAttributes)){
-            throw new Error('jsToHtml.'+tagName+' expects plain object of attributes or array of content');
+        if(contentOrAttributes!=null){
+            if(!isPlainObject(contentOrAttributes)){
+                throw new Error('jsToHtml.'+tagName+' expects plain object of attributes or array of content');
+            }
+            attributes=contentOrAttributes;
+            content=contentIfThereAreAttributes;
         }
-        attributes=contentOrAttributes;
-        content=contentIfThereAreAttributes;
     }else{
         content = contentOrAttributes;
         if(arguments.length>3 || contentIfThereAreAttributes != null){
