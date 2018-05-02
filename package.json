@@ -27,7 +27,7 @@
     "express-session": "~1.15.6",
     "fs-promise": "~2.0.3",
     "istanbul": "~0.4.5",
-    "karma": "~2.0.0",
+    "karma": "~2.0.2",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "~1.1.1",
     "karma-coverage-html-index-reporter": "~1.0.2",
@@ -37,14 +37,14 @@
     "karma-mocha": "~1.3.0",
     "karma-phantomjs-launcher": "~1.0.4",
     "karma-safari-launcher": "~1.0.0",
-    "mocha": "~5.0.4",
-    "moment": "~2.21.0",
+    "mocha": "~5.1.1",
+    "moment": "~2.22.1",
     "phantomjs-prebuilt": "~2.1",
-    "pug": "~2.0.1",
-    "sinon": "~4.4.3",
+    "pug": "~2.0.3",
+    "sinon": "~5.0.2",
     "extension-serve-static": "~0.1.6",
-    "mini-tools": "~0.3.22",
-    "require-bro": "~0.1.10"
+    "mini-tools": "~1.0.0",
+    "require-bro": "~0.1.11"
   },
   "engines": {
     "node": ">= 0.12.0"
