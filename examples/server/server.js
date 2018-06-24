@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs-promise');
 var path = require('path');
-var extensionServeStatic = require('extension-serve-static');
+var serveContent = require('serve-content');
 var MiniTools = require('mini-tools');
 
 var karma;
@@ -64,7 +64,7 @@ function serveErr(req,res,next){
     }
 }
 
-var mime = extensionServeStatic.mime;
+var mime = serveContent.mime;
 
 var validExts=[
     'html',
@@ -73,16 +73,16 @@ var validExts=[
 
 // ajax-best-promise.js
 // 
-app.use('/',extensionServeStatic('./bin', {
+app.use('/',serveContent('./bin', {
     index: ['index.html'], 
     extensions:[''], 
-    staticExtensions:validExts
+    allowedExts:validExts
 }));
 
-app.use('/',extensionServeStatic('./examples/client', {
+app.use('/',serveContent('./examples/client', {
     index: ['index.html'], 
     extensions:[''], 
-    staticExtensions:validExts
+    allowedExts:validExts
 }));
 
 var actualConfig;
