@@ -357,7 +357,7 @@ export class Html extends HtmlBase{
         this.attributes=directObject.attributes
         this.content=directObject.content
     }
-    toHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts):string{
+    toHtmlText(opts?:PrintOpts, recurseOpts?:PrintRecurseOpts):string{
         opts=opts||{};
         recurseOpts=recurseOpts||{};
         recurseOpts.margin=recurseOpts.margin||0;

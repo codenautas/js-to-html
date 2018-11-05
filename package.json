@@ -1,7 +1,7 @@
 {
   "name": "js-to-html",
   "description": "Create HTML text from JS object",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/js-to-html",
@@ -21,13 +21,13 @@
     "body-parser": "~1.18.3",
     "classlist.js": "~1.1.20150312",
     "cookie-parser": "~1.4.3",
-    "es6-promise": "~4.2.4",
+    "es6-promise": "~4.2.5",
     "expect.js": "~0.3.1",
-    "express": "~4.16.3",
+    "express": "~4.16.4",
     "express-session": "~1.15.6",
     "fs-promise": "~2.0.3",
     "istanbul": "~0.4.5",
-    "karma": "~2.0.4",
+    "karma": "~3.1.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "~1.1.2",
     "karma-coverage-html-index-reporter": "~1.0.2",
@@ -41,10 +41,10 @@
     "moment": "~2.22.2",
     "phantomjs-prebuilt": "~2.1",
     "pug": "~2.0.3",
-    "sinon": "~6.0.0",
-    "serve-content": "~0.3.9",
-    "mini-tools": "~1.0.2",
-    "require-bro": "~0.1.11"
+    "sinon": "~7.1.1",
+    "serve-content": "~0.3.10",
+    "mini-tools": "~1.0.4",
+    "require-bro": "~0.1.13"
   },
   "engines": {
     "node": ">= 0.12.0"
