@@ -1,5 +1,5 @@
-export declare type ArrayContent = (HtmlBase | string | HTMLElement)[];
-export declare type Content = string | ArrayContent;
+export declare type ArrayContent = (HtmlBase | string | HTMLElement | null)[];
+export declare type Content = string | ArrayContent | null;
 export declare type Attr4HTMLElement = {
     class?: string;
     id?: string;
@@ -552,7 +552,7 @@ export declare class Html extends HtmlBase {
     };
     content: HtmlBase[];
     constructor(directObject: DirectObject);
-    toHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
+    toHtmlText(opts?: PrintOpts, recurseOpts?: PrintRecurseOpts): string;
     contentToHtmlText(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;
     create(): any;
     toHtmlDoc(opts: PrintOpts, recurseOpts: PrintRecurseOpts): string;

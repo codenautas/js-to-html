@@ -19,8 +19,8 @@ var htmlReservedSymbols:{[key:string]:string}={
     '"' :'&quot;'
 };
 
-export type ArrayContent = (HtmlBase|string|HTMLElement)[]
-export type Content = string|ArrayContent
+export type ArrayContent = (HtmlBase|string|HTMLElement|null)[]
+export type Content = string|ArrayContent|null
 
 export type Attr4HTMLElement = {
     class?:string,
