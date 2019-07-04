@@ -8,7 +8,6 @@ if(typeof document === 'undefined'){
     global.jsToHtml = require('../js-to-html.js');
     global.expect = require('expect.js');
     global.moment = require('moment');
-    global.sinon = require('sinon');
 }
 
 describe('js-to-html', function(){
@@ -391,8 +390,14 @@ describe('js-to-html', function(){
             var html = jsToHtml.html;
             html.insecureModeEnabled = true;
             var htmlCode = 'the html code';
-            html.includeHtmlValidator=sinon.stub();
-            html.includeHtmlValidator.returns(true);
+            html.includeHtmlValidator=function(){
+                html.includeHtmlValidator.callCount=html.includeHtmlValidator.callCount||0;
+                html.includeHtmlValidator.callCount++;
+                if(!html.includeHtmlValidator.firstCall){
+                    html.includeHtmlValidator.firstCall={args: Array.prototype.slice.call(arguments)};
+                }
+                return true;
+            };
             var code = html.includeHtml(htmlCode);
             expect(code).to.eql(direct({htmlCode:htmlCode, validator:html.includeHtmlValidator}));
             expect(code.toHtmlText()).to.eql(htmlCode);

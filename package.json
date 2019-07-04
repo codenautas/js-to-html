@@ -21,12 +21,11 @@
     "body-parser": "~1.19.0",
     "classlist.js": "~1.1.20150312",
     "cookie-parser": "~1.4.4",
-    "es6-promise": "~4.2.6",
+    "es6-promise": "~4.2.8",
     "expect.js": "~0.3.1",
-    "express": "~4.16.4",
-    "express-session": "~1.16.1",
+    "express": "~4.17.1",
+    "express-session": "~1.16.2",
     "fs-promise": "~2.0.3",
-    "istanbul": "~0.4.5",
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "~1.1.2",
@@ -39,17 +38,18 @@
     "karma-safari-launcher": "~1.0.0",
     "mocha": "~6.1.4",
     "moment": "~2.24.0",
+    "nyc": "~14.1.1",
     "phantomjs-prebuilt": "~2.1",
-    "pug": "~2.0.3",
-    "sinon": "~7.3.2",
+    "pug": "~2.0.4",
     "serve-content": "~0.3.11",
-    "mini-tools": "~1.0.7",
+    "mini-tools": "~1.0.9",
     "require-bro": "~0.1.13"
   },
   "engines": {
-    "node": ">= 0.12.0"
+    "node": ">= 8"
   },
   "scripts": {
+    "build": "tsc || echo 'with error'",
     "infinito": "node examples/server/server.js --karma karma.conf.js",
     "test": "node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss": "mocha --reporter spec --bail --check-leaks test/",
