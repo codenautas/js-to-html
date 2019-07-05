@@ -468,6 +468,7 @@ describe('js-to-html', function(){
 });
 
 if(typeof document !== 'undefined'){
+    var arrange = jsToHtml.arrange;
     describe('js-to-dom', function(){
         function control(htmlObject, pairsOrHtml, done){
             try{
@@ -628,4 +629,45 @@ if(typeof document !== 'undefined'){
             expect(div.style.width).to.eql("80%");
         });
     });
+    describe('mutating DOM', function(){
+        var html = jsToHtml.html;
+        var layout
+        beforeEach(function(){
+            layout = document.getElementById('test-layout');
+            if(layout){
+                layout.parentElement.removeChild(layout);
+            }
+            layout = document.createElement('div');
+            document.body.appendChild(layout);
+            layout.id='test-layout';
+            layout.innerHTML="";
+        })
+        it('must create one element in layout',function(){
+            arrange(layout, html.div({id:'one'}, 'the one'));
+            var one = document.getElementById('one');
+            expect(one).to.be.an(HTMLDivElement);
+            expect(one.textContent).to.eql('the one');
+        })
+        it('must create elements in layout',function(){
+            arrange(layout, html.div({id:'one'}, 'the one'));
+            arrange(layout, html.div({id:'two'}, 'the second'));
+            var one = document.getElementById('one');
+            expect(one).to.be.an(HTMLDivElement);
+            var two = document.getElementById('two');
+            expect(two).to.be.an(HTMLDivElement);
+            expect(two.textContent).to.eql('the second');
+        })
+        it('must change attributes of elements',function(){
+            arrange(layout, html.div({id:'one', lang:'es'}, 'first'));
+            var one = document.getElementById('one');
+            arrange(layout, html.div({id:'one', title:'tit1'}, 'second'));
+            var sameOne = document.getElementById('one');
+            console.log(layout.innerHTML);
+            expect(one===sameOne).to.be.ok();
+            console.log(sameOne.outerHTML);
+            expect(sameOne.lang).to.eql('es');
+            expect(one.title).to.eql('tit1');
+            expect(one.textContent).to.eql('second');
+        })
+    })
 }

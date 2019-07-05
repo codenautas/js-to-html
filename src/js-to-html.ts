@@ -335,6 +335,9 @@ export class HtmlBase{
     toHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts):string{
         throw new Error('must implement toHtmlText');
     }
+    createNode():HTMLElement|Text{
+        throw new Error('createNode not implemented')
+    }
     create():HTMLElement|Text{
         throw new Error('create not implemented')
     }
@@ -389,8 +392,11 @@ export class Html extends HtmlBase{
     contentToHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts){
         return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
     }
+    createNode(){
+        return document.createElement(this.tagName);
+    }
     create(){
-        var element:HTMLElement|any = document.createElement(this.tagName);
+        var element:HTMLElement|any = this.createNode();
         Object.keys(this.attributes).map(function(attr){
             var value=this.attributes[attr];
             //console.log("attr", attr, "value", value);
@@ -478,8 +484,11 @@ export class HtmlTextNode extends HtmlBase{
     toHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts){
         return escapeChar(this.textNode);
     }
-    create(){
+    createNode(){
         return document.createTextNode(this.textNode);
+    }
+    create(){
+        return this.createNode();
     }
 }
 
@@ -509,6 +518,57 @@ function internalArrayToHtmlText(listOfObjects:HtmlBase[], opts:PrintOpts, recur
     return listOfObjects.map(function(node){
         return node.toHtmlText(opts,recurseOpts);
     }).join('');
+}
+
+export function arrange(element:HTMLElement, listOfBjects:HtmlBase):void;
+export function arrange(element:HTMLElement, listOfBjects:HtmlBase[]):void;
+export function arrange(element:HTMLElement, listOfBjects:HtmlBase|HtmlBase[]):void{
+    if(!(listOfBjects instanceof Array)){
+        return arrange(element, [listOfBjects]);
+    }
+    // @ts-ignore
+    var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}};
+    listOfBjects.forEach(function(htmlElement, i){
+        var id = htmlElement instanceof HTMLElement ? htmlElement.id : (
+            htmlElement instanceof HtmlTextNode ? null : htmlElement.attributes.id
+        );
+        console.log('htmlElement',id,htmlElement)
+        var domElement = id && jsToHtmlArrange.id[id] || jsToHtmlArrange.position[i];
+        if(!domElement){
+            if(htmlElement instanceof HTMLElement){
+                domElement=htmlElement;
+            }else{
+                domElement=htmlElement.createNode();
+            }
+            if(id){
+                jsToHtmlArrange.id[id]=domElement;
+            }else{
+                jsToHtmlArrange.position[i]=domElement;
+            }
+            element.appendChild(domElement);
+        }else{
+            console.log('encontrado')
+        }
+        if(!(htmlElement instanceof HTMLElement))
+            if(domElement instanceof HTMLElement){
+                console.log('aca',htmlElement.attributes)
+                for(var attr in htmlElement.attributes){
+                    var value = htmlElement.attributes[attr];
+                    if(attr.indexOf('-')<0){
+                        console.log('prop',attr,value)
+                        // @ts-ignore
+                        domElement[attr] = value;
+                    }else{
+                        console.log('attr',attr,value)
+                        domElement.setAttribute(attr, value);
+                    }
+                }
+                arrange(domElement, htmlElement.content)
+            }else if(domElement instanceof Text){
+                domElement.textContent = htmlElement.textNode;
+            }
+        }
+    })
 }
 
 // https://www.typescriptlang.org/play/index.html#src=%0D%0Aclass%20X%20%7B%0D%0A%20%20%20%20constructor(public%20hola%3Astring)%7B%7D%0D%0A%20%20%20%20show()%20%7B%0D%0A%20%20%20%20%20%20%20%20alert(this.hola)%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%7D%0D%0A%0D%0Aclass%20Y%20extends%20X%7B%0D%0A%20%20%20%20constructor(hola_che)%20%7B%0D%0A%20%20%20%20%20%20%20%20super(hola_che%2B%22%20che!%22)%0D%0A%20%20%20%20%7D%0D%0A%7D%0D%0A%0D%0Avar%20t%3Atypeof%20X%20%0D%0A%0D%0At%20%3D%20Y%0D%0A%0D%0Avar%20t1%20%3D%20%7B%0D%0A%20%20%20%20t2%3At%0D%0A%7D%0D%0A%0D%0Avar%20x%20%3D%20new%20t1.t2(%22hola%22))%3B%0D%0A%0D%0Ax.show()%3B
