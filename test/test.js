@@ -662,12 +662,27 @@ if(typeof document !== 'undefined'){
             var one = document.getElementById('one');
             arrange(layout, html.div({id:'one', title:'tit1'}, 'second'));
             var sameOne = document.getElementById('one');
-            console.log(layout.innerHTML);
             expect(one===sameOne).to.be.ok();
             console.log(sameOne.outerHTML);
             expect(sameOne.lang).to.eql('es');
             expect(one.title).to.eql('tit1');
             expect(one.textContent).to.eql('second');
+        })
+        it('must use recursion',function(){
+            arrange(layout, html.div({id:'one', lang:'es'}, [
+                html.label({id:'one.1'}, "one"),
+                html.input({id:'one.2', value:'two'})
+            ]));
+            var one1 = document.getElementById('one.1');
+            arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
+                html.label({id:'one.1'}, "ones"),
+                html.input({id:'one.2', value:'two'}),
+                html.span({id:'one.3'}, "warn"),
+            ]));
+            var sameOne1 = document.getElementById('one.1');
+            console.log(layout.innerHTML);
+            expect(one===sameOne).to.be.ok();
+            expect(one.textContent).to.eql('ones');
         })
     })
 }
