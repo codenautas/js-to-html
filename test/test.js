@@ -248,11 +248,12 @@ describe('js-to-html', function(){
                 direct({tagName:8, content:[], attributes:{valid:true}});
             }).to.throwError(/tagName must be a string/);
         });
-        it('should control attributes with null value', function(){
+        it('should not control attributes with null value', function(){
             this.timeout(9000);
-            expect(function(){
-                direct({tagName:'p', content:[], attributes:{display:null}});
-            }).to.throwError(/attributes must not contain null value/);
+            expect(
+                direct({tagName:'p', content:[], attributes:{id:null}}).toHtmlText()
+            ).to.eql("<p></p>");
+            //attributes can contain null value/;
         });
         it('should not permit de presence of other attributes', function(){
             this.timeout(9000);
@@ -290,12 +291,6 @@ describe('js-to-html', function(){
             expect(function(){
                 html._text()
             }).to.throwError(/textNodes must not contains null/);
-        });
-        it('should reject null in escapeChar by attributes', function(){
-            this.timeout(9000);
-            expect(function(){
-                html.p({'class':null})
-            }).to.throwError(/attributes must not contain null value/);
         });
         it('should reject other objects', function(){
             this.timeout(9000);
@@ -433,6 +428,13 @@ describe('js-to-html', function(){
                 direct({tagName:'div', attributes:{"this-is-special":'yeah'}, content:[]}).toHtmlText()
             ).to.eql(
                 "<div this-is-special=yeah></div>"
+            );
+        })
+        it('must accept $attrs',function(){
+            expect(
+                direct({tagName:'div', attributes:{$attrs:{"this-is-special":'yeah', also:'this'}}, content:[]}).toHtmlText()
+            ).to.eql(
+                "<div this-is-special=yeah also=this></div>"
             );
         })
     });
@@ -670,12 +672,12 @@ if(typeof document !== 'undefined'){
         })
         it('must use recursion',function(){
             arrange(layout, html.div({id:'one', lang:'es'}, [
-                html.label({id:'one.1'}, "one"),
+                html.label({id:'one.1', $attrs:{attr1:1}}, "one"),
                 html.input({id:'one.2', value:'two'})
             ]));
             var one1 = document.getElementById('one.1');
             arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
-                html.label({id:'one.1'}, "ones"),
+                html.label({id:'one.1', $attrs:{attr1:2}}, "ones"),
                 html.input({id:'one.2', value:'two'}),
                 html.span({id:'one.3'}, "warn"),
             ]));
@@ -683,6 +685,7 @@ if(typeof document !== 'undefined'){
             console.log(layout.innerHTML);
             expect(one1===sameOne1).to.be.ok();
             expect(one1.textContent).to.eql('ones');
+            expect(one1.getAttribute('attr1')).to.eql('2');
         })
     })
 }

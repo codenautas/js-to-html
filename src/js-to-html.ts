@@ -25,6 +25,8 @@ export type Content = string|ArrayContent|null
 export type Attr4HTMLElement = {
     class?:string,
     id?:string,
+    $on:{click?:EventListener, blur?:EventListener},
+    $attrs:{[key:string]:string},
     accesskey?:any,autocapitalize?:any,contenteditable?:any,dir?:any,draggable?:any,hidden?:any,inputmode?:any,is?:any,itemid?:any,itemprop?:any,itemref?:any,itemscope?:any,itemtype?:any,lang?:any,nonce?:any,spellcheck?:any,style?:any,tabindex?:any,title?:any,translate?:any
 }
 
@@ -318,19 +320,29 @@ export class HtmlBase{
             }
         }
     }
-    attributesToHtmlText(){
-        var pattNonWordChar=new RegExp(/\W/);
-        return Object.keys(this.attributes).map(function(attrName){
-            var attrVal=this.attributes[attrName];
+    private pattNonWordChar=new RegExp(/\W/)
+    attributesMapToHtmlText(attributeMap:any, inner?:true):string{
+        var esto = this;
+        return Object.keys(attributeMap).map(function(attrName){
+            var attrVal=attributeMap[attrName];
+            if(attrVal==null){
+                return ''
+            }
+            if(attrName=='$attrs' && !inner){
+                return esto.attributesMapToHtmlText(attrVal, true)
+            }
             var textAttrVal=attrVal;
             var attrDefinition=htmlAttributes[attrName] || {listName:false};
             if(attrDefinition.listName && typeof attrVal!=="string"){
                 textAttrVal=attrVal.join(' ');
             } 
             var escapedAttrVal=escapeChar(textAttrVal);
-            var quotingAttrVal=textAttrVal===''||pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
+            var quotingAttrVal=textAttrVal===''||esto.pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+'='+quotingAttrVal;
         },this).join('');
+    }
+    attributesToHtmlText(){
+        return this.attributesMapToHtmlText(this.attributes);
     }
     toHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts):string{
         throw new Error('must implement toHtmlText');
@@ -403,11 +415,15 @@ export class Html extends HtmlBase{
         });
         return element;
     }
-    assignAttr(element:HTMLElement){
-        Object.keys(this.attributes).map(function(attr){
-            var value=this.attributes[attr];
-            if(/-/.test(attr)){
+    assignAttr(element:HTMLElement, attributesMap?:any){
+        let esto = this;
+        let attributes = attributesMap || this.attributes;
+        Object.keys(attributes).map(function(attr){
+            var value=attributes[attr];
+            if(/-/.test(attr) || attributesMap){
                 element.setAttribute(attr, value);
+            }else if(attr=='$attrs'){
+                esto.assignAttr(element, value);
             }else{
                 var defAttr=htmlAttributes[attr];
                 if(('listName' in defAttr) && (typeof value!=="string")){
@@ -604,9 +620,7 @@ var validDirectProperties:ValidProperties={
                         /*jshint forin:true */
                         var attrValue=attributes[attrName];
                         if(attrValue==null){
-                            throw new Error('js-to-html: attributes must not contain null value');
-                        }
-                        if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
+                        }else if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
                             if(pattWhiteSpaces.test(attrValue)){   
                                 throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use classList attribute.');
@@ -623,7 +637,7 @@ var validDirectProperties:ValidProperties={
                     for(var attrName in attributes){
                         /*jshint forin:true */
                         var attrInfo=htmlAttributes[attrName];
-                        if(/-/.test(attrName)){
+                        if(/-/.test(attrName) || attrName=='$on' || attrName=='$attrs'){
                             /*eslint no-empty: 0 */
                         }else if(!attrInfo){
                             throw new Error("inexistent attribute "+JSON.stringify(attrName));
