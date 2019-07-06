@@ -396,31 +396,35 @@ export class Html extends HtmlBase{
         return document.createElement(this.tagName);
     }
     create(){
-        var element:HTMLElement|any = this.createNode();
+        var element:HTMLElement = this.createNode();
+        this.assignAttr(element);
+        this.content.forEach(function(node){
+            element.appendChild(node instanceof HtmlBase?node.create():node);
+        });
+        return element;
+    }
+    assignAttr(element:HTMLElement){
         Object.keys(this.attributes).map(function(attr){
             var value=this.attributes[attr];
-            //console.log("attr", attr, "value", value);
             if(/-/.test(attr)){
                 element.setAttribute(attr, value);
             }else{
                 var defAttr=htmlAttributes[attr];
                 if(('listName' in defAttr) && (typeof value!=="string")){
                     Array.prototype.forEach.call(value,function(subValue:any){
+                        // @ts-ignore
                         element[defAttr.listName].add(subValue);
                     });
                 }else{
                     if(defAttr.noProperty) {
                         element.setAttribute(defAttr.idl, value);
                     }else{
+                        // @ts-ignore
                         element[defAttr.idl] = value;
                     }
                 }
             }
         },this);
-        this.content.forEach(function(node){
-            element.appendChild(node instanceof HtmlBase?node.create():node);
-        });
-        return element;
     }
     toHtmlDoc(opts:PrintOpts,recurseOpts:PrintRecurseOpts){
         opts = opts||{};
@@ -520,19 +524,18 @@ function internalArrayToHtmlText(listOfObjects:HtmlBase[], opts:PrintOpts, recur
     }).join('');
 }
 
-export function arrange(element:HTMLElement, listOfBjects:HtmlBase):void;
-export function arrange(element:HTMLElement, listOfBjects:HtmlBase[]):void;
-export function arrange(element:HTMLElement, listOfBjects:HtmlBase|HtmlBase[]):void{
-    if(!(listOfBjects instanceof Array)){
-        return arrange(element, [listOfBjects]);
+export function arrange(element:HTMLElement, oneObject:HtmlBase):void;
+export function arrange(element:HTMLElement, listOfObjects:HtmlBase[]):void;
+export function arrange(element:HTMLElement, listOfObjects:HtmlBase|HtmlBase[]):void{
+    if(!(listOfObjects instanceof Array)){
+        return arrange(element, [listOfObjects]);
     }
     // @ts-ignore
     var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}};
-    listOfBjects.forEach(function(htmlElement, i){
+    listOfObjects.forEach(function(htmlElement, i){
         var id = htmlElement instanceof HTMLElement ? htmlElement.id : (
             htmlElement instanceof HtmlTextNode ? null : htmlElement.attributes.id
         );
-        console.log('htmlElement',id,htmlElement)
         var domElement = id && jsToHtmlArrange.id[id] || jsToHtmlArrange.position[i];
         if(!domElement){
             if(htmlElement instanceof HTMLElement){
@@ -546,23 +549,10 @@ export function arrange(element:HTMLElement, listOfBjects:HtmlBase|HtmlBase[]):v
                 jsToHtmlArrange.position[i]=domElement;
             }
             element.appendChild(domElement);
-        }else{
-            console.log('encontrado')
         }
-        if(!(htmlElement instanceof HTMLElement))
+        if(!(htmlElement instanceof HTMLElement)){
             if(domElement instanceof HTMLElement){
-                console.log('aca',htmlElement.attributes)
-                for(var attr in htmlElement.attributes){
-                    var value = htmlElement.attributes[attr];
-                    if(attr.indexOf('-')<0){
-                        console.log('prop',attr,value)
-                        // @ts-ignore
-                        domElement[attr] = value;
-                    }else{
-                        console.log('attr',attr,value)
-                        domElement.setAttribute(attr, value);
-                    }
-                }
+                htmlElement.assignAttr(domElement);
                 arrange(domElement, htmlElement.content)
             }else if(domElement instanceof Text){
                 domElement.textContent = htmlElement.textNode;

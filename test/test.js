@@ -681,8 +681,8 @@ if(typeof document !== 'undefined'){
             ]));
             var sameOne1 = document.getElementById('one.1');
             console.log(layout.innerHTML);
-            expect(one===sameOne).to.be.ok();
-            expect(one.textContent).to.eql('ones');
+            expect(one1===sameOne1).to.be.ok();
+            expect(one1.textContent).to.eql('ones');
         })
     })
 }
