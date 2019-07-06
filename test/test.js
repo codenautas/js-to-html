@@ -672,12 +672,12 @@ if(typeof document !== 'undefined'){
         })
         it('must use recursion',function(){
             arrange(layout, html.div({id:'one', lang:'es'}, [
-                html.label({id:'one.1', $attrs:{attr1:1}}, "one"),
+                html.label({id:'one.1', $attrs:{attr1:1, attr2:3}}, "one"),
                 html.input({id:'one.2', value:'two'})
             ]));
             var one1 = document.getElementById('one.1');
             arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
-                html.label({id:'one.1', $attrs:{attr1:2}}, "ones"),
+                html.label({id:'one.1', $attrs:{attr1:2, attr2:null}}, "ones"),
                 html.input({id:'one.2', value:'two'}),
                 html.span({id:'one.3'}, "warn"),
             ]));
@@ -686,6 +686,7 @@ if(typeof document !== 'undefined'){
             expect(one1===sameOne1).to.be.ok();
             expect(one1.textContent).to.eql('ones');
             expect(one1.getAttribute('attr1')).to.eql('2');
+            expect(one1.hasAttribute('attr2')).to.not.ok();
         })
     })
 }

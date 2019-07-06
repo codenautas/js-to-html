@@ -415,13 +415,20 @@ export class Html extends HtmlBase{
         });
         return element;
     }
+    setOrResetAttribute(element:HTMLElement, attr:string, valueOrNull:null|string){
+        if(valueOrNull!=null){
+            element.setAttribute(attr,valueOrNull);
+        }else{
+            element.removeAttribute(attr);
+        }
+    }
     assignAttr(element:HTMLElement, attributesMap?:any){
         let esto = this;
         let attributes = attributesMap || this.attributes;
         Object.keys(attributes).map(function(attr){
             var value=attributes[attr];
             if(/-/.test(attr) || attributesMap){
-                element.setAttribute(attr, value);
+                esto.setOrResetAttribute(element, attr, value);
             }else if(attr=='$attrs'){
                 esto.assignAttr(element, value);
             }else{
@@ -433,7 +440,7 @@ export class Html extends HtmlBase{
                     });
                 }else{
                     if(defAttr.noProperty) {
-                        element.setAttribute(defAttr.idl, value);
+                        esto.setOrResetAttribute(element, defAttr.idl, value);
                     }else{
                         // @ts-ignore
                         element[defAttr.idl] = value;
