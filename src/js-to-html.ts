@@ -25,8 +25,8 @@ export type Content = string|ArrayContent|null
 export type Attr4HTMLElement = {
     class?:string,
     id?:string,
-    $on:{click?:EventListener, blur?:EventListener},
-    $attrs:{[key:string]:string},
+    $on?:{click?:EventListener, blur?:EventListener},
+    $attrs?:{[key:string]:string},
     accesskey?:any,autocapitalize?:any,contenteditable?:any,dir?:any,draggable?:any,hidden?:any,inputmode?:any,is?:any,itemid?:any,itemprop?:any,itemref?:any,itemscope?:any,itemtype?:any,lang?:any,nonce?:any,spellcheck?:any,style?:any,tabindex?:any,title?:any,translate?:any
 }
 
@@ -331,6 +331,9 @@ export class HtmlBase{
             if(attrName=='$attrs' && !inner){
                 return esto.attributesMapToHtmlText(attrVal, true)
             }
+            if(attrName=='$on' && !inner){
+                throw new Error('listener can not be toHtmlTexted');
+            }
             var textAttrVal=attrVal;
             var attrDefinition=htmlAttributes[attrName] || {listName:false};
             if(attrDefinition.listName && typeof attrVal!=="string"){
@@ -431,6 +434,17 @@ export class Html extends HtmlBase{
                 esto.setOrResetAttribute(element, attr, value);
             }else if(attr=='$attrs'){
                 esto.assignAttr(element, value);
+            }else if(attr=='$on'){
+                // @ts-ignore
+                var $on=element.$on=element.$on||{};
+                for(var eventName in value){
+                    if(eventName in $on){
+                        element.removeEventListener(eventName, $on[eventName])
+                    }
+                    element.addEventListener(eventName, value[eventName])
+                    $on[eventName]=value[eventName];
+                    // element["on"+eventName] = value[eventName];
+                }
             }else{
                 var defAttr=htmlAttributes[attr];
                 if(('listName' in defAttr) && (typeof value!=="string")){

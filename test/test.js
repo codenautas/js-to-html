@@ -689,4 +689,44 @@ if(typeof document !== 'undefined'){
             expect(one1.hasAttribute('attr2')).to.not.ok();
         })
     })
+    describe('eventListeners', function(){
+        var html = jsToHtml.html;;
+        var div;
+        var clickCount;
+        beforeEach(function(){
+            clickCount=0;
+            div=html.div({id:'clickeable_div', $on:{click:function(){clickCount++}}});
+        })
+        it('must reject eventListener in txtToHtml', function(){
+            expect(function(){
+                div.toHtmlText();
+            }).to.throwError(/listener can not be toHtmlTexted/);
+        });
+        it('must assign listeners once', function(){
+            arrange(document.body, div);
+            arrange(document.body, div);
+            var element = document.getElementById('clickeable_div');
+            element.click();
+            expect(clickCount).to.eql(1);
+        });
+        it('must assign listeners once with clousures', function(){
+            var xs=[{name:'one'},{name:'two'}];
+            var z=0;
+            var message;
+            xs.forEach(function(x){
+                var y=0;
+                arrange(document.body, html.div({id:'other_clickeable_div', $on:{click:function(){
+                    z++;
+                    y++;
+                    clickCount++;
+                    message='counters '+x.name+':'+y+clickCount;
+                }}}));
+            })
+            var element = document.getElementById('other_clickeable_div');
+            element.click();
+            expect(z).to.eql(1);
+            expect(clickCount).to.eql(1);
+            expect(message).to.eql('counters two:11');
+        });
+    });
 }
