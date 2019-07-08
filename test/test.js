@@ -665,7 +665,6 @@ if(typeof document !== 'undefined'){
             arrange(layout, html.div({id:'one', title:'tit1'}, 'second'));
             var sameOne = document.getElementById('one');
             expect(one===sameOne).to.be.ok();
-            console.log(sameOne.outerHTML);
             expect(sameOne.lang).to.eql('es');
             expect(one.title).to.eql('tit1');
             expect(one.textContent).to.eql('second');
@@ -682,7 +681,6 @@ if(typeof document !== 'undefined'){
                 html.span({id:'one.3'}, "warn"),
             ]));
             var sameOne1 = document.getElementById('one.1');
-            console.log(layout.innerHTML);
             expect(one1===sameOne1).to.be.ok();
             expect(one1.textContent).to.eql('ones');
             expect(one1.getAttribute('attr1')).to.eql('2');
@@ -728,5 +726,10 @@ if(typeof document !== 'undefined'){
             expect(clickCount).to.eql(1);
             expect(message).to.eql('counters two:11');
         });
+        it("can receive undefined $attrs an $on", function(){
+            var $attrs;
+            var $on;
+            arrange(document.body, html.div({$attrs:$attrs, $on:$on}));
+        })
     });
 }

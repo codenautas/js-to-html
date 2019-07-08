@@ -433,17 +433,21 @@ export class Html extends HtmlBase{
             if(/-/.test(attr) || attributesMap){
                 esto.setOrResetAttribute(element, attr, value);
             }else if(attr=='$attrs'){
-                esto.assignAttr(element, value);
+                if(value != null){
+                    esto.assignAttr(element, value);
+                }
             }else if(attr=='$on'){
-                // @ts-ignore
-                var $on=element.$on=element.$on||{};
-                for(var eventName in value){
-                    if(eventName in $on){
-                        element.removeEventListener(eventName, $on[eventName])
+                if(value != null){
+                    // @ts-ignore
+                    var $on=element.$on=element.$on||{};
+                    for(var eventName in value){
+                        if(eventName in $on){
+                            element.removeEventListener(eventName, $on[eventName])
+                        }
+                        element.addEventListener(eventName, value[eventName])
+                        $on[eventName]=value[eventName];
+                        // element["on"+eventName] = value[eventName];
                     }
-                    element.addEventListener(eventName, value[eventName])
-                    $on[eventName]=value[eventName];
-                    // element["on"+eventName] = value[eventName];
                 }
             }else{
                 var defAttr=htmlAttributes[attr];
