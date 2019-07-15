@@ -686,6 +686,30 @@ if(typeof document !== 'undefined'){
             expect(one1.getAttribute('attr1')).to.eql('2');
             expect(one1.hasAttribute('attr2')).to.not.ok();
         })
+        it('must use recursion and accept positional elements',function(){
+            arrange(layout, html.div({id:'one', lang:'es'}, [
+                html.label("zero"),
+                html.label({id:'one.1', $attrs:{attr1:1, attr2:3}}, "one"),
+                "text1",
+                html.input({value:'two'})
+            ]));
+            var one1 = document.getElementById('one.1');
+            arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
+                html.label({class:'ZERO'}, "zero"),
+                html.label({id:'one.1', $attrs:{attr1:2, attr2:null}}, "ones"),
+                "text2",
+                html.input({value:'two', class:'TWO'}),
+                html.span({id:'one.3'}, "warn"),
+            ]));
+            var sameOne1 = document.getElementById('one.1');
+            expect(one1===sameOne1).to.be.ok();
+            expect(one1.textContent).to.eql('ones');
+            expect(one1.getAttribute('attr1')).to.eql('2');
+            expect(one1.hasAttribute('attr2')).to.not.ok();
+            var one = document.getElementById('one');
+            expect(one.innerHTML).to.eql('<label class="ZERO">zero</label><label id="one.1" attr1="2">ones</label>text2<input class="TWO"><span id="one.3">warn</span>')
+            expect(one.childNodes[3].value).to.eql('two')
+        })
     })
     describe('eventListeners', function(){
         var html = jsToHtml.html;;
