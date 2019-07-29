@@ -412,41 +412,45 @@ export class Html extends HtmlBase{
     }
     create(){
         var element:HTMLElement = this.createNode();
-        this.assignAttr(element);
+        this.assignAttr(element, null, false);
         this.content.forEach(function(node){
             element.appendChild(node instanceof HtmlBase?node.create():node);
         });
         return element;
     }
-    setOrResetAttribute(element:HTMLElement, attr:string, valueOrNull:null|string){
-        if(valueOrNull!=null){
-            element.setAttribute(attr,valueOrNull);
-        }else{
-            element.removeAttribute(attr);
+    setOrResetAttribute(element:HTMLElement, attr:string, valueOrNull:null|string, testFirst:boolean){
+        if(!testFirst || valueOrNull == null && element.hasAttribute(attr) || valueOrNull != element.getAttribute(attr)){
+            if(valueOrNull!=null){
+                element.setAttribute(attr,valueOrNull);
+            }else{
+                element.removeAttribute(attr);
+            }
         }
     }
-    assignAttr(element:HTMLElement, attributesMap?:any){
+    assignAttr(element:HTMLElement, attributesMap:any, testFirst:boolean){
         let esto = this;
         let attributes = attributesMap || this.attributes;
         Object.keys(attributes).map(function(attr){
             var value=attributes[attr];
             if(/-/.test(attr) || attributesMap){
-                esto.setOrResetAttribute(element, attr, value);
+                esto.setOrResetAttribute(element, attr, value, testFirst);
             }else if(attr=='$attrs'){
                 if(value != null){
-                    esto.assignAttr(element, value);
+                    esto.assignAttr(element, value, testFirst);
                 }
             }else if(attr=='$on'){
                 if(value != null){
                     // @ts-ignore
                     var $on=element.$on=element.$on||{};
                     for(var eventName in value){
-                        if(eventName in $on){
-                            element.removeEventListener(eventName, $on[eventName])
+                        if(!testFirst || $on[eventName] != value[eventName]){
+                            if(eventName in $on){
+                                element.removeEventListener(eventName, $on[eventName])
+                            }
+                            element.addEventListener(eventName, value[eventName])
+                            $on[eventName]=value[eventName];
+                            // element["on"+eventName] = value[eventName];
                         }
-                        element.addEventListener(eventName, value[eventName])
-                        $on[eventName]=value[eventName];
-                        // element["on"+eventName] = value[eventName];
                     }
                 }
             }else{
@@ -458,10 +462,13 @@ export class Html extends HtmlBase{
                     });
                 }else{
                     if(defAttr.noProperty) {
-                        esto.setOrResetAttribute(element, defAttr.idl, value);
+                        esto.setOrResetAttribute(element, defAttr.idl, value, testFirst);
                     }else{
-                        // @ts-ignore
-                        element[defAttr.idl] = value;
+                        // @ts-ignore // no le gusta indexar HTML
+                        if(!testFirst || element[defAttr.idl] != value){
+                            // @ts-ignore // no le gusta indexar HTML
+                            element[defAttr.idl] = value;
+                        }
                     }
                 }
             }
@@ -596,7 +603,9 @@ export function arrange(element:HTMLElement, listOfObjects:HtmlBase|HtmlBase[]):
                 htmlElement.assignAttr(domElement);
                 arrange(domElement, htmlElement.content)
             }else if(domElement instanceof Text){
-                domElement.textContent = htmlElement.textNode;
+                if(domElement.textContent != htmlElement.textNode){
+                    domElement.textContent = htmlElement.textNode;
+                }
             }
         }
     })
