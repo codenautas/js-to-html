@@ -580,6 +580,7 @@ export function arrange(element:HTMLElement, listOfObjects:HtmlBase|HtmlBase[]):
     }
     // @ts-ignore
     var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}};
+    var pending:Node[] = Array.prototype.slice.call(element.childNodes,0);
     listOfObjects.forEach(function(htmlElement, i){
         var id = htmlElement instanceof HTMLElement ? htmlElement.id : (
             htmlElement instanceof HtmlTextNode ? null : htmlElement.attributes.id
@@ -597,17 +598,28 @@ export function arrange(element:HTMLElement, listOfObjects:HtmlBase|HtmlBase[]):
                 jsToHtmlArrange.position[i]=domElement;
             }
             element.appendChild(domElement);
+        }else{
+            var index = pending.indexOf(domElement);
+            if(index >= 0){
+                pending.splice(index, 1);
+            }
         }
         if(!(htmlElement instanceof HTMLElement)){
             if(domElement instanceof HTMLElement){
                 htmlElement.assignAttr(domElement);
                 arrange(domElement, htmlElement.content)
+                if(htmlElement.content.length==0 && domElement.childNodes.length){
+                    domElement.innerHTML="";
+                }
             }else if(domElement instanceof Text){
                 if(domElement.textContent != htmlElement.textNode){
                     domElement.textContent = htmlElement.textNode;
                 }
             }
         }
+    })
+    pending.forEach(function(childToDelete:Node){
+        element.removeChild(childToDelete);
     })
 }
 
