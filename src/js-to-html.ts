@@ -1,5 +1,3 @@
-import { jSXExpressionContainer } from "babel-types";
-
 "use strict";
 
 function isPlainObject(x:any):boolean{

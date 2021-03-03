@@ -1,13 +1,17 @@
 language: node_js
+dist: xenial
+services:
+  - xvfb
 node_js:
-  - "10"
-  - "12"
-  - "13"
+  - "14"
+addons:
+  firefox: "49.0"
 matrix:
   fast_finish: true
 script: "npm run-script test"
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - sleep 2
   - npm run build
 after_script: "cp ./coverage/Fire*/lcov.info ./coverage && ls -cal ./coverage && npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"

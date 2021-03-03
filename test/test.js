@@ -651,10 +651,18 @@ if(typeof document !== 'undefined'){
             expect(one.textContent).to.eql('the one');
         })
         it('must create elements in layout',function(){
+            arrange(layout, [html.div({id:'one'}, 'the one'), html.div({id:'two'}, 'the second')]);
+            var one = document.getElementById('one');
+            expect(one).to.be.an(HTMLDivElement);
+            var two = document.getElementById('two');
+            expect(two).to.be.an(HTMLDivElement);
+            expect(two.textContent).to.eql('the second');
+        })
+        it('must create delete not mentioned',function(){
             arrange(layout, html.div({id:'one'}, 'the one'));
             arrange(layout, html.div({id:'two'}, 'the second'));
             var one = document.getElementById('one');
-            expect(one).to.be.an(HTMLDivElement);
+            expect(one).to.be(null);
             var two = document.getElementById('two');
             expect(two).to.be.an(HTMLDivElement);
             expect(two.textContent).to.eql('the second');
