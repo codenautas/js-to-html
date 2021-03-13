@@ -22,6 +22,7 @@ module.exports = function(config) {
       'node_modules/moment/min/moment-with-locales.min.js',
       'node_modules/require-bro/lib/require-bro.js',
       'node_modules/sinon/pkg/sinon.js',
+      'node_modules/best-globals/best-globals.js',
       'lib/js-to-html.js',
       'test/*.js'
     ],

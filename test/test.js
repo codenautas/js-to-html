@@ -1,6 +1,9 @@
 "use strict";
 
+var esIE=/\.NET/.test(navigator.userAgent);
+
 var jsToHtml = require('js-to-html')
+var bestGlobals = require('best-globals');
 
 var moment = require('moment')
 
@@ -615,6 +618,22 @@ if(typeof document !== 'undefined'){
                 );
             });
         });
+        describe('svg', function(){
+            var html = jsToHtml.html;
+            beforeEach(function(){
+            });
+            it('should render an element with content', function(done){
+                var svgTxt=esIE?'<svg xmlns="http://www.w3.org/2000/svg" class="one" id="id-svg" viewbox="0 0 100 200"><path id="path-id" d="M 19 13 h -6 v 6 h -2 v -6 H 5 v -2 h 6 V 5 h 2 v 6 h 6 v 2 Z" /></svg>':
+                    '<svg id="id-svg" class="one" viewbox="0 0 100 200"><path id="path-id" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>';
+                control(
+                    html.svg({id:'id-svg', class:'one', viewbox:"0 0 100 200"},[
+                        html.path({id:'path-id', d:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'})
+                    ]),
+                    svgTxt,
+                    done
+                );
+            });
+        });
     });
     describe('mixed objects', function(){
         it('must accept DOMElements in html element list', function(){
@@ -679,12 +698,12 @@ if(typeof document !== 'undefined'){
         })
         it('must use recursion',function(){
             arrange(layout, html.div({id:'one', lang:'es'}, [
-                html.label({id:'one.1', $attrs:{attr1:1, attr2:3}}, "one"),
+                html.label({id:'one.1', class:'class.1', $attrs:{attr1:1, attr2:3}}, "one"),
                 html.input({id:'one.2', value:'two'})
             ]));
             var one1 = document.getElementById('one.1');
             arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
-                html.label({id:'one.1', $attrs:{attr1:2, attr2:null}}, "ones"),
+                html.label({id:'one.1', class:'class.2', $attrs:{attr1:2, attr2:null}}, "ones"),
                 html.input({id:'one.2', value:'two'}),
                 html.span({id:'one.3'}, "warn"),
             ]));
@@ -693,6 +712,7 @@ if(typeof document !== 'undefined'){
             expect(one1.textContent).to.eql('ones');
             expect(one1.getAttribute('attr1')).to.eql('2');
             expect(one1.hasAttribute('attr2')).to.not.ok();
+            expect(one1.className).to.eql('class.2');
         })
         it('must use recursion and accept positional elements',function(){
             arrange(layout, html.div({id:'one', lang:'es'}, [
@@ -717,6 +737,52 @@ if(typeof document !== 'undefined'){
             var one = document.getElementById('one');
             expect(one.innerHTML).to.eql('<label class="ZERO">zero</label><label id="one.1" attr1="2">ones</label>text2<input class="TWO"><span id="one.3">warn</span>')
             expect(one.childNodes[3].value).to.eql('two')
+        });
+        it("must work with svg v2", function(){
+            this.timeout(9000);
+            arrange(layout,html.svg({id:'svg1', class:'one', viewbox:"0 0 100 200"},[
+                html.path({id:'svg2', d:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z'})
+            ]));
+            return bestGlobals.sleep(400).then(function(){
+                var svg = document.querySelector('#svg1');
+                // var svg = document.getElementsByTagNameNS("http://www.w3.org/2000/svg", 'svg')[0];
+                if(!esIE){
+                    expect(svg.constructor.name).to.eql('SVGSVGElement');
+                }
+                // var path1 = svg.children[0];
+                var path1 = svg.getElementById('svg2');
+                if(!esIE){
+                    expect(path1.constructor.name).to.eql('SVGPathElement');
+                }
+                expect(path1.id).to.eql('svg2');
+                var path1d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z';
+                if(!esIE){
+                    expect(path1.getAttribute('d')).to.eql(path1d);
+                }else{
+                    expect(path1.getAttribute('d').replace(/\s+/g,'')).to.eql(path1d.replace(/\s+/g,''));
+                }
+                arrange(layout,html.svg({id:'svg1', class:'one', viewbox:"0 0 100 200"},[
+                    html.path({id:'svg2', d:'M19 13h-6v6h-2v-6Z'})
+                ]));
+                return bestGlobals.sleep(400).then(function(){
+                    var svgL = layout.children[0]
+                    expect(svgL==svg).to.ok();
+                    var id2 = document.querySelector('#svg1');
+                    var path2 = id2.getElementById('svg2');
+                    expect(svg===id2).to.ok();
+                    expect(path1===path2).to.ok();
+                    path1d='M19 13h-6v6h-2v-6Z';
+                    if(!esIE){
+                        expect(path1.getAttribute('d')).to.eql(path1d);
+                    }else{
+                        expect(path1.getAttribute('d').replace(/\s+/g,'')).to.eql(path1d.replace(/\s+/g,''));
+                    }
+                    if(!esIE){
+                        expect(svg.innerHTML).to.eql('<path id="svg2" d="M19 13h-6v6h-2v-6Z"></path>')
+                        expect(path1.constructor.name).to.eql('SVGPathElement')
+                    }
+                });
+            });
         })
     })
     describe('eventListeners', function(){

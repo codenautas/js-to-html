@@ -1,5 +1,5 @@
 
-var fs=require('fs');
+var fs=require('fs').promises;
 
 // https://html.spec.whatwg.org/multipage/indices.html#element-interfaces
 
@@ -228,8 +228,11 @@ ul	List	flow; palpable*	flow	li; script-supporting elements	globals	HTMLUListEle
 var	Variable	flow; phrasing; palpable	phrasing	phrasing	globals	HTMLElement
 video	Video player	flow; phrasing; embedded; interactive; palpable	phrasing	source*; track*; transparent*	globals; src; crossorigin; poster; preload; autoplay; playsinline; loop; muted; controls; width; height	HTMLVideoElement
 wbr	Line breaking opportunity	flow; phrasing	phrasing	empty	globals	HTMLElement`
-.replace(/MathML\s+/g,'')
-.replace(/SVG\s+/g,'');
+.replace(/MathML math/g,'math')
+.replace(/SVG svg/g,'svg')
+.replace(/per \[SVG\]	per \[SVG\]/,'svg	focusable; viewBox; aria-hidden')+`
+circle	SVG path	svg	svg	empty	cx; cy; r	SVGCircleElement
+path	SVG path	svg	svg	empty	d	SVGPathElement`
 
 var globalAttributes=`class
 id
@@ -269,12 +272,9 @@ var output=lines.map(function(line){
     var [tags,description,category,parents,children,attributes,htmlinterface]=line.split(/\t/);
     var empty = children==="empty"
     return tags.split(/,\s*/).map(function(tag){
-        if(/per\s+\[\w+\]/.test(attributes)){
-            return null;
-        }
-        if(htmlinterface=='HTMLElement'){
-            return ;
-        }
+        // if(htmlinterface=='HTMLElement'){
+        //     return ;
+        // }
         var attrTypeName='Attr4'+htmlinterface;
         if(!(attrTypeName in attrTypes)){
             var attrList = (attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).filter(function(attribute){
