@@ -111,7 +111,7 @@ jsToHtml.htmlAttributes={
             "HTML elements": {"description": "Classes to which the element belongs","value": "Set of space-separated tokens"}
         },
         "idl": "className",
-        "rejectSpaces": true,
+        "rejectSpaces": false,
         "listName": "classList",
         "reserved": true
     },

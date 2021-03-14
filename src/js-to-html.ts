@@ -82,7 +82,7 @@ export interface Attr4HTMLSlotElement extends Attr4HTMLElement {name?:any,}
 export interface Attr4HTMLSourceElement extends Attr4HTMLElement {src?:any,"type srcset"?:any,sizes?:any,media?:any,}
 export interface Attr4HTMLSpanElement extends Attr4HTMLElement {}
 export interface Attr4HTMLStyleElement extends Attr4HTMLElement {media?:any,}
-export interface Attr4SVGSVGElement extends Attr4HTMLElement {focusable?:any,viewBox?:any,"aria-hidden"?:any,}
+export interface Attr4SVGSVGElement extends Attr4HTMLElement {focusable?:any,viewbox?:any,"aria-hidden"?:any,}
 export interface Attr4HTMLTableElement extends Attr4HTMLElement {}
 export interface Attr4HTMLTableSectionElement extends Attr4HTMLElement {}
 export interface Attr4HTMLTableCellElement extends Attr4HTMLElement {colspan?:any,rowspan?:any,headers?:any,}
@@ -681,7 +681,7 @@ var validDirectProperties:ValidProperties={
                         }else if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
                             if(pattWhiteSpaces.test(attrValue)){   
-                                throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use classList attribute.');
+                                throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use an array of attributes.');
                             }
                             if(attrValue instanceof Array){
                                 attrValue = attrValue.join('');
@@ -1034,7 +1034,7 @@ export let htmlAttributes:HtmlAttributes={
             "HTML elements": {"description": "Classes to which the element belongs","value": "Set of space-separated tokens"}
         },
         "idl": "className",
-        "rejectSpaces": true,
+        "rejectSpaces": false,
         "listName": "classList",
         "reserved": true
     },
@@ -1830,7 +1830,7 @@ export let htmlAttributes:HtmlAttributes={
         "tags": {
             "svg": {"description": "SVG", "value":"svg"}
         },
-        "idl": "viewbox",
+        "idl": "viewBox",
         "noProperty": true
     },
 };

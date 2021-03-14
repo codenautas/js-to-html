@@ -186,11 +186,12 @@ describe('js-to-html', function(){
                 "<p title='esto &lt; esto &amp; &gt; aquello &#39;sí&#39; y &quot;no&quot;'></p>"
             );
         });
-        it('should control space in class atribute', function(){
-            this.timeout(9000);
-            expect(function(){
-                html.p({"class":'three class names'},'text')
-            }).to.throwError(/class attribute could not contain spaces/);
+        it('should accpet space in class atribute', function(){
+            expect(
+                html.p({"class":'three class names'},'text').toHtmlText()
+            ).to.eql(
+                "<p class='three class names'>text</p>"
+            );
         });
         it('should not admit an invalid element', function(){
             this.timeout(9000);

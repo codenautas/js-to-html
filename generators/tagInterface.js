@@ -230,7 +230,7 @@ video	Video player	flow; phrasing; embedded; interactive; palpable	phrasing	sour
 wbr	Line breaking opportunity	flow; phrasing	phrasing	empty	globals	HTMLElement`
 .replace(/MathML math/g,'math')
 .replace(/SVG svg/g,'svg')
-.replace(/per \[SVG\]	per \[SVG\]/,'svg	focusable; viewBox; aria-hidden')+`
+.replace(/per \[SVG\]	per \[SVG\]/,'svg	focusable; viewbox; aria-hidden')+`
 circle	SVG path	svg	svg	empty	cx; cy; r	SVGCircleElement
 path	SVG path	svg	svg	empty	d	SVGPathElement`
 

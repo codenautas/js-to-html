@@ -52,7 +52,7 @@ export interface Attr4HTMLSlotElement extends Attr4HTMLElement {name?:any,}
 export interface Attr4HTMLSourceElement extends Attr4HTMLElement {src?:any,"type srcset"?:any,sizes?:any,media?:any,}
 export interface Attr4HTMLSpanElement extends Attr4HTMLElement {}
 export interface Attr4HTMLStyleElement extends Attr4HTMLElement {media?:any,}
-export interface Attr4SVGSVGElement extends Attr4HTMLElement {focusable?:any,viewBox?:any,"aria-hidden"?:any,}
+export interface Attr4SVGSVGElement extends Attr4HTMLElement {focusable?:any,viewbox?:any,"aria-hidden"?:any,}
 export interface Attr4HTMLTableElement extends Attr4HTMLElement {}
 export interface Attr4HTMLTableSectionElement extends Attr4HTMLElement {}
 export interface Attr4HTMLTableCellElement extends Attr4HTMLElement {colspan?:any,rowspan?:any,headers?:any,}
