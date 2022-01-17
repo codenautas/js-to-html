@@ -97,10 +97,14 @@ export interface Attr4HTMLVideoElement extends Attr4HTMLElement {src?:any,crosso
 export interface Attr4SVGCircleElement extends Attr4HTMLElement {cx?:any,cy?:any,r?:any,}
 export interface Attr4SVGPathElement extends Attr4HTMLElement {d?:any}
 
+var auditArrange:undefined | ((what:string, setting:boolean)=>void);
+
 export var html={
     defaultTitle:"",
     insecureModeEnabled:true,
     mandatoryTitle:true,
+    optimizingArrange:true,
+    auditArrange,
     _text(text:string){
         return direct({textNode:text})
     },
@@ -430,7 +434,9 @@ export class Html extends HtmlBase{
         return element;
     }
     setOrResetAttribute(element:HTMLElement|SVGElement, attr:string, valueOrNull:null|string, testFirst:boolean){
+        html.auditArrange?.('attr.mod', false);
         if(!testFirst || valueOrNull == null && element.hasAttribute(attr) || valueOrNull != element.getAttribute(attr)){
+            html.auditArrange?.('attr.mod', true);
             if(valueOrNull!=null){
                 element.setAttribute(attr,valueOrNull);
             }else{
@@ -455,7 +461,9 @@ export class Html extends HtmlBase{
                     // @ts-ignore
                     var $on=element.$on=element.$on||{};
                     for(var eventName in value){
+                        html.auditArrange?.('attr.on', false);
                         if(!testFirst || $on[eventName] != value[eventName]){
+                            html.auditArrange?.('attr.on', true);
                             if(eventName in $on){
                                 element.removeEventListener(eventName, $on[eventName])
                             }
@@ -469,6 +477,7 @@ export class Html extends HtmlBase{
                 var defAttr=htmlAttributes[attr];
                 if(('listName' in defAttr) && (typeof value!=="string")){
                     Array.prototype.forEach.call(value,function(subValue:any){
+                        html.auditArrange?.('attr.add', true);
                         // @ts-ignore
                         element[defAttr.listName].add(subValue);
                     });
@@ -478,6 +487,7 @@ export class Html extends HtmlBase{
                     }else{
                         // @ts-ignore // no le gusta indexar HTML
                         if(!testFirst || element[defAttr.idl] != value){
+                            html.auditArrange?.('attr.set', true);
                             // @ts-ignore // no le gusta indexar HTML
                             element[defAttr.idl] = value;
                         }
@@ -591,24 +601,30 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
         return arrange(element, [listOfObjects]);
     }
     // @ts-ignore
-    var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}};
+    var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}, idSource:{}, positionSource:{}};
     var pending:Node[] = Array.prototype.slice.call(element.childNodes,0);
     listOfObjects.forEach(function(htmlElement, i){
         var id = htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement ? htmlElement.id : (
             htmlElement instanceof HtmlTextNode ? null : htmlElement.attributes.id
         );
         var domElement = id && jsToHtmlArrange.id[id] || jsToHtmlArrange.position[i];
+        var source =  id && jsToHtmlArrange.idSource[id] || jsToHtmlArrange.positionSource[i];
         if(!domElement){
             if(htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement){
+                html.auditArrange?.('existing', true);
                 domElement=htmlElement;
             }else{
+                html.auditArrange?.('creating', true);
                 domElement=htmlElement.createNode();
             }
             if(id){
                 jsToHtmlArrange.id[id]=domElement;
+                jsToHtmlArrange.idSource[id]=htmlElement;
             }else{
                 jsToHtmlArrange.position[i]=domElement;
+                jsToHtmlArrange.positionSource[i]=htmlElement;
             }
+            html.auditArrange?.('append', true);
             element.appendChild(domElement);
         }else{
             var index = pending.indexOf(domElement);
@@ -624,13 +640,16 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
                     domElement.innerHTML="";
                 }
             }else if(domElement instanceof Text){
+                html.auditArrange?.('textNode', false);
                 if(domElement.textContent != htmlElement.textNode){
+                    html.auditArrange?.('textNode', true);
                     domElement.textContent = htmlElement.textNode;
                 }
             }
         }
     })
     pending.forEach(function(childToDelete:Node){
+        html.auditArrange?.('deleting', true);
         element.removeChild(childToDelete);
     })
 }

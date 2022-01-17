@@ -13,6 +13,27 @@ if(typeof document === 'undefined'){
     global.moment = require('moment');
 }
 
+function alfaHTML(text){
+    var result = text.replace(/(<\/?\w+ )([^<>]*?)(\/?>)/g, function(_all,ini,content,fin){
+        var parts = content.split(' ');
+        var okParts = [];
+        var inString = false;
+        var okPart = [];
+        while(parts.length){
+            var part = parts.shift();
+            if(!inString && part.match(/^[-a-zA-Z0-9_]*="/)) inString = true;
+            okPart.push(part);
+            if(!inString || part[part.length-1] == '"' && part[part.length-2] != '\\'){
+                okParts.push(okPart.join(' '));
+                inString = false;
+                okPart = [];
+            }
+        }
+        return ini+okParts.sort().join(' ')+fin;
+    });
+    return result;
+}
+
 describe('js-to-html', function(){
     describe('basic test', function(){
         var html = jsToHtml.html;
@@ -476,7 +497,7 @@ describe('js-to-html', function(){
 if(typeof document !== 'undefined'){
     var arrange = jsToHtml.arrange;
     describe('js-to-dom', function(){
-        function control(htmlObject, pairsOrHtml, done){
+        function control(htmlObject, pairsOrHtml, done, others){
             try{
                 var div = document.createElement('div');
                 document.body.appendChild(div);
@@ -499,7 +520,8 @@ if(typeof document !== 'undefined'){
                         }
                     }
                 }
-                setTimeout(done,100);
+                if(others) others(done, element) 
+                else setTimeout(done,100);
             }catch(err){
                 done(err);
             }
@@ -613,9 +635,13 @@ if(typeof document !== 'undefined'){
             });
             it('should create input with list attribute', function(done){
                 control(
-                    html.input({list: 'esto'}),
+                    html.input({list: 'esto', value: 'alfa'}),
                     '<input list="esto">',
-                    done
+                    done,
+                    function(done, element){
+                        expect(element.value).to.eql('alfa');
+                        done();
+                    }
                 );
             });
         });
@@ -651,141 +677,164 @@ if(typeof document !== 'undefined'){
             expect(div.style.width).to.eql("80%");
         });
     });
-    describe('mutating DOM', function(){
+    describe('alfaHTML', function(){
+        it('order attributes', function(){
+            var result = alfaHTML('<div eso alfa="esto" gama="aquello a" beta=3393>otra cosa</div><img id=algo-tres algo/>');
+            expect(result).to.eql('<div alfa="esto" beta=3393 eso gama="aquello a">otra cosa</div><img algo id=algo-tres/>');
+        })
+    });
+    [false, true].forEach(function(optimizing){ describe('optimizing '+optimizing, function(){
+        var cacheAudit = {};
         var html = jsToHtml.html;
-        var layout
-        beforeEach(function(){
-            layout = document.getElementById('test-layout');
-            if(layout){
-                layout.parentElement.removeChild(layout);
+        before(function(){
+            html.optimizingArrange = optimizing;
+            html.auditArrange = function(que, donde){
+                var attr = que+(donde?'!':'.');
+                cacheAudit[attr] = (cacheAudit[attr] || 0) +  1
             }
-            layout = document.createElement('div');
-            document.body.appendChild(layout);
-            layout.id='test-layout';
-            layout.innerHTML="";
-        })
-        it('must create one element in layout',function(){
-            arrange(layout, html.div({id:'one'}, 'the one'));
-            var one = document.getElementById('one');
-            expect(one).to.be.an(HTMLDivElement);
-            expect(one.textContent).to.eql('the one');
-        })
-        it('must create elements in layout',function(){
-            arrange(layout, [html.div({id:'one'}, 'the one'), html.div({id:'two'}, 'the second')]);
-            var one = document.getElementById('one');
-            expect(one).to.be.an(HTMLDivElement);
-            var two = document.getElementById('two');
-            expect(two).to.be.an(HTMLDivElement);
-            expect(two.textContent).to.eql('the second');
-        })
-        it('must create delete not mentioned',function(){
-            arrange(layout, html.div({id:'one'}, 'the one'));
-            arrange(layout, html.div({id:'two'}, 'the second'));
-            var one = document.getElementById('one');
-            expect(one).to.be(null);
-            var two = document.getElementById('two');
-            expect(two).to.be.an(HTMLDivElement);
-            expect(two.textContent).to.eql('the second');
-        })
-        it('must change attributes of elements',function(){
-            arrange(layout, html.div({id:'one', lang:'es'}, 'first'));
-            var one = document.getElementById('one');
-            arrange(layout, html.div({id:'one', title:'tit1'}, 'second'));
-            var sameOne = document.getElementById('one');
-            expect(one===sameOne).to.be.ok();
-            expect(sameOne.lang).to.eql('es');
-            expect(one.title).to.eql('tit1');
-            expect(one.textContent).to.eql('second');
-        })
-        it('must use recursion',function(){
-            arrange(layout, html.div({id:'one', lang:'es'}, [
-                html.label({id:'one.1', class:'class.1', $attrs:{attr1:1, attr2:3}}, "one"),
-                html.input({id:'one.2', value:'two'})
-            ]));
-            var one1 = document.getElementById('one.1');
-            arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
-                html.label({id:'one.1', class:'class.2', $attrs:{attr1:2, attr2:null}}, "ones"),
-                html.input({id:'one.2', value:'two'}),
-                html.span({id:'one.3'}, "warn"),
-            ]));
-            var sameOne1 = document.getElementById('one.1');
-            expect(one1===sameOne1).to.be.ok();
-            expect(one1.textContent).to.eql('ones');
-            expect(one1.getAttribute('attr1')).to.eql('2');
-            expect(one1.hasAttribute('attr2')).to.not.ok();
-            expect(one1.className).to.eql('class.2');
-        })
-        it('must use recursion and accept positional elements',function(){
-            arrange(layout, html.div({id:'one', lang:'es'}, [
-                html.label("zero"),
-                html.label({id:'one.1', $attrs:{attr1:1, attr2:3}}, "one"),
-                "text1",
-                html.input({value:'two'})
-            ]));
-            var one1 = document.getElementById('one.1');
-            arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
-                html.label({class:'ZERO'}, "zero"),
-                html.label({id:'one.1', $attrs:{attr1:2, attr2:null}}, "ones"),
-                "text2",
-                html.input({value:'two', class:'TWO'}),
-                html.span({id:'one.3'}, "warn"),
-            ]));
-            var sameOne1 = document.getElementById('one.1');
-            expect(one1===sameOne1).to.be.ok();
-            expect(one1.textContent).to.eql('ones');
-            expect(one1.getAttribute('attr1')).to.eql('2');
-            expect(one1.hasAttribute('attr2')).to.not.ok();
-            var one = document.getElementById('one');
-            expect(one.innerHTML).to.eql('<label class="ZERO">zero</label><label id="one.1" attr1="2">ones</label>text2<input class="TWO"><span id="one.3">warn</span>')
-            expect(one.childNodes[3].value).to.eql('two')
         });
-        it("must work with svg v2", function(){
-            this.timeout(9000);
-            arrange(layout,html.svg({id:'svg1', class:'one', viewbox:"0 0 100 200"},[
-                html.path({id:'svg2', d:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z'})
-            ]));
-            return bestGlobals.sleep(400).then(function(){
-                var svg = document.querySelector('#svg1');
-                // var svg = document.getElementsByTagNameNS("http://www.w3.org/2000/svg", 'svg')[0];
-                if(!esIE){
-                    expect(svg.constructor.name).to.eql('SVGSVGElement');
+        after(function(){
+            console.log(optimizing?'o':'i',cacheAudit);
+        })
+        describe('mutating DOM', function(){
+            var layout
+            beforeEach(function(){
+                layout = document.getElementById('test-layout');
+                if(layout){
+                    layout.parentElement.removeChild(layout);
                 }
-                // var path1 = svg.children[0];
-                var path1 = svg.getElementById('svg2');
-                if(!esIE){
-                    expect(path1.constructor.name).to.eql('SVGPathElement');
-                }
-                expect(path1.id).to.eql('svg2');
-                var path1d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z';
-                if(!esIE){
-                    expect(path1.getAttribute('d')).to.eql(path1d);
-                }else{
-                    expect(path1.getAttribute('d').replace(/\s+/g,'')).to.eql(path1d.replace(/\s+/g,''));
-                }
+                layout = document.createElement('div');
+                document.body.appendChild(layout);
+                layout.id='test-layout';
+                layout.innerHTML="";
+            })
+            it('must create one element in layout',function(){
+                arrange(layout, html.div({id:'one'}, 'the one'));
+                var one = document.getElementById('one');
+                expect(one).to.be.an(HTMLDivElement);
+                expect(one.textContent).to.eql('the one');
+                expect(alfaHTML(layout.innerHTML)).to.eql('<div id="one">the one</div>');
+            })
+            it('must create elements in layout',function(){
+                arrange(layout, [html.div({id:'one'}, 'the one'), html.div({id:'two'}, 'the second')]);
+                var one = document.getElementById('one');
+                expect(one).to.be.an(HTMLDivElement);
+                var two = document.getElementById('two');
+                expect(two).to.be.an(HTMLDivElement);
+                expect(two.textContent).to.eql('the second');
+            })
+            it('must create delete not mentioned',function(){
+                arrange(layout, html.div({id:'one'}, 'the one'));
+                arrange(layout, html.div({id:'two'}, 'the second'));
+                var one = document.getElementById('one');
+                expect(one).to.be(null);
+                var two = document.getElementById('two');
+                expect(two).to.be.an(HTMLDivElement);
+                expect(two.textContent).to.eql('the second');
+            })
+            it('must change attributes of elements',function(){
+                arrange(layout, html.div({id:'one', lang:'es'}, 'first'));
+                var one = document.getElementById('one');
+                arrange(layout, html.div({id:'one', title:'tit1'}, 'second'));
+                var sameOne = document.getElementById('one');
+                expect(one===sameOne).to.be.ok();
+                expect(sameOne.lang).to.eql('es');
+                expect(one.title).to.eql('tit1');
+                expect(one.textContent).to.eql('second');
+            })
+            it('must use recursion',function(){
+                arrange(layout, html.div({id:'one', lang:'es'}, [
+                    html.label({id:'one.1', class:'class.1', $attrs:{attr1:1, attr2:3}}, "one"),
+                    html.input({id:'one.2', value:'two'})
+                ]));
+                var one1 = document.getElementById('one.1');
+                arrange(layout, html.div({id:'one', style:'display: none;', lang:'es'}, [
+                    html.label({id:'one.1', class:'class.2', $attrs:{attr1:2, attr2:null}}, "ones"),
+                    html.input({id:'one.2', value:'two'}),
+                    html.span({id:'one.3'}, "warn"),
+                ]));
+                var sameOne1 = document.getElementById('one.1');
+                var one2 = document.getElementById('one.2');
+                expect(one1===sameOne1).to.be.ok();
+                expect(one1.textContent).to.eql('ones');
+                expect(one1.getAttribute('attr1')).to.eql('2');
+                expect(one1.hasAttribute('attr2')).to.not.ok();
+                expect(one1.className).to.eql('class.2');
+                expect(one2.value).to.eql('two');
+                expect(alfaHTML(layout.innerHTML)).to.eql('<div id="one" lang="es" style="display: none;"><label attr1="2" class="class.2" id="one.1">ones</label><input id="one.2"><span id="one.3">warn</span></div>');
+            })
+            it('must use recursion and accept positional elements',function(){
+                arrange(layout, html.div({id:'one', lang:'es'}, [
+                    html.label("zero"),
+                    html.label({id:'one.1', $attrs:{attr1:1, attr2:3}}, "one"),
+                    "text1",
+                    html.input({value:'two'})
+                ]));
+                var one1 = document.getElementById('one.1');
+                arrange(layout, html.div({id:'one', lang:'es', style:'display:none'}, [
+                    html.label({class:'ZERO'}, "zero"),
+                    html.label({id:'one.1', $attrs:{attr1:2, attr2:null}}, "ones"),
+                    "text2",
+                    html.input({value:'two', class:'TWO'}),
+                    html.span({id:'one.3'}, "warn"),
+                ]));
+                var sameOne1 = document.getElementById('one.1');
+                expect(one1===sameOne1).to.be.ok();
+                expect(one1.textContent).to.eql('ones');
+                expect(one1.getAttribute('attr1')).to.eql('2');
+                expect(one1.hasAttribute('attr2')).to.not.ok();
+                var one = document.getElementById('one');
+                expect(alfaHTML(one.innerHTML)).to.eql('<label class="ZERO">zero</label><label attr1="2" id="one.1">ones</label>text2<input class="TWO"><span id="one.3">warn</span>')
+                expect(one.childNodes[3].value).to.eql('two')
+            });
+            it("must work with svg v2", function(){
+                this.timeout(9000);
                 arrange(layout,html.svg({id:'svg1', class:'one', viewbox:"0 0 100 200"},[
-                    html.path({id:'svg2', d:'M19 13h-6v6h-2v-6Z'})
+                    html.path({id:'svg2', d:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z'})
                 ]));
                 return bestGlobals.sleep(400).then(function(){
-                    var svgL = layout.children[0]
-                    expect(svgL==svg).to.ok();
-                    var id2 = document.querySelector('#svg1');
-                    var path2 = id2.getElementById('svg2');
-                    expect(svg===id2).to.ok();
-                    expect(path1===path2).to.ok();
-                    path1d='M19 13h-6v6h-2v-6Z';
+                    var svg = document.querySelector('#svg1');
+                    // var svg = document.getElementsByTagNameNS("http://www.w3.org/2000/svg", 'svg')[0];
+                    if(!esIE){
+                        expect(svg.constructor.name).to.eql('SVGSVGElement');
+                    }
+                    // var path1 = svg.children[0];
+                    var path1 = svg.getElementById('svg2');
+                    if(!esIE){
+                        expect(path1.constructor.name).to.eql('SVGPathElement');
+                    }
+                    expect(path1.id).to.eql('svg2');
+                    var path1d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z';
                     if(!esIE){
                         expect(path1.getAttribute('d')).to.eql(path1d);
                     }else{
                         expect(path1.getAttribute('d').replace(/\s+/g,'')).to.eql(path1d.replace(/\s+/g,''));
                     }
-                    if(!esIE){
-                        expect(svg.innerHTML).to.eql('<path id="svg2" d="M19 13h-6v6h-2v-6Z"></path>')
-                        expect(path1.constructor.name).to.eql('SVGPathElement')
-                    }
+                    arrange(layout,html.svg({id:'svg1', class:'one', viewbox:"0 0 100 200"},[
+                        html.path({id:'svg2', d:'M19 13h-6v6h-2v-6Z'})
+                    ]));
+                    return bestGlobals.sleep(400).then(function(){
+                        var svgL = layout.children[0]
+                        expect(svgL==svg).to.ok();
+                        var id2 = document.querySelector('#svg1');
+                        var path2 = id2.getElementById('svg2');
+                        expect(svg===id2).to.ok();
+                        expect(path1===path2).to.ok();
+                        path1d='M19 13h-6v6h-2v-6Z';
+                        if(!esIE){
+                            expect(path1.getAttribute('d')).to.eql(path1d);
+                        }else{
+                            expect(path1.getAttribute('d').replace(/\s+/g,'')).to.eql(path1d.replace(/\s+/g,''));
+                        }
+                        if(!esIE){
+                            expect(svg.innerHTML).to.eql('<path id="svg2" d="M19 13h-6v6h-2v-6Z"></path>')
+                            expect(path1.constructor.name).to.eql('SVGPathElement')
+                        }
+                    });
                 });
-            });
+            })
         })
-    })
+    })});
     describe('eventListeners', function(){
         var html = jsToHtml.html;;
         var div;
