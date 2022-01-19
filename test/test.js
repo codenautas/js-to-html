@@ -833,6 +833,21 @@ if(typeof document !== 'undefined'){
                     });
                 });
             })
+            it.skip('must change tagName of elements and change mutating objects',function(){
+                var listOfElements = [
+                    html._text('hello'),
+                    html.div({id:'one', lang:'es'}, 'first'),
+                    html.br()
+                ]
+                arrange(layout, listOfElements);
+                var one = document.getElementById('one');
+                listOfElements[1] = html.pre({id:'one', lang:'es'}, 'first');
+                arrange(layout, listOfElements);
+                var otherOne = document.getElementById('one');
+                expect(alfaHTML(layout.innerHTML)).to.eql('hello<pre id="one" lang="es">first</pre><br>');
+                expect(otherOne.tagName).to.eql('pre');
+                expect(one!==otherOne).to.be.ok();
+            })
         })
     })});
     describe('eventListeners', function(){

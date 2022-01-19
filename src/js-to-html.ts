@@ -609,23 +609,32 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
         );
         var domElement = id && jsToHtmlArrange.id[id] || jsToHtmlArrange.position[i];
         var source =  id && jsToHtmlArrange.idSource[id] || jsToHtmlArrange.positionSource[i];
-        if(!domElement){
+        if(!domElement || !(
+            domElement instanceof Text && htmlElement instanceof HtmlTextNode ||
+            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName 
+        ) ){
+            var newElement;
             if(htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement){
                 html.auditArrange?.('existing', true);
-                domElement=htmlElement;
+                newElement=htmlElement;
             }else{
                 html.auditArrange?.('creating', true);
-                domElement=htmlElement.createNode();
+                newElement=htmlElement.createNode();
             }
             if(id){
-                jsToHtmlArrange.id[id]=domElement;
+                jsToHtmlArrange.id[id]=newElement;
                 jsToHtmlArrange.idSource[id]=htmlElement;
             }else{
-                jsToHtmlArrange.position[i]=domElement;
+                jsToHtmlArrange.position[i]=newElement;
                 jsToHtmlArrange.positionSource[i]=htmlElement;
             }
             html.auditArrange?.('append', true);
-            element.appendChild(domElement);
+            if(!domElement){
+                element.appendChild(newElement);
+            }else{
+                element.insertBefore(newElement, domElement);
+            }
+            domElement = newElement;
         }else{
             var index = pending.indexOf(domElement);
             if(index >= 0){
