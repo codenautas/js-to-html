@@ -83,6 +83,28 @@ describe('js-to-html', function(){
             var htmlText=input.toHtmlText();
             expect(htmlText).to.eql('<input class=date value="2015/12/3">');
         });
+        it('should not render a boolean false attribute', function(){
+            // esto es inválido, no entiendo por qué lo pusimos
+            var input=direct({
+                tagName:'input',
+                attributes:{checked:false, type:'radio'},
+                content:[]
+            });
+            expect(input).to.be.a(jsToHtml.Html);
+            var htmlText=input.toHtmlText();
+            expect(htmlText).to.eql('<input type=radio>');
+        });
+        it('should render a boolean true attribute', function(){
+            // esto es inválido, no entiendo por qué lo pusimos
+            var input=direct({
+                tagName:'input',
+                attributes:{checked:true, type:'radio'},
+                content:[]
+            });
+            expect(input).to.be.a(jsToHtml.Html);
+            var htmlText=input.toHtmlText();
+            expect(htmlText).to.eql('<input checked type=radio>');
+        });
         it('should exclude null and undefined  in content', function(){
             var p=html.p(['sí', null, html.img(), undefined, 1, '', 'no', 0]);
             expect(p).to.eql(direct({
@@ -640,6 +662,28 @@ if(typeof document !== 'undefined'){
                     done,
                     function(done, element){
                         expect(element.value).to.eql('alfa');
+                        done();
+                    }
+                );
+            });
+            it('should create input radiobutton unckecked', function(done){
+                control(
+                    html.input({type:'radio', checked:false}),
+                    '<input type="radio">',
+                    done,
+                    function(done, element){
+                        expect(element.checked).to.eql(false);
+                        done();
+                    }
+                );
+            });
+            it('should create input radiobutton ckecked', function(done){
+                control(
+                    html.input({type:'radio', checked:true}),
+                    '<input type="radio" checked="">', // equivale a <input type="radio" checked>
+                    done,
+                    function(done, element){
+                        expect(element.checked).to.eql(true);
                         done();
                     }
                 );
