@@ -352,9 +352,6 @@ export class HtmlBase{
             } 
             var escapedAttrVal=escapeChar(textAttrVal);
             var quotingAttrVal=textAttrVal===''||esto.pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
-            if(attrVal === true){
-                console.log('attrVal true', ' '+attrName+(attrVal === true ? '' : '='+quotingAttrVal))
-            }
             return ' '+attrName+(attrVal === true?'':'='+quotingAttrVal);
         },this).join('');
     }
