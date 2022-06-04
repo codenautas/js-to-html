@@ -793,14 +793,14 @@ function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfTh
     return direct({
         tagName:tagName,
         attributes:attributes,
-        content:(content instanceof Array?content:[content]).filter(function(element){
-            return element!==null && element!==undefined;
-        }).map(function(element){
-            if(element instanceof Array){
-                throw new Error("js-to-html: invalid array of arrays creating html element");
-            }
-            return couldDirectTextContent(element)?direct({textNode:(element as string)}):(element as HtmlBase);
-        })
+        content:(content instanceof Array?content:[content]).reduce(function(result, element){
+            (element instanceof Array ? element : [element]).forEach(function(element){
+                if(element!=null){
+                    result.push(couldDirectTextContent(element)?direct({textNode:(element as string)}):(element as HtmlBase))
+                }
+            });
+            return result;
+        },[])
     });
 };
 
