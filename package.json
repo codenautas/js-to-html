@@ -17,17 +17,17 @@
     "lib"
   ],
   "devDependencies": {
-    "best-globals": "^1.0.3",
-    "body-parser": "~1.20.0",
+    "best-globals": "^1.1.0",
+    "body-parser": "~1.20.2",
     "classlist.js": "~1.1.20150312",
     "cookie-parser": "~1.4.6",
     "es6-promise": "~4.2.8",
     "expect.js": "~0.3.1",
-    "express": "~4.18.1",
+    "express": "~4.18.2",
     "express-session": "~1.17.3",
-    "follow-redirects": ">=1.15.1",
+    "follow-redirects": ">=1.15.2",
     "fs-promise": "~2.0.3",
-    "karma": "~6.3.20",
+    "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.1",
     "karma-coverage": "~2.2.0",
     "karma-coverage-html-index-reporter": "~1.0.2",
@@ -37,13 +37,13 @@
     "karma-mocha": "~2.0.1",
     "karma-safari-launcher": "~1.0.0",
     "mini-tools": "~1.11.2",
-    "mocha": "~10.0.0",
-    "moment": "~2.29.3",
+    "mocha": "~10.2.0",
+    "moment": "~2.29.4",
     "nyc": "~15.1.0",
     "pug": "~3.0.2",
     "require-bro": "~0.3.0",
     "serve-content": "~0.3.17",
-    "typescript": "^4.7.3"
+    "typescript": "^5.0.4"
   },
   "engines": {
     "node": ">= 8"
@@ -60,9 +60,7 @@
     "test": "npm run build && node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss": "mocha --reporter spec --bail --check-leaks test/",
     "test-cov": "npm run build && node examples/server/server.js --karma karma.conf.js --single-run",
-    "test-ss-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
-    "start": "node example/server.js",
-    "report": "istanbul report "
+    "start": "node example/server.js"
   },
   "tonicExampleFilename": "examples/tonic/js-to-html-tonic-example.js",
   "qa-control": {
