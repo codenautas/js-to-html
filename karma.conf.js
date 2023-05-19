@@ -72,7 +72,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox','Chrome'].concat((process.env.TRAVIS?[]:[/*'Safari',*/'IE'])),
+    browsers: ['Firefox','Chrome'].concat((process.env.TRAVIS?[]:[/*'Safari',*/ /*'Edge'*/])),
     // browsers: ['IE'],
 
 
