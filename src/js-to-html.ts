@@ -1,5 +1,13 @@
 "use strict";
 
+var SCRIPT_IS_VOID = true;
+
+export function setScriptIsVoid(is:boolean){
+    SCRIPT_IS_VOID = is;
+    htmlTags.script["void"] = is;
+    htmlTags.script.mandatoryTag = is ? "src" : null;
+}
+
 function isPlainObject(x:any):boolean{
     return typeof x==="object" && x && x.constructor === Object;
 }
@@ -205,7 +213,7 @@ export var html={
     ruby(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("ruby", optsOrContent, content) as HtmlTag<HTMLElement>; },
     s(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("s", optsOrContent, content) as HtmlTag<HTMLElement>; },
     samp(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("samp", optsOrContent, content) as HtmlTag<HTMLElement>; },
-    script(optsOrContent?:Attr4HTMLScriptElement|Content, content?:Content){ return indirect("script", optsOrContent, content) as HtmlTag<HTMLScriptElement>; },
+    script(optsOrContent?:Attr4HTMLScriptElement){ return indirect("script", optsOrContent, arguments[1]) as HtmlTag<HTMLScriptElement>; },
     section(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("section", optsOrContent, content) as HtmlTag<HTMLElement>; },
     select(optsOrContent?:Attr4HTMLSelectElement|Content, content?:Content){ return indirect("select", optsOrContent, content) as HtmlTag<HTMLSelectElement>; },
     slot(optsOrContent?:Attr4HTMLSlotElement|Content, content?:Content){ return indirect("slot", optsOrContent, content) as HtmlTag<HTMLSlotElement>; },
@@ -734,6 +742,15 @@ var validDirectProperties:ValidProperties={
                         }
                     }
                     return true;
+                }},
+                {check:function(attributes, o){  
+                    if (htmlTags[o.tagName].mandatoryTag) {
+                        if (!attributes[htmlTags[o.tagName].mandatoryTag]) {
+                            console.log('************', attributes, o, htmlTags[o.tagName].mandatoryTag, attributes[htmlTags[o.tagName].mandatoryTag])
+                            throw new Error("lack of " + htmlTags[o.tagName].mandatoryTag + " in html." + o.tagName)
+                        }
+                    }
+                    return true;
                 }}
             ]},
             content:{checks:[
@@ -804,7 +821,7 @@ function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfTh
     });
 };
 
-export type HtmlTagDef={type:string, void?:boolean, display?:string, description:string}
+export type HtmlTagDef={type:string, void?:boolean, display?:string, description:string, mandatoryTag?:string}
 export type HtmlTags={
     readonly [key:string]:HtmlTagDef
 }
@@ -903,7 +920,7 @@ export let htmlTags:HtmlTags={
     "ruby"         :{type:'HTML5', description:"Defines a ruby annotation (for East Asian typography)"},
     "s"            :{type:'HTML4', description:"Defines text that is no longer correct"},
     "samp"         :{type:'HTML4', description:"Defines sample output from a computer program"},
-    "script"       :{type:'HTML4', description:"Defines a client-side script"},
+    "script"       :{type:'HTML4', mandatoryTag:"src", description:"Defines a client-side script"},
     "section"      :{type:'HTML5', description:"Defines a section in a document"},
     "select"       :{type:'HTML4', description:"Defines a drop-down list"},
     "small"        :{type:'HTML4', description:"Defines smaller text"},
@@ -1876,3 +1893,5 @@ export let htmlAttributes:HtmlAttributes={
 //     // };
 // // });
 
+
+setScriptIsVoid(SCRIPT_IS_VOID);

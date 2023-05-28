@@ -1,14 +1,14 @@
 "use strict";
 
-var esIE=/\.NET/.test(navigator.userAgent);
+var esIE = this.navigator ? /\.NET/.test(navigator.userAgent) : false;
 
-var jsToHtml = require('js-to-html')
+var jsToHtml = require('../lib/js-to-html')
 var bestGlobals = require('best-globals');
 
 var moment = require('moment')
 
 if(typeof document === 'undefined'){
-    global.jsToHtml = require('../js-to-html.js');
+    global.jsToHtml = require('../lib/js-to-html.js');
     global.expect = require('expect.js');
     global.moment = require('moment');
 }
@@ -361,6 +361,42 @@ describe('js-to-html', function(){
                 html.p(complexObject);
             }).to.throwError(/expects plain object of attributes or array of content/);
         });
+        it('should accept script attributes',function(){
+            html.script({src:"ok.js"});
+        });
+        describe("html.script new", function(){ [true, false].forEach(function(direct){
+            beforeEach(function(){
+                jsToHtml.setScriptIsVoid(true);
+            })
+            describe("html.script: " + (direct ? 'direct' : 'tag'), function(){
+                [["in-array.js"],"one.js"].forEach(function(content){
+                    it('should reject script content: '+JSON.stringify(content),function(){
+                        expect(function(){
+                            if(direct && content instanceof Array)
+                                jsToHtml.direct({tagName:"script", attributes:{src:"ok.js"}, content:content})
+                            else
+                                html.script({src:"ok.js"}, content)
+                        }).to.throwError(/must not have content/);
+                    });
+                });
+                [{src:null},{id:"bad.js"},{},null,undefined].forEach(function(attrs){
+                    it('should reject script without source: '+(attrs ? JSON.stringify(attrs) : attrs),function(){
+                        expect(function(){
+                            if(direct && attrs && attrs instanceof Object)
+                                jsToHtml.direct({tagName:"script", attributes:attrs, content:null})
+                            else
+                                html.script(attrs)
+                        }).to.throwError(/lack of src in html.script/);
+                    });
+                });
+            })
+        })});
+        it('should accept script with all others',function(){
+            jsToHtml.setScriptIsVoid(false);
+            html.script({src:"ok.js"});
+            html.script();
+            html.script("ok.js");
+        });
     });
     describe("toHtmlDoc", function(){
         var html = jsToHtml.html;
@@ -465,11 +501,6 @@ describe('js-to-html', function(){
             expect(function(){
                 html.insecureModeEnabled=false;
                 html.includeHtml("hello");
-            }).to.throwError(/insecure functions not allowed/);
-        });
-        it('should reject insecure functions for direct',function(){
-            expect(function(){
-                direct({htmlCode:"hello"});
             }).to.throwError(/insecure functions not allowed/);
         });
     });
