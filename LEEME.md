@@ -15,7 +15,7 @@ Create HTML text from JS object
 ![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![npm-version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
-[![build](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
+[![build](https://github.com/codenautas/js-to-html/actions/workflows/node.js.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/node.js.yml)
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
 [![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
 
