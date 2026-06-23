@@ -16,16 +16,21 @@
   "files": [
     "lib"
   ],
+  "overrides": {
+    "diff": ">=8.0.2",
+    "serialize-javascript": ">=7.0.0",
+    "uuid": ">=14.0.0"
+  },
   "devDependencies": {
-    "best-globals": "^2.0.7",
-    "body-parser": "^2.2.2",
+    "best-globals": "^2.2.0",
+    "body-parser": "^2.3.0",
     "classlist.js": "^1.1.20150312",
     "cookie-parser": "^1.4.7",
     "es6-promise": "^4.2.8",
     "expect.js": "^0.3.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "follow-redirects": ">=1.15.11",
+    "follow-redirects": ">=1.16.0",
     "fs-promise": "^2.0.3",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
@@ -35,13 +40,14 @@
     "karma-firefox-launcher": "^2.1.3",
     "karma-mocha": "^2.0.1",
     "karma-safari-launcher": "^1.0.0",
-    "mini-tools": "^1.13.4",
-    "mocha": "^11.7.5",
+    "mini-tools": "^1.13.6",
+    "mocha": "^11.7.6",
     "moment": "^2.30.1",
-    "nyc": "^17.1.0",
-    "pug": "^3.0.3",
-    "require-bro": "^0.3.2",
-    "serve-content": "^1.0.2",
+    "nyc": "^18.0.0",
+    "pug": "^3.0.4",
+    "require-bro": "^0.3.5",
+    "qa-control": "^0.6.16",
+    "serve-content": "^1.0.4",
     "typescript": "^5.9.3"
   },
   "engines": {
@@ -54,15 +60,18 @@
     ]
   },
   "scripts": {
-    "build": "tsc || echo 'with error'",
+    "build": "tsc",
     "infinito": "node examples/server/server.js --karma karma.conf.js",
     "test": "npm run build && node examples/server/server.js --karma karma.conf.js --single-run",
     "test-ss": "mocha --reporter spec --bail --check-leaks test/",
     "test-cov": "npm run build && node examples/server/server.js --karma karma.conf.js --single-run",
+    "test-ci": "npm run test-cov",
     "start": "node example/server.js"
   },
   "tonicExampleFilename": "examples/tonic/js-to-html-tonic-example.js",
   "qa-control": {
+    "profile": "minimum",
+    "gha": "all",
     "package-version": "0.3.0",
     "coverage": 100,
     "run-in": "both",
