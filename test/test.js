@@ -557,7 +557,7 @@ if(typeof document !== 'undefined'){
                         }
                     }
                 }
-                if(others) others(done, element) 
+                if(others) others(done, element)
                 else setTimeout(done,100);
             }catch(err){
                 done(err);

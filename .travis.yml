@@ -11,7 +11,7 @@ addons:
 matrix:
   fast_finish: true
 script: "npm run-script test"
-services: 
+services:
   - xvfb
 before_script:
   - export DISPLAY=:99.0

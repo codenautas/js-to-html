@@ -349,7 +349,7 @@ export class HtmlBase{
             var attrDefinition=htmlAttributes[attrName] || {listName:false};
             if(attrDefinition.listName && typeof attrVal!=="string"){
                 textAttrVal=attrVal.join(' ');
-            } 
+            }
             var escapedAttrVal=escapeChar(textAttrVal);
             var quotingAttrVal=textAttrVal===''||esto.pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+(attrVal === true?'':'='+quotingAttrVal);
@@ -413,7 +413,7 @@ export class Html extends HtmlBase{
             this.contentToHtmlText(opts,recurseOpts)+
             (firstChildInline?sp(recurseOpts.margin):'')+
             (isvoidTag?'':"</"+this.tagName+">")+nl;
-    
+
     }
     contentToHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts){
         return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
@@ -611,7 +611,7 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
         var source =  id && jsToHtmlArrange.idSource[id] || jsToHtmlArrange.positionSource[i];
         if(!domElement || !(
             domElement instanceof Text && htmlElement instanceof HtmlTextNode ||
-            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName 
+            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName
         ) ){
             var newElement;
             if(htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement){
@@ -679,9 +679,9 @@ var validDirectProperties:ValidProperties={
         properties:{
             textNode:{
                 checks:[
-                    {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
+                    {check:function(x){ return x!=null;}, text:"textNodes must not contains null"},
                     {check:couldDirectTextContent, text:"must be string or number"}
-                ], 
+                ],
                 transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
             }
         }
@@ -692,11 +692,11 @@ var validDirectProperties:ValidProperties={
             tagName:{checks:[
                 {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
                 {check:function(x){
-                    if(!htmlTags[x]){ 
+                    if(!htmlTags[x]){
                         throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
-                    } 
+                    }
                     return true;
-                }}  
+                }}
             ]},
             attributes:{checks:[
                 {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
@@ -708,7 +708,7 @@ var validDirectProperties:ValidProperties={
                         if(attrValue==null){
                         }else if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
-                            if(pattWhiteSpaces.test(attrValue)){   
+                            if(pattWhiteSpaces.test(attrValue)){
                                 throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use an array of attributes.');
                             }
                             if(attrValue instanceof Array){
@@ -718,7 +718,7 @@ var validDirectProperties:ValidProperties={
                     }
                     return true;
                 }},
-                {check:function(attributes, o){  
+                {check:function(attributes, o){
                     /*jshint forin:false */
                     for(var attrName in attributes){
                         /*jshint forin:true */
@@ -747,7 +747,7 @@ var validDirectProperties:ValidProperties={
         properties:{
             htmlCode:{
                 checks:[
-                    {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
+                    {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"},
                     {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
                     {check:function(){ return html.insecureModeEnabled; }, text:"insecure functions not allowed"},
                     {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"}
@@ -1870,9 +1870,8 @@ export let htmlAttributes:HtmlAttributes={
 // var ok=Object.keys(jsToHtml.htmlTags)
 
 // // Object.keys(htmlTags).map(function(tagName){
-// ok.map(function(tagName){    
+// ok.map(function(tagName){
 //     // html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
 //         // return indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
 //     // };
 // // });
-

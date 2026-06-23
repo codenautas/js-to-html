@@ -204,7 +204,7 @@ var html2idl = {
   "usemap": "useMap",
   "valign": "vAlign",
   "value": "value",
-  "valuetype": "valueType" 
+  "valuetype": "valueType"
 };
 
 var htmlAttrsSpecials={
@@ -227,7 +227,7 @@ lista.forEach(function(linea){
     }
     linea[1].split('; ').forEach(function(tagName){
         mapa[clave].tags[tagName]={
-            description:linea[2], 
+            description:linea[2],
             value:linea[3]
         };
     })

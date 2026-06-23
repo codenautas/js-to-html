@@ -280,7 +280,7 @@ var output=lines.map(function(line){
             var attrList = (attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).filter(function(attribute){
                 return true // !attribute.trim();
             });
-            var def='export interface '+attrTypeName+' extends Attr4HTMLElement {'+attrList.map(function(attribute){ 
+            var def='export interface '+attrTypeName+' extends Attr4HTMLElement {'+attrList.map(function(attribute){
                 attribute=attribute.replace('*','')
                 if(!attribute){
                     return null;

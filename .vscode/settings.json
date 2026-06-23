@@ -1,3 +1,7 @@
 {
-    "window.title": "𝒿𝓈→ᴴᵀᴹᴸ ${dirty}${separator}${rootName}${separator}${activeEditorShort}"
+    "window.title": "𝒿𝓈→ᴴᵀᴹᴸ ${dirty}${separator}${rootName}${separator}${activeEditorShort}",
+    "editor.renderWhitespace": "selection",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.encoding": "utf8"
 }

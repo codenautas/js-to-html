@@ -15,8 +15,8 @@ if(karmaIndex>0){
     var karma = require('karma');
     var karmaConfig = require('../../karma.conf.js');
     var options;
-    karmaConfig({set:function(opts){ 
-        options=opts; 
+    karmaConfig({set:function(opts){
+        options=opts;
         if(process.argv.indexOf('--single-run')>0){
             options.singleRun=true;
         }
@@ -72,16 +72,16 @@ var validExts=[
     'css','js','manifest'];
 
 // ajax-best-promise.js
-// 
+//
 app.use('/',serveContent('./bin', {
-    index: ['index.html'], 
-    extensions:[''], 
+    index: ['index.html'],
+    extensions:[''],
     allowedExts:validExts
 }));
 
 app.use('/',serveContent('./examples/client', {
-    index: ['index.html'], 
-    extensions:[''], 
+    index: ['index.html'],
+    extensions:[''],
     allowedExts:validExts
 }));
 
