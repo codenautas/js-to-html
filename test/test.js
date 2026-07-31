@@ -8,9 +8,9 @@ var bestGlobals = require('best-globals');
 var moment = require('moment')
 
 if(typeof document === 'undefined'){
-    global.jsToHtml = require('../js-to-html.js');
-    global.expect = require('expect.js');
-    global.moment = require('moment');
+    global.jsToHtml = require('../js-to-html.js'); /* eslint-disable-line global-require */
+    global.expect = require('expect.js'); /* eslint-disable-line global-require */
+    global.moment = require('moment'); /* eslint-disable-line global-require */
 }
 
 function alfaHTML(text){
@@ -23,7 +23,7 @@ function alfaHTML(text){
             var part = parts.shift();
             if(!inString && part.match(/^[-a-zA-Z0-9_]*="/)) inString = true;
             okPart.push(part);
-            if(!inString || part[part.length-1] == '"' && part[part.length-2] != '\\'){
+            if(!inString || part[part.length-1] === '"' && part[part.length-2] !== '\\'){
                 okParts.push(okPart.join(' '));
                 inString = false;
                 okPart = [];
@@ -35,7 +35,7 @@ function alfaHTML(text){
 }
 
 describe('js-to-html', function(){
-    describe('basic test', function(){
+    describe('basic test', function(){ /* eslint-disable-line max-statements */
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
         beforeEach(function(){
@@ -540,7 +540,7 @@ if(typeof document !== 'undefined'){
                 document.body.appendChild(div);
                 var element = htmlObject.create();
                 div.appendChild(element);
-                if(typeof pairsOrHtml=="string"){
+                if(typeof pairsOrHtml === "string"){
                     expect(div.innerHTML.replace(/<[^ >]*[ >]/g,function(x){ return x.toLowerCase(); })).to.be(pairsOrHtml);
                 }else if(pairsOrHtml instanceof RegExp){
                     expect(div.innerHTML).to.match(pairsOrHtml);
@@ -874,7 +874,7 @@ if(typeof document !== 'undefined'){
                     ]));
                     return bestGlobals.sleep(400).then(function(){
                         var svgL = layout.children[0]
-                        expect(svgL==svg).to.ok();
+                        expect(svgL === svg).to.ok();
                         var id2 = document.querySelector('#svg1');
                         var path2 = id2.getElementById('svg2');
                         expect(svg===id2).to.ok();
@@ -910,7 +910,7 @@ if(typeof document !== 'undefined'){
         })
     })});
     describe('eventListeners', function(){
-        var html = jsToHtml.html;;
+        var html = jsToHtml.html;
         var div;
         var clickCount;
         beforeEach(function(){

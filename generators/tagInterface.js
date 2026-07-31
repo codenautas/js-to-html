@@ -4,121 +4,6 @@ var fs=require('fs').promises;
 // https://html.spec.whatwg.org/multipage/indices.html#element-interfaces
 
 var source=
-`a	HTMLAnchorElement : HTMLElement
-abbr	HTMLElement
-address	HTMLElement
-area	HTMLAreaElement : HTMLElement
-article	HTMLElement
-aside	HTMLElement
-audio	HTMLAudioElement : HTMLMediaElement : HTMLElement
-b	HTMLElement
-base	HTMLBaseElement : HTMLElement
-bdi	HTMLElement
-bdo	HTMLElement
-blockquote	HTMLQuoteElement : HTMLElement
-body	HTMLBodyElement : HTMLElement
-br	HTMLBRElement : HTMLElement
-button	HTMLButtonElement : HTMLElement
-canvas	HTMLCanvasElement : HTMLElement
-caption	HTMLTableCaptionElement : HTMLElement
-cite	HTMLElement
-code	HTMLElement
-col	HTMLTableColElement : HTMLElement
-colgroup	HTMLTableColElement : HTMLElement
-data	HTMLDataElement : HTMLElement
-datalist	HTMLDataListElement : HTMLElement
-dd	HTMLElement
-del	HTMLModElement : HTMLElement
-details	HTMLDetailsElement : HTMLElement
-dfn	HTMLElement
-dialog	HTMLDialogElement : HTMLElement
-div	HTMLDivElement : HTMLElement
-dl	HTMLDListElement : HTMLElement
-dt	HTMLElement
-em	HTMLElement
-embed	HTMLEmbedElement : HTMLElement
-fieldset	HTMLFieldSetElement : HTMLElement
-figcaption	HTMLElement
-figure	HTMLElement
-footer	HTMLElement
-form	HTMLFormElement : HTMLElement
-h1	HTMLHeadingElement : HTMLElement
-h2	HTMLHeadingElement : HTMLElement
-h3	HTMLHeadingElement : HTMLElement
-h4	HTMLHeadingElement : HTMLElement
-h5	HTMLHeadingElement : HTMLElement
-h6	HTMLHeadingElement : HTMLElement
-head	HTMLHeadElement : HTMLElement
-header	HTMLElement
-hgroup	HTMLElement
-hr	HTMLHRElement : HTMLElement
-html	HTMLHtmlElement : HTMLElement
-i	HTMLElement
-iframe	HTMLIFrameElement : HTMLElement
-img	HTMLImageElement : HTMLElement
-input	HTMLInputElement : HTMLElement
-ins	HTMLModElement : HTMLElement
-kbd	HTMLElement
-label	HTMLLabelElement : HTMLElement
-legend	HTMLLegendElement : HTMLElement
-li	HTMLLIElement : HTMLElement
-link	HTMLLinkElement : HTMLElement
-main	HTMLElement
-map	HTMLMapElement : HTMLElement
-mark	HTMLElement
-menu	HTMLMenuElement : HTMLElement
-meta	HTMLMetaElement : HTMLElement
-meter	HTMLMeterElement : HTMLElement
-nav	HTMLElement
-noscript	HTMLElement
-object	HTMLObjectElement : HTMLElement
-ol	HTMLOListElement : HTMLElement
-optgroup	HTMLOptGroupElement : HTMLElement
-option	HTMLOptionElement : HTMLElement
-output	HTMLOutputElement : HTMLElement
-p	HTMLParagraphElement : HTMLElement
-param	HTMLParamElement : HTMLElement
-picture	HTMLPictureElement : HTMLElement
-pre	HTMLPreElement : HTMLElement
-progress	HTMLProgressElement : HTMLElement
-q	HTMLQuoteElement : HTMLElement
-rp	HTMLElement
-rt	HTMLElement
-ruby	HTMLElement
-s	HTMLElement
-samp	HTMLElement
-script	HTMLScriptElement : HTMLElement
-section	HTMLElement
-select	HTMLSelectElement : HTMLElement
-slot	HTMLSlotElement : HTMLElement
-small	HTMLElement
-source	HTMLSourceElement : HTMLElement
-span	HTMLSpanElement : HTMLElement
-strong	HTMLElement
-style	HTMLStyleElement : HTMLElement
-sub	HTMLElement
-summary	HTMLElement
-sup	HTMLElement
-table	HTMLTableElement : HTMLElement
-tbody	HTMLTableSectionElement : HTMLElement
-td	HTMLTableCellElement : HTMLElement
-template	HTMLTemplateElement : HTMLElement
-textarea	HTMLTextAreaElement : HTMLElement
-tfoot	HTMLTableSectionElement : HTMLElement
-th	HTMLTableCellElement : HTMLElement
-thead	HTMLTableSectionElement : HTMLElement
-time	HTMLTimeElement : HTMLElement
-title	HTMLTitleElement : HTMLElement
-tr	HTMLTableRowElement : HTMLElement
-track	HTMLTrackElement : HTMLElement
-u	HTMLElement
-ul	HTMLUListElement : HTMLElement
-var	HTMLElement
-video	HTMLVideoElement : HTMLMediaElement : HTMLElement
-wbr	HTMLElement`;
-
-
-var source=
 `a	Hyperlink	flow; phrasing*; interactive; palpable	phrasing	transparent*	globals; href; target; download; ping; rel; hreflang; type; referrerpolicy	HTMLAnchorElement
 abbr	Abbreviation	flow; phrasing; palpable	phrasing	phrasing	globals	HTMLElement
 address	Contact information for a page or article element	flow; palpable	flow	flow*	globals	HTMLElement
@@ -230,7 +115,7 @@ video	Video player	flow; phrasing; embedded; interactive; palpable	phrasing	sour
 wbr	Line breaking opportunity	flow; phrasing	phrasing	empty	globals	HTMLElement`
 .replace(/MathML math/g,'math')
 .replace(/SVG svg/g,'svg')
-.replace(/per \[SVG\]	per \[SVG\]/,'svg	focusable; viewbox; aria-hidden')+`
+.replace(/per \[SVG\]\tper \[SVG\]/,'svg	focusable; viewbox; aria-hidden')+`
 circle	SVG path	svg	svg	empty	cx; cy; r	SVGCircleElement
 path	SVG path	svg	svg	empty	d	SVGPathElement`
 

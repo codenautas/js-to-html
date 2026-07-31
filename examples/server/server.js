@@ -12,8 +12,8 @@ var MiniTools = require('mini-tools');
 var karma;
 var karmaIndex=process.argv.indexOf('--karma');
 if(karmaIndex>0){
-    var karma = require('karma');
-    var karmaConfig = require('../../karma.conf.js');
+    karma = require('karma'); /* eslint-disable-line global-require */
+    var karmaConfig = require('../../karma.conf.js'); /* eslint-disable-line global-require */
     var options;
     karmaConfig({set:function(opts){
         options=opts;
@@ -28,7 +28,7 @@ if(karmaIndex>0){
     console.log('karma starting');
     var karmaServer = new karma.Server(options, function(exitCode) {
         console.log('Karma has exited with ' + exitCode);
-        process.exit(exitCode);
+        process.exit(exitCode); /* eslint-disable-line no-process-exit */
     })
     karmaServer.start();
     console.log('karma starting',options.port);
@@ -50,7 +50,7 @@ function serveHtmlText(htmlText){
 
 function serveErr(req,res,next){
     return function(err){
-        if(err.message=='next'){
+        if(err.message === 'next'){
             return next();
         }
         console.log('ERROR', err);
@@ -131,7 +131,7 @@ app.get('/ejemplo/flujo',function(req,res){
         if(x<2) return false;
         for(var i=0; i<primos.length; i++){
             var divisor=primos[i];
-            if(x % divisor ==0){
+            if(x % divisor === 0){
                 return false;
             }
         }
