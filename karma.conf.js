@@ -5,6 +5,8 @@
 
 const headless = !!process.env.TRAVIS || !!process.env.GITHUB_ACTIONS
 
+const withCoverage = !!process.env.TRAVIS || !!process.env.SINGLE_RUN
+
 module.exports = function(config) {
   config.set({
 
@@ -38,12 +40,16 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'js-to-html.js': process.env.SINGLE_RUN ? ['coverage'] : []
+      'lib/js-to-html.js': withCoverage ? ['coverage'] : []
     },
 
     coverageReporter: process.env.TRAVIS?{
-      type:'lcov',
-      dir : 'coverage/'
+      dir : 'coverage/',
+      subdir : '.',
+      reporters: [
+        {type:'lcov'},
+        {type:'text-summary'}
+      ]
     }:{
       type : 'html',
       dir : 'coverage/'

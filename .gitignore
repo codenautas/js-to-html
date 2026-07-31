@@ -34,3 +34,5 @@ local-*
 *-local.*
 
 lib
+
+.claude/settings.json
