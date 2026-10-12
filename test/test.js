@@ -2,13 +2,13 @@
 
 var esIE=/\.NET/.test(navigator.userAgent);
 
-var jsToHtml = require('js-to-html')
+var jsToHtml = require('../lib/js-to-html.js')
 var bestGlobals = require('best-globals');
 
 var moment = require('moment')
 
 if(typeof document === 'undefined'){
-    global.jsToHtml = require('../js-to-html.js'); /* eslint-disable-line global-require */
+    global.jsToHtml = require('../lib/js-to-html.js'); /* eslint-disable-line global-require */
     global.expect = require('expect.js'); /* eslint-disable-line global-require */
     global.moment = require('moment'); /* eslint-disable-line global-require */
 }
@@ -527,6 +527,31 @@ describe('js-to-html', function(){
             ])).to.eql(
                 "<h1>The title</h1>content"
             );
+        });
+    });
+    describe("generated tag functions", function(){
+        var html = jsToHtml.html;
+        var tagNames = Object.keys(jsToHtml.htmlTags).filter(function(tagName){
+            return typeof html[tagName] === 'function';
+        });
+        it('should have a function for most of the tags', function(){
+            expect(tagNames.length).to.be.greaterThan(100);
+        });
+        it('should render the void elements wbr and track without closing tag', function(){
+            expect(html.wbr().toHtmlText()).to.eql('<wbr>');
+            expect(html.track({src:'subtitles.vtt'}).toHtmlText()).to.eql("<track src='subtitles.vtt'>");
+        });
+        tagNames.forEach(function(tagName){
+            it('should render <'+tagName+'> with its function', function(){
+                var isVoid = jsToHtml.htmlTags[tagName]["void"];
+                // the generated functions with only one parameter do not receive content
+                var withContent = html[tagName].length > 1;
+                var element = withContent ? html[tagName]({title:'the '+tagName}, ['content']) : html[tagName]({title:'the '+tagName});
+                expect(element.tagName).to.eql(tagName);
+                expect(element.toHtmlText()).to.eql(
+                    '<'+tagName+" title='the "+tagName+"'>"+(withContent ? 'content' : '')+(isVoid ? '' : '</'+tagName+'>')
+                );
+            });
         });
     });
 });

@@ -13,6 +13,9 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# Raw coverage data collected from the browser (server4test --run-browser)
+.nyc_output
+
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 

@@ -1,0 +1,11 @@
+server4test:
+  verbose: false
+  browser-test:
+    files:
+      - node_modules/expect.js/index.js
+      - node_modules/require-bro/lib/polyfills-bro.js
+      - node_modules/moment/min/moment-with-locales.min.js
+      - node_modules/require-bro/lib/require-bro.js
+      - node_modules/best-globals/best-globals.js
+      - local-instrumented/lib/js-to-html.js
+      - test/test.js

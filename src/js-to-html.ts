@@ -926,13 +926,13 @@ export let htmlTags:HtmlTags={
     "time"         :{type:'HTML5', description:"Defines a date/time"},
     "title"        :{type:'HTML4', description:"Defines a title for the document"},
     "tr"           :{type:'HTML4', display:'not-inline', description:"Defines a row in a table"},
-    "track"        :{type:'HTML5', description:"Defines text tracks for media elements (<video> and <audio>)"},
+    "track"        :{type:'HTML5', "void":true, description:"Defines text tracks for media elements (<video> and <audio>)"},
     "tt"           :{type:'HTML4', description:"Not supported in HTML5. Defines teletype text"},
     "u"            :{type:'HTML4', description:"Defines text that should be stylistically different from normal text"},
     "ul"           :{type:'HTML4', description:"Defines an unordered list"},
     "var"          :{type:'HTML4', description:"Defines a variable"},
     "video"        :{type:'HTML5', description:"Defines a video or movie"},
-    "wbr"          :{type:'HTML5', description:"Defines a possible line-break"},
+    "wbr"          :{type:'HTML5', "void":true, description:"Defines a possible line-break"},
     "path"         :{type:'SVG'  , description:"SVG path"}
 };
 
