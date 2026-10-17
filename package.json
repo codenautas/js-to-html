@@ -32,7 +32,7 @@
     "nyc": "^18.0.0",
     "qa-control": "^0.12.2",
     "require-bro": "^0.4.1",
-    "server4test": "^2.0.0-rc.1",
+    "server4test": "^2.0.1",
     "typescript": "^5.9.3"
   },
   "engines": {
