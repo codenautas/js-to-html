@@ -1,8 +1,19 @@
 "use strict";
 
+const tseslint = require("typescript-eslint");
+const sonarjs = require("eslint-plugin-sonarjs");
+
 module.exports = [
     {
         ignores: ["dist/**", "lib/**", "coverage/**", "local-*/**"]
+    },
+    {
+        // SonarQube rules (the ones silenced in the code)
+        plugins: { sonarjs },
+        rules: {
+            "sonarjs/no-clear-text-protocols": 2,
+            "sonarjs/super-linear-regex": 2
+        }
     },
     {
         languageOptions: {
@@ -202,6 +213,27 @@ module.exports = [
             "prefer-spread": 0,
             "prefer-template": 0,
             "require-yield": 0
+        }
+    },
+    {
+        files: ["**/*.ts", "**/*.mts", "**/*.cts"],
+        languageOptions: {
+            parser: tseslint.parser,
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: __dirname
+            },
+            sourceType: "module"
+        },
+        plugins: {
+            "@typescript-eslint": tseslint.plugin
+        },
+        rules: {
+            // JavaScript rules with false positives in TypeScript
+            "no-redeclare": 0,
+            "no-unused-expressions": 0,
+            "strict": 0,
+            "@typescript-eslint/no-unused-expressions": 2
         }
     }
 ];

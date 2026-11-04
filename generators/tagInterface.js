@@ -113,8 +113,8 @@ ul	List	flow; palpable*	flow	li; script-supporting elements	globals	HTMLUListEle
 var	Variable	flow; phrasing; palpable	phrasing	phrasing	globals	HTMLElement
 video	Video player	flow; phrasing; embedded; interactive; palpable	phrasing	source*; track*; transparent*	globals; src; crossorigin; poster; preload; autoplay; playsinline; loop; muted; controls; width; height	HTMLVideoElement
 wbr	Line breaking opportunity	flow; phrasing	phrasing	empty	globals	HTMLElement`
-.replace(/MathML math/g,'math')
-.replace(/SVG svg/g,'svg')
+.replaceAll('MathML math','math')
+.replaceAll('SVG svg','svg')
 .replace(/per \[SVG\]\tper \[SVG\]/,'svg	focusable; viewbox; aria-hidden')+`
 circle	SVG path	svg	svg	empty	cx; cy; r	SVGCircleElement
 path	SVG path	svg	svg	empty	d	SVGPathElement`
@@ -140,14 +140,14 @@ spellcheck
 style
 tabindex
 title
-translate`.replace(/\s*\r?\n/g,';');
+translate`.replace(/\s*\r?\n/g,';'); // eslint-disable-line sonarjs/super-linear-regex -- it runs over the fixed text of this generator
 
 var lines=source.split(/\r?\n/);
 
 
 function escapeChar(simpleText){
     simpleText=''+simpleText;
-    return !/^\w+$/.test(simpleText)?'"'+simpleText.replace(/["]/g,'\\"')+'"':simpleText;
+    return !/^\w+$/.test(simpleText)?'"'+simpleText.replaceAll('"','\\"')+'"':simpleText;
 }
 
 var attrTypesDefs = [];
@@ -162,7 +162,7 @@ var output=lines.map(function(line){
         // }
         var attrTypeName='Attr4'+htmlinterface;
         if(!(attrTypeName in attrTypes)){
-            var attrList = (attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).filter(function(attribute){
+            var attrList = (attributes.replace(/globals(\s*;\s*|$)/,'$1')).split(/[*\s \t]*;\s*/).filter(function(attribute){ // eslint-disable-line sonarjs/super-linear-regex -- it runs over the fixed text of this generator
                 return true // !attribute.trim();
             });
             var def='export interface '+attrTypeName+' extends Attr4HTMLElement {'+attrList.map(function(attribute){

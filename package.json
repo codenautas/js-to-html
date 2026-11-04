@@ -25,15 +25,17 @@
     }
   },
   "devDependencies": {
+    "eslint-plugin-sonarjs": "^4.2.2",
     "best-globals": "^2.2.3",
     "expect.js": "^0.3.1",
     "mocha": "^12.0.3",
     "moment": "^2.31.0",
     "nyc": "^18.0.0",
-    "qa-control": "^0.12.2",
-    "require-bro": "^0.4.1",
-    "server4test": "^2.0.1",
-    "typescript": "^5.9.3"
+    "qa-control": "^0.14.2",
+    "require-bro": "^0.4.2",
+    "server4test": "^2.1.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.0"
   },
   "engines": {
     "node": ">= 22"
@@ -59,6 +61,7 @@
     "gha": "all",
     "coverage": 95,
     "run-in": "both",
-    "type": "lib"
+    "type": "lib",
+    "sonar": true
   }
 }

@@ -29,7 +29,7 @@ function alfaHTML(text){
                 okPart = [];
             }
         }
-        return ini+okParts.sort().join(' ')+fin;
+        return ini+okParts.sort(function(a,b){ return a<b?-1:(a>b?1:0); }).join(' ')+fin;
     });
     return result;
 }
@@ -343,7 +343,7 @@ describe('js-to-html', function(){
         });
         it('should reject content for void elements', function(){
             expect(function(){
-                direct({tagName:'link', attributes:{href: "http://correct.com"}, content:["content"]})
+                direct({tagName:'link', attributes:{href: "http://correct.com"}, content:["content"]}) // eslint-disable-line sonarjs/no-clear-text-protocols
             }).to.throwError(/void elements must not have content/);
         });
     });
@@ -482,7 +482,7 @@ describe('js-to-html', function(){
         })
         it('must reject not matching attributes',function(){
             expect(function(){
-                direct({tagName:'p', attributes:{href:'http://p.must.not.contains.it'}, content:[]})
+                direct({tagName:'p', attributes:{href:'http://p.must.not.contains.it'}, content:[]}) // eslint-disable-line sonarjs/no-clear-text-protocols
             }).to.throwError(/attribute .* does not match with tagName/);
         })
         it('must accept dashed attributes',function(){
@@ -635,14 +635,14 @@ if(typeof document !== 'undefined'){
                 var element = htmlObject.create();
                 div.appendChild(element);
                 if(typeof pairsOrHtml === "string"){
-                    expect(div.innerHTML.replace(/<[^ >]*[ >]/g,function(x){ return x.toLowerCase(); })).to.be(pairsOrHtml);
+                    expect(div.innerHTML.replace(/<[^ >]*[ >]/g,function(x){ return x.toLowerCase(); })).to.be(pairsOrHtml); // eslint-disable-line sonarjs/super-linear-regex
                 }else if(pairsOrHtml instanceof RegExp){
                     expect(div.innerHTML).to.match(pairsOrHtml);
                 }else{
                     for(var prop in pairsOrHtml){
-                        if(pairsOrHtml[prop] instanceof Array){
+                        if(Array.isArray(pairsOrHtml[prop])){
                             var obtained=element[prop];
-                            if(!(obtained instanceof Array) && 'length' in obtained || '_updateClassName' in obtained){
+                            if(!Array.isArray(obtained) && 'length' in obtained || '_updateClassName' in obtained){
                                 obtained=Array.prototype.slice.call(obtained,0);
                             }
                             expect(obtained).to.eql(pairsOrHtml[prop]);

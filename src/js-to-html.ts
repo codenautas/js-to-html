@@ -264,7 +264,7 @@ function escapeChar(simpleText:string){
 
 function couldDirectTextContent(x:any){
     return typeof x==="string" || typeof x==="number";
-};
+}
 
 function identity<T>(x:T){ return x; }
 
@@ -356,10 +356,10 @@ export class HtmlBase{
             if(attrVal==null || attrVal === false){
                 return ''
             }
-            if(attrName=='$attrs' && !inner){
+            if(attrName==='$attrs' && !inner){
                 return esto.attributesMapToHtmlText(attrVal, true)
             }
-            if(attrName=='$on' && !inner){
+            if(attrName==='$on' && !inner){
                 throw new Error('listener can not be toHtmlTexted');
             }
             var textAttrVal=attrVal;
@@ -403,7 +403,7 @@ export class Html extends HtmlBase{
         this.attributes=directObject.attributes
         this.content=directObject.content
     }
-    toHtmlText(opts?:PrintOpts, recurseOpts?:PrintRecurseOpts):string{
+    toHtmlText(opts?:PrintOpts, recurseOpts?:PrintRecurseOpts):string{ // eslint-disable-line complexity
         opts=opts||{};
         recurseOpts=recurseOpts||{};
         recurseOpts.margin=recurseOpts.margin||0;
@@ -412,7 +412,7 @@ export class Html extends HtmlBase{
         var tagInfoFirstChild:HtmlTagDef|{display:string}={display:''}
         if(Array.isArray(this.content)){
             var o=this.content[0]
-            if(typeof o == "object"){
+            if(typeof o === "object"){
                 if('tagName' in o){
                     tagInfoFirstChild=htmlTags[o.tagName]
                 }
@@ -437,7 +437,7 @@ export class Html extends HtmlBase{
     }
     createNode(){
         var tagInfo=htmlTags[this.tagName];
-        if(tagInfo.type=='SVG'){
+        if(tagInfo.type==='SVG'){
             return document.createElementNS("http://www.w3.org/2000/svg",this.tagName);
         }
         return document.createElement(this.tagName);
@@ -452,7 +452,7 @@ export class Html extends HtmlBase{
     }
     setOrResetAttribute(element:HTMLElement|SVGElement, attr:string, valueOrNull:null|string, testFirst:boolean){
         html.auditArrange?.('attr.mod', false);
-        if(!testFirst || valueOrNull == null && element.hasAttribute(attr) || valueOrNull != element.getAttribute(attr)){
+        if(!testFirst || valueOrNull == null && element.hasAttribute(attr) || valueOrNull != element.getAttribute(attr)){ // eslint-disable-line eqeqeq
             html.auditArrange?.('attr.mod', true);
             if(valueOrNull!=null){
                 element.setAttribute(attr,valueOrNull);
@@ -465,21 +465,21 @@ export class Html extends HtmlBase{
         let esto = this;
         let attributes = attributesMap || this.attributes;
         var tagInfo=htmlTags[this.tagName];
-        Object.keys(attributes).forEach(function(attr){
+        Object.keys(attributes).forEach(function(attr){ // eslint-disable-line complexity
             var value=attributes[attr];
-            if(/-/.test(attr) || attributesMap || tagInfo.type=='SVG' && attr!='id'){
+            if(/-/.test(attr) || attributesMap || tagInfo.type==='SVG' && attr!=='id'){
                 esto.setOrResetAttribute(element, attr, value, testFirst);
-            }else if(attr=='$attrs'){
+            }else if(attr==='$attrs'){
                 if(value != null){
                     esto.assignAttr(element, value, testFirst);
                 }
-            }else if(attr=='$on'){
+            }else if(attr==='$on'){
                 if(value != null){
                     // @ts-ignore
                     var $on=element.$on=element.$on||{};
                     for(var eventName in value){
                         html.auditArrange?.('attr.on', false);
-                        if(!testFirst || $on[eventName] != value[eventName]){
+                        if(!testFirst || $on[eventName] != value[eventName]){ // eslint-disable-line eqeqeq
                             html.auditArrange?.('attr.on', true);
                             if(eventName in $on){
                                 element.removeEventListener(eventName, $on[eventName])
@@ -503,7 +503,7 @@ export class Html extends HtmlBase{
                         esto.setOrResetAttribute(element, defAttr.idl, value, testFirst);
                     }else{
                         // @ts-ignore // no le gusta indexar HTML
-                        if(!testFirst || element[defAttr.idl] != value){
+                        if(!testFirst || element[defAttr.idl] != value){ // eslint-disable-line eqeqeq
                             html.auditArrange?.('attr.set', true);
                             // @ts-ignore // no le gusta indexar HTML
                             element[defAttr.idl] = value;
@@ -545,7 +545,7 @@ export class Html extends HtmlBase{
             });
             if(titles.length>1){
                 throw new Error("toHtmlDoc ERROR: multiple title");
-            }else if(titles.length==1){
+            }else if(titles.length===1){
                 if(opts.title){
                     throw new Error("toHtmlDoc ERROR: double title");
                 }
@@ -620,7 +620,7 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
     // @ts-ignore
     var jsToHtmlArrange=element.jsToHtmlArrange=element.jsToHtmlArrange||{id:{}, position:{}, idSource:{}, positionSource:{}};
     var pending:Node[] = Array.prototype.slice.call(element.childNodes,0);
-    listOfObjects.forEach(function(htmlElement, i){
+    listOfObjects.forEach(function(htmlElement, i){ // eslint-disable-line complexity, max-statements
         var id = htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement ? htmlElement.id : (
             htmlElement instanceof HtmlTextNode ? null : htmlElement.attributes.id
         );
@@ -628,7 +628,7 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
         var source =  id && jsToHtmlArrange.idSource[id] || jsToHtmlArrange.positionSource[i];
         if(!domElement || !(
             domElement instanceof Text && htmlElement instanceof HtmlTextNode ||
-            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName
+            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() === htmlElement.tagName
         ) ){
             var newElement;
             if(htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement){
@@ -662,12 +662,12 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
             if(domElement instanceof HTMLElement || domElement instanceof SVGElement){
                 htmlElement.assignAttr(domElement);
                 arrange(domElement, htmlElement.content)
-                if(htmlElement.content.length==0 && domElement.childNodes.length){
+                if(htmlElement.content.length===0 && domElement.childNodes.length){
                     domElement.innerHTML="";
                 }
             }else if(domElement instanceof Text){
                 html.auditArrange?.('textNode', false);
-                if(domElement.textContent != htmlElement.textNode){
+                if(domElement.textContent !== htmlElement.textNode){
                     html.auditArrange?.('textNode', true);
                     domElement.textContent = htmlElement.textNode;
                 }
@@ -688,7 +688,7 @@ export function direct(directObject:DirectObject):HtmlBase{
         }
     }
     throw new Error('js-to-html.direct error: invalid arguments to direct function');
-};
+}
 
 var validDirectProperties:ValidProperties={
     textNode:{
@@ -740,9 +740,9 @@ var validDirectProperties:ValidProperties={
                     for(var attrName in attributes){
                         /*jshint forin:true */
                         var attrInfo=htmlAttributes[attrName];
-                        if(attrName=='$on'){
+                        if(attrName==='$on'){
                             /*eslint no-empty: 0 */
-                        }else if(attrName=='$attrs'){
+                        }else if(attrName==='$attrs'){
                             if(attributes.$attrs!=null){
                                 Object.keys(attributes.$attrs).forEach(checkAttributeName);
                             }
@@ -771,7 +771,7 @@ var validDirectProperties:ValidProperties={
             htmlCode:{
                 checks:[
                     {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"},
-                    {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
+                    {check:function(x){ return typeof x === "string"; }, text:"htmlCode must be a string"},
                     {check:function(){ return html.insecureModeEnabled; }, text:"insecure functions not allowed"},
                     {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"}
                 ]
@@ -788,9 +788,9 @@ var validDirectProperties:ValidProperties={
         properties:{
             commentText:{
                 checks:[
-                    {check:function(x){ return typeof x == "string"; }, text:"commentText must be a string"},
+                    {check:function(x){ return typeof x === "string"; }, text:"commentText must be a string"},
                     // the text must not start with ">" or "->" or contain "-->" or "--!>": they close the comment
-                    {check:function(x){ return !/^-?>|-->|--!>/.test(x);}, text:"invalid text in comment"}
+                    {check:function(x){ return !/(?:^-?>)|-->|--!>/.test(x);}, text:"invalid text in comment"}
                 ]
             }
         },
@@ -800,7 +800,7 @@ var validDirectProperties:ValidProperties={
 function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfThereAreAttributes?:Content){
     var attributes:object={};
     var content:Content=[];
-    if(typeof contentOrAttributes=="object" && !Array.isArray(contentOrAttributes) ){
+    if(typeof contentOrAttributes==="object" && !Array.isArray(contentOrAttributes) ){
         if(contentOrAttributes!=null){
             if(!isPlainObject(contentOrAttributes)){
                 throw new Error('jsToHtml.'+tagName+' expects plain object of attributes or array of content');
@@ -826,7 +826,7 @@ function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfTh
             return result;
         },[])
     });
-};
+}
 
 export type HtmlTagDef={type:string, void?:boolean, display?:string, description:string}
 export type HtmlTags={
