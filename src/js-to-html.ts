@@ -1,13 +1,5 @@
 "use strict";
 
-var SCRIPT_IS_VOID = true;
-
-export function setScriptIsVoid(is:boolean){
-    SCRIPT_IS_VOID = is;
-    htmlTags.script["void"] = is;
-    htmlTags.script.mandatoryTag = is ? "src" : null;
-}
-
 function isPlainObject(x:any):boolean{
     return typeof x==="object" && x && x.constructor === Object;
 }
@@ -213,7 +205,7 @@ export var html={
     ruby(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("ruby", optsOrContent, content) as HtmlTag<HTMLElement>; },
     s(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("s", optsOrContent, content) as HtmlTag<HTMLElement>; },
     samp(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("samp", optsOrContent, content) as HtmlTag<HTMLElement>; },
-    script(optsOrContent?:Attr4HTMLScriptElement){ return indirect("script", optsOrContent, arguments[1]) as HtmlTag<HTMLScriptElement>; },
+    script(optsOrContent?:Attr4HTMLScriptElement|Content, content?:Content){ return indirect("script", optsOrContent, content) as HtmlTag<HTMLScriptElement>; },
     section(optsOrContent?:Attr4HTMLElement|Content, content?:Content){ return indirect("section", optsOrContent, content) as HtmlTag<HTMLElement>; },
     select(optsOrContent?:Attr4HTMLSelectElement|Content, content?:Content){ return indirect("select", optsOrContent, content) as HtmlTag<HTMLSelectElement>; },
     slot(optsOrContent?:Attr4HTMLSlotElement|Content, content?:Content){ return indirect("slot", optsOrContent, content) as HtmlTag<HTMLSlotElement>; },
@@ -357,7 +349,7 @@ export class HtmlBase{
             var attrDefinition=htmlAttributes[attrName] || {listName:false};
             if(attrDefinition.listName && typeof attrVal!=="string"){
                 textAttrVal=attrVal.join(' ');
-            } 
+            }
             var escapedAttrVal=escapeChar(textAttrVal);
             var quotingAttrVal=textAttrVal===''||esto.pattNonWordChar.test(textAttrVal)?'\''+escapedAttrVal+'\'':escapedAttrVal;
             return ' '+attrName+(attrVal === true?'':'='+quotingAttrVal);
@@ -421,7 +413,7 @@ export class Html extends HtmlBase{
             this.contentToHtmlText(opts,recurseOpts)+
             (firstChildInline?sp(recurseOpts.margin):'')+
             (isvoidTag?'':"</"+this.tagName+">")+nl;
-    
+
     }
     contentToHtmlText(opts:PrintOpts, recurseOpts:PrintRecurseOpts){
         return internalArrayToHtmlText(this.content,opts,{margin:recurseOpts.margin+2});
@@ -619,7 +611,7 @@ export function arrange(element:HTMLElement|SVGElement, listOfObjects:HtmlBase|H
         var source =  id && jsToHtmlArrange.idSource[id] || jsToHtmlArrange.positionSource[i];
         if(!domElement || !(
             domElement instanceof Text && htmlElement instanceof HtmlTextNode ||
-            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName 
+            'tagName' in domElement && 'tagName' in htmlElement && domElement.tagName.toLowerCase() == htmlElement.tagName
         ) ){
             var newElement;
             if(htmlElement instanceof HTMLElement || htmlElement instanceof SVGElement){
@@ -687,9 +679,9 @@ var validDirectProperties:ValidProperties={
         properties:{
             textNode:{
                 checks:[
-                    {check:function(x){ return x!=null;}, text:"textNodes must not contains null"}, 
+                    {check:function(x){ return x!=null;}, text:"textNodes must not contains null"},
                     {check:couldDirectTextContent, text:"must be string or number"}
-                ], 
+                ],
                 transform:function(x){ return typeof x==="string" || x==null?x:''+x; }
             }
         }
@@ -700,11 +692,11 @@ var validDirectProperties:ValidProperties={
             tagName:{checks:[
                 {check:function(x){ return typeof x==="string"; }, text:"must be a string"},
                 {check:function(x){
-                    if(!htmlTags[x]){ 
+                    if(!htmlTags[x]){
                         throw new Error("jsToHtml.Html error: directObject tagName "+x+" not exists");
-                    } 
+                    }
                     return true;
-                }}  
+                }}
             ]},
             attributes:{checks:[
                 {check:function(attributes){ return isPlainObject(attributes); }, text:"must be a plain Object"},
@@ -716,7 +708,7 @@ var validDirectProperties:ValidProperties={
                         if(attrValue==null){
                         }else if((attrName in htmlAttributes) && (htmlAttributes[attrName].rejectSpaces)){
                             var pattWhiteSpaces=new RegExp( "\\s");
-                            if(pattWhiteSpaces.test(attrValue)){   
+                            if(pattWhiteSpaces.test(attrValue)){
                                 throw new Error('js-to-html: ' + attrName + 'class attribute could not contain spaces. Use an array of attributes.');
                             }
                             if(attrValue instanceof Array){
@@ -726,7 +718,7 @@ var validDirectProperties:ValidProperties={
                     }
                     return true;
                 }},
-                {check:function(attributes, o){  
+                {check:function(attributes, o){
                     /*jshint forin:false */
                     for(var attrName in attributes){
                         /*jshint forin:true */
@@ -739,15 +731,6 @@ var validDirectProperties:ValidProperties={
                             if(!attrInfo.tags[o.tagName] && !attrInfo.tags["HTML elements"]){
                                 throw new Error("attribute "+JSON.stringify(attrName)+" does not match with tagName "+JSON.stringify(o.tagName)+"");
                             }
-                        }
-                    }
-                    return true;
-                }},
-                {check:function(attributes, o){  
-                    if (htmlTags[o.tagName].mandatoryTag) {
-                        if (!attributes[htmlTags[o.tagName].mandatoryTag]) {
-                            console.log('************', attributes, o, htmlTags[o.tagName].mandatoryTag, attributes[htmlTags[o.tagName].mandatoryTag])
-                            throw new Error("lack of " + htmlTags[o.tagName].mandatoryTag + " in html." + o.tagName)
                         }
                     }
                     return true;
@@ -764,7 +747,7 @@ var validDirectProperties:ValidProperties={
         properties:{
             htmlCode:{
                 checks:[
-                    {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"}, 
+                    {check:function(x){ return x!=null;}, text:"htmlCode must not contains null"},
                     {check:function(x){ return typeof x == "string"; }, text:"htmlCode must be a string"},
                     {check:function(){ return html.insecureModeEnabled; }, text:"insecure functions not allowed"},
                     {check:function(x,o){ return o.validator(x); }, text:"invalid htmlCode"}
@@ -821,7 +804,7 @@ function indirect(tagName:string,contentOrAttributes?:Content|object,contentIfTh
     });
 };
 
-export type HtmlTagDef={type:string, void?:boolean, display?:string, description:string, mandatoryTag?:string}
+export type HtmlTagDef={type:string, void?:boolean, display?:string, description:string}
 export type HtmlTags={
     readonly [key:string]:HtmlTagDef
 }
@@ -920,7 +903,7 @@ export let htmlTags:HtmlTags={
     "ruby"         :{type:'HTML5', description:"Defines a ruby annotation (for East Asian typography)"},
     "s"            :{type:'HTML4', description:"Defines text that is no longer correct"},
     "samp"         :{type:'HTML4', description:"Defines sample output from a computer program"},
-    "script"       :{type:'HTML4', mandatoryTag:"src", description:"Defines a client-side script"},
+    "script"       :{type:'HTML4', description:"Defines a client-side script"},
     "section"      :{type:'HTML5', description:"Defines a section in a document"},
     "select"       :{type:'HTML4', description:"Defines a drop-down list"},
     "small"        :{type:'HTML4', description:"Defines smaller text"},
@@ -943,13 +926,13 @@ export let htmlTags:HtmlTags={
     "time"         :{type:'HTML5', description:"Defines a date/time"},
     "title"        :{type:'HTML4', description:"Defines a title for the document"},
     "tr"           :{type:'HTML4', display:'not-inline', description:"Defines a row in a table"},
-    "track"        :{type:'HTML5', description:"Defines text tracks for media elements (<video> and <audio>)"},
+    "track"        :{type:'HTML5', "void":true, description:"Defines text tracks for media elements (<video> and <audio>)"},
     "tt"           :{type:'HTML4', description:"Not supported in HTML5. Defines teletype text"},
     "u"            :{type:'HTML4', description:"Defines text that should be stylistically different from normal text"},
     "ul"           :{type:'HTML4', description:"Defines an unordered list"},
     "var"          :{type:'HTML4', description:"Defines a variable"},
     "video"        :{type:'HTML5', description:"Defines a video or movie"},
-    "wbr"          :{type:'HTML5', description:"Defines a possible line-break"},
+    "wbr"          :{type:'HTML5', "void":true, description:"Defines a possible line-break"},
     "path"         :{type:'SVG'  , description:"SVG path"}
 };
 
@@ -1887,11 +1870,8 @@ export let htmlAttributes:HtmlAttributes={
 // var ok=Object.keys(jsToHtml.htmlTags)
 
 // // Object.keys(htmlTags).map(function(tagName){
-// ok.map(function(tagName){    
+// ok.map(function(tagName){
 //     // html[tagName]=function(contentOrAttributes,contentIfThereAreAttributes){
 //         // return indirect(tagName,contentOrAttributes,contentIfThereAreAttributes);
 //     // };
 // // });
-
-
-setScriptIsVoid(SCRIPT_IS_VOID);

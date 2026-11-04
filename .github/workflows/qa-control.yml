@@ -1,0 +1,18 @@
+name: QA control
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '20 20 * * 5'
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  qa:
+    uses: codenautas/.github/.github/workflows/qa-control.yaml@v3

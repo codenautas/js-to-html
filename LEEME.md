@@ -12,12 +12,11 @@ Create HTML text from JS object
 [!--lang:*-->
 
 <!-- cucardas -->
-![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![npm-version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
-[![build](https://github.com/codenautas/js-to-html/actions/workflows/node.js.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/node.js.yml)
+[![build](https://github.com/codenautas/js-to-html/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/build-and-test.yml)
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
-[![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
+[![qa-control](https://github.com/codenautas/js-to-html/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/qa-control.yml)
 
 <!--multilang buttons-->
 
@@ -42,10 +41,10 @@ $ npm install js-to-html
 ### html.TAGNAME([attributes, ]content)
 <!--lang:es-->
 
-Devuelve un objeto HTML cuyo tagname es TAGNAME y que contiene los atributos y el contenido que corresponda. 
+Devuelve un objeto HTML cuyo tagname es TAGNAME y que contiene los atributos y el contenido que corresponda.
 
 <!--lang:en--]
-Returns an Html object with TAGNAME, attributes and content. 
+Returns an Html object with TAGNAME, attributes and content.
 
 <!--lang:es-->
 **content** puede ser:
@@ -64,16 +63,16 @@ Returns an Html object with TAGNAME, attributes and content.
 
 [!--lang:es-->
 
-**attributes** debe ser un objeto plano (sin tipo). 
+**attributes** debe ser un objeto plano (sin tipo).
 Cada propiedad del objeto será un atributo html (ejemplo:`{colspan:3,id:"abc"}`).
 Algunos nombres de atributos son palabras reservadas, se pueden usar con el mismo nombre (ejemplo:`{'class':'ejemplos'}`).
 Algunos atributos (como **class**) pueden contener listas (ejemplo: `{'class':['ejemplos','listas']}`).
-   
+
 <!--lang:en--]
 
-**attributes** must be a plain object. Each property of the object will be an html attribute (example: `{colspan:3, id:"abc"}`). 
-Some attributes names are reserved words, you can use them with the same name (example: `{class:'examples'}`). 
-Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`). 
+**attributes** must be a plain object. Each property of the object will be an html attribute (example: `{colspan:3, id:"abc"}`).
+Some attributes names are reserved words, you can use them with the same name (example: `{class:'examples'}`).
+Some attributes (like **class**) could contain lists (example: `{class:['examples', 'lists']}`).
 
 [!--lang:*-->
 ### Html.toHtmlText(opts)
@@ -170,14 +169,14 @@ title      | text title
 ## Usándolo en el navegador
 
 Los objetos html tienen un método `create` que se usa para crear el elemento del DOM
-listo para agregarlo (por ejemplo con `appendChild`) a cualqueir elemento existente. 
-Además `create` crea también todos los elementos internos. 
+listo para agregarlo (por ejemplo con `appendChild`) a cualqueir elemento existente.
+Además `create` crea también todos los elementos internos.
 
 <!--lang:en--]
 ## Using with DOM in client-side
 
-All html objects have a `create` method that build a DOM Element ready to append to a existing one. 
-`create` builds the element and inside elements too. 
+All html objects have a `create` method that build a DOM Element ready to append to a existing one.
+`create` builds the element and inside elements too.
 
 [!--lang:*-->
 ```js
@@ -192,7 +191,7 @@ document.body.appendChild(
         ])
     ]).create()
 );
-  
+
 ```
 
 <!--lang:es-->
@@ -226,7 +225,7 @@ attribute | classList     | for a class name list (this module rejects class wit
 html.insecureModeEnabled = true;
 console.log(html.div({id:'this'}, html.includeHtml('<svg xml:....> </svg>')));
 ```
- 
+
 <!--lang:es-->
 ## Notas
  * En el futuro será inteligente manejar el atributo **style** como `{style:{color: "blue", background: "none"}}`
@@ -251,7 +250,7 @@ NPM version |Device                 |OS             |nav                      |o
 0.9.1       | HTC Desire            | Android 2.2.2 | Android 2.2.2           | polyfill:classList
 0.9.1       | iPad mini Retina      | iOS 8.4.0     | Mobile Safari 8.0.0     |
 0.9.1       | VMWare                | WinXP         | IE 8.0.0                | polyfill:many
- 
+
 <!--lang:es-->
 
 ## Licencias

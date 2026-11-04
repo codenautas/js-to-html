@@ -1,16 +1,16 @@
 "use strict";
 
-var esIE = this.navigator ? /\.NET/.test(navigator.userAgent) : false;
+var esIE=/\.NET/.test(navigator.userAgent);
 
-var jsToHtml = require('../lib/js-to-html')
+var jsToHtml = require('../lib/js-to-html.js')
 var bestGlobals = require('best-globals');
 
 var moment = require('moment')
 
 if(typeof document === 'undefined'){
-    global.jsToHtml = require('../lib/js-to-html.js');
-    global.expect = require('expect.js');
-    global.moment = require('moment');
+    global.jsToHtml = require('../lib/js-to-html.js'); /* eslint-disable-line global-require */
+    global.expect = require('expect.js'); /* eslint-disable-line global-require */
+    global.moment = require('moment'); /* eslint-disable-line global-require */
 }
 
 function alfaHTML(text){
@@ -23,7 +23,7 @@ function alfaHTML(text){
             var part = parts.shift();
             if(!inString && part.match(/^[-a-zA-Z0-9_]*="/)) inString = true;
             okPart.push(part);
-            if(!inString || part[part.length-1] == '"' && part[part.length-2] != '\\'){
+            if(!inString || part[part.length-1] === '"' && part[part.length-2] !== '\\'){
                 okParts.push(okPart.join(' '));
                 inString = false;
                 okPart = [];
@@ -35,7 +35,7 @@ function alfaHTML(text){
 }
 
 describe('js-to-html', function(){
-    describe('basic test', function(){
+    describe('basic test', function(){ /* eslint-disable-line max-statements */
         var html = jsToHtml.html;
         var direct = jsToHtml.direct;
         beforeEach(function(){
@@ -361,42 +361,6 @@ describe('js-to-html', function(){
                 html.p(complexObject);
             }).to.throwError(/expects plain object of attributes or array of content/);
         });
-        it('should accept script attributes',function(){
-            html.script({src:"ok.js"});
-        });
-        describe("html.script new", function(){ [true, false].forEach(function(direct){
-            beforeEach(function(){
-                jsToHtml.setScriptIsVoid(true);
-            })
-            describe("html.script: " + (direct ? 'direct' : 'tag'), function(){
-                [["in-array.js"],"one.js"].forEach(function(content){
-                    it('should reject script content: '+JSON.stringify(content),function(){
-                        expect(function(){
-                            if(direct && content instanceof Array)
-                                jsToHtml.direct({tagName:"script", attributes:{src:"ok.js"}, content:content})
-                            else
-                                html.script({src:"ok.js"}, content)
-                        }).to.throwError(/must not have content/);
-                    });
-                });
-                [{src:null},{id:"bad.js"},{},null,undefined].forEach(function(attrs){
-                    it('should reject script without source: '+(attrs ? JSON.stringify(attrs) : attrs),function(){
-                        expect(function(){
-                            if(direct && attrs && attrs instanceof Object)
-                                jsToHtml.direct({tagName:"script", attributes:attrs, content:null})
-                            else
-                                html.script(attrs)
-                        }).to.throwError(/lack of src in html.script/);
-                    });
-                });
-            })
-        })});
-        it('should accept script with all others',function(){
-            jsToHtml.setScriptIsVoid(false);
-            html.script({src:"ok.js"});
-            html.script();
-            html.script("ok.js");
-        });
     });
     describe("toHtmlDoc", function(){
         var html = jsToHtml.html;
@@ -503,6 +467,11 @@ describe('js-to-html', function(){
                 html.includeHtml("hello");
             }).to.throwError(/insecure functions not allowed/);
         });
+        it('should reject insecure functions for direct',function(){
+            expect(function(){
+                direct({htmlCode:"hello"});
+            }).to.throwError(/insecure functions not allowed/);
+        });
     });
     describe("custom attributes",function(){
         var direct = jsToHtml.direct;
@@ -560,6 +529,31 @@ describe('js-to-html', function(){
             );
         });
     });
+    describe("generated tag functions", function(){
+        var html = jsToHtml.html;
+        var tagNames = Object.keys(jsToHtml.htmlTags).filter(function(tagName){
+            return typeof html[tagName] === 'function';
+        });
+        it('should have a function for most of the tags', function(){
+            expect(tagNames.length).to.be.greaterThan(100);
+        });
+        it('should render the void elements wbr and track without closing tag', function(){
+            expect(html.wbr().toHtmlText()).to.eql('<wbr>');
+            expect(html.track({src:'subtitles.vtt'}).toHtmlText()).to.eql("<track src='subtitles.vtt'>");
+        });
+        tagNames.forEach(function(tagName){
+            it('should render <'+tagName+'> with its function', function(){
+                var isVoid = jsToHtml.htmlTags[tagName]["void"];
+                // the generated functions with only one parameter do not receive content
+                var withContent = html[tagName].length > 1;
+                var element = withContent ? html[tagName]({title:'the '+tagName}, ['content']) : html[tagName]({title:'the '+tagName});
+                expect(element.tagName).to.eql(tagName);
+                expect(element.toHtmlText()).to.eql(
+                    '<'+tagName+" title='the "+tagName+"'>"+(withContent ? 'content' : '')+(isVoid ? '' : '</'+tagName+'>')
+                );
+            });
+        });
+    });
 });
 
 if(typeof document !== 'undefined'){
@@ -571,7 +565,7 @@ if(typeof document !== 'undefined'){
                 document.body.appendChild(div);
                 var element = htmlObject.create();
                 div.appendChild(element);
-                if(typeof pairsOrHtml=="string"){
+                if(typeof pairsOrHtml === "string"){
                     expect(div.innerHTML.replace(/<[^ >]*[ >]/g,function(x){ return x.toLowerCase(); })).to.be(pairsOrHtml);
                 }else if(pairsOrHtml instanceof RegExp){
                     expect(div.innerHTML).to.match(pairsOrHtml);
@@ -588,7 +582,7 @@ if(typeof document !== 'undefined'){
                         }
                     }
                 }
-                if(others) others(done, element) 
+                if(others) others(done, element)
                 else setTimeout(done,100);
             }catch(err){
                 done(err);
@@ -905,7 +899,7 @@ if(typeof document !== 'undefined'){
                     ]));
                     return bestGlobals.sleep(400).then(function(){
                         var svgL = layout.children[0]
-                        expect(svgL==svg).to.ok();
+                        expect(svgL === svg).to.ok();
                         var id2 = document.querySelector('#svg1');
                         var path2 = id2.getElementById('svg2');
                         expect(svg===id2).to.ok();
@@ -941,7 +935,7 @@ if(typeof document !== 'undefined'){
         })
     })});
     describe('eventListeners', function(){
-        var html = jsToHtml.html;;
+        var html = jsToHtml.html;
         var div;
         var clickCount;
         beforeEach(function(){

@@ -4,14 +4,11 @@
 Create HTML text from JS object
 
 
-![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![npm-version](https://img.shields.io/npm/v/js-to-html.svg)](https://npmjs.org/package/js-to-html)
 [![downloads](https://img.shields.io/npm/dm/js-to-html.svg)](https://npmjs.org/package/js-to-html)
-[![build](https://img.shields.io/travis/codenautas/js-to-html/master.svg)](https://travis-ci.org/codenautas/js-to-html)
+[![build](https://github.com/codenautas/js-to-html/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/build-and-test.yml)
 [![coverage](https://img.shields.io/coveralls/codenautas/js-to-html/master.svg)](https://coveralls.io/r/codenautas/js-to-html)
-[![climate](https://img.shields.io/codeclimate/github/codenautas/js-to-html.svg)](https://codeclimate.com/github/codenautas/js-to-html)
-[![dependencies](https://img.shields.io/david/codenautas/js-to-html.svg)](https://david-dm.org/codenautas/js-to-html)
-[![qa-control](http://codenautas.com/github/codenautas/js-to-html.svg)](http://codenautas.com/github/codenautas/js-to-html)
+[![qa-control](https://github.com/codenautas/js-to-html/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/js-to-html/actions/workflows/qa-control.yml)
 
 
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
