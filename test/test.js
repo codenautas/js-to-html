@@ -500,6 +500,75 @@ describe('js-to-html', function(){
             );
         })
     });
+    describe("security", function(){
+        var direct = jsToHtml.direct;
+        var html = jsToHtml.html;
+        // taken before the tests of "insecure" replace it
+        var includeHtmlValidator = html.includeHtmlValidator;
+        function rejectsAttributeName(attributes){
+            return function(){
+                expect(function(){
+                    direct({tagName:'div', attributes:attributes, content:[]});
+                }).to.throwError(/invalid attribute name/);
+            };
+        }
+        function rejectsComment(text){
+            return function(){
+                expect(function(){
+                    html._comment(text);
+                }).to.throwError(/invalid text in comment/);
+            };
+        }
+        it('rejects a dashed attribute name with spaces', rejectsAttributeName({"data-x onmouseover=alert(1) y":"v"}));
+        it('rejects a dashed attribute name with >', rejectsAttributeName({"data-x><script>alert(1)</script><b":"v"}));
+        it('rejects a dashed attribute name with quotes', rejectsAttributeName({"data-x\"":"v"}));
+        it('rejects an attribute name in $attrs with spaces', rejectsAttributeName({$attrs:{"x onmouseover=alert(1)":"v"}}));
+        it('rejects an attribute name in $attrs with =', rejectsAttributeName({$attrs:{"x=y":"v"}}));
+        it('accepts the names that the HTML standard allows, as @click, v-on:click or non ASCII letters', function(){
+            expect(
+                direct({tagName:'div', attributes:{"data-año":'1', $attrs:{"@click":'go', "v-on:click":'go'}}, content:[]}).toHtmlText()
+            ).to.eql(
+                "<div data-año=1 @click=go v-on:click=go></div>"
+            );
+        });
+        it('warns that those names are deprecated, only the first times', function(){
+            var logged = 0;
+            var originalLog = console.log;
+            console.log = function(message){ if(/DEPRECATED/.test(message)){ logged++; } };
+            try{
+                for(var i=0; i<20; i++){
+                    var attrs = {};
+                    attrs["@on"+i] = 'x';
+                    direct({tagName:'div', attributes:{$attrs:attrs}, content:[]});
+                }
+            }finally{
+                console.log = originalLog;
+            }
+            expect(logged).to.be.below(11);
+            expect(logged).to.be.above(0);
+        });
+        it('accepts data, aria and namespaced attribute names', function(){
+            expect(
+                direct({tagName:'div', attributes:{"data-one":'1', "aria-label":'x', $attrs:{"xml:lang":'es', "data-two.three":'2'}}, content:[]}).toHtmlText()
+            ).to.eql(
+                "<div data-one=1 aria-label=x xml:lang=es data-two.three=2></div>"
+            );
+        });
+        it('rejects a comment that starts with > (it closes the comment)', rejectsComment("><img src=x onerror=alert(1)>"));
+        it('rejects a comment that starts with -> (it closes the comment)', rejectsComment("-><img src=x onerror=alert(1)>"));
+        it('rejects a comment that contains --!> (it closes the comment)', rejectsComment("--!><img src=x onerror=alert(1)>"));
+        it('accepts a comment with > inside', function(){
+            expect(html._comment("a > b").toHtmlText()).to.eql("<!--a > b-->");
+        });
+        it('includeHtmlValidator answers quickly for a long text with an unclosed <', function(){
+            var start=Date.now();
+            expect(includeHtmlValidator("a".repeat(50000)+"<")).to.be(false);
+            expect(Date.now()-start).to.be.below(100);
+        });
+        it('includeHtmlValidator accepts tags, text and line breaks', function(){
+            expect(includeHtmlValidator('<div class="x">\nok\n</div>')).to.be(true);
+        });
+    });
     describe("arrayToHtmlText", function(){
         var html = jsToHtml.html;
         it('should list off nodes', function(){
